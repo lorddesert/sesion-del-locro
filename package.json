@@ -1,0 +1,39 @@
+{
+  "name": "sesion-del-locro",
+  "version": "1.0.0",
+  "description": "A chat saloon where you will can play some games with your friends in real time!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --open --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lorddesert/sesion-del-locro.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lorddesert/sesion-del-locro/issues"
+  },
+  "homepage": "https://github.com/lorddesert/sesion-del-locro#readme",
+  "dependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
+    "babel-loader": "^8.1.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "babel-plugin-class-properties": "^1.0.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "html-loader": "^1.1.0",
+    "html-webpack-plugin": "^4.0.4",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  }
+}
