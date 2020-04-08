@@ -36,6 +36,10 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.0.4",
+    "node-sass": "^4.13.1",
+    "postcss-loader": "^3.0.0",
+    "resolve-url-loader": "^3.1.1",
+    "sass-loader": "^8.0.2",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
