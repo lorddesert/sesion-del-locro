@@ -1,0 +1,15 @@
+$background-color: #546c5a;
+$font-size: 20px;
+$font-color: #ebebeb;
+
+.Footer {
+  border: dashed $background-color 2px;
+  bottom: 0 !important;
+  background: $background-color;
+  padding: .5em;
+  display: flex;
+    span {
+      font-size: $font-size;
+      color: $font-color;
+    }
+}

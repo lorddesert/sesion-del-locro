@@ -1,0 +1,15 @@
+$font-color: #546c5a;
+.Header {
+  font-size: 2em;
+  height: 15vh;
+  display: grid;
+  align-items: center;
+  background: #ebebeb;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #ebebeb, #cad2c5);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #ebebeb, #cad2c5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  justify-content: start;
+  .Header-title {
+    margin-left: .5em;
+    color: $font-color;
+  }
+}

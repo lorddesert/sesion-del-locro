@@ -1,0 +1,15 @@
+.Main {
+  display: flex;
+  flex: 1;
+  margin-top: .5em;
+
+ .Main-content {
+   flex: 1;
+   display: flex;
+   flex-direction: row;
+ }
+}
+
+@media(max-width: 600px) {
+  
+}

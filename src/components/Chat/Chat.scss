@@ -1,0 +1,59 @@
+$background-color: #fbfef9;
+
+.Chat {
+  flex: 8;
+  display: flex;
+  flex-direction: column;
+  
+  .Chat-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+
+    .MSG {
+      color: black;
+      margin: 2em 0;
+      display: flex;
+      flex-direction: row;
+      span {
+        flex: 0.5;
+        border: cyan 1px solid;
+        border-radius: 36px;
+        margin-left: .5em;
+        background: sandybrown;
+        padding: .6em;
+      }
+    }
+    .Chat-messages {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: $background-color;
+      overflow: auto;
+    }
+    .Chat-input {
+      display: flex;
+      justify-content: space-evenly;
+      input {
+        padding-left: .5em;
+        text-align: start;
+        flex: 0.9;
+        border-radius: 36px;
+        padding: .5em;
+        font-size: 1.2em;
+        border: 3px solid #ead2ac;
+      }
+      .Chat-inputBtn {
+        border: 3px solid black;
+        padding: .5em;
+        border-radius: 36px;
+        letter-spacing: .5em;
+        cursor: pointer;
+      }
+      .Chat-inputBtn:hover {
+
+      }
+    }
+  }
+}
