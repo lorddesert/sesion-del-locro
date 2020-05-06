@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import './App.scss';
 // reset and normalize css
@@ -8,16 +8,18 @@ import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 
-const App = () => {
-  return (
-    <div className='App'>
-      <div className='App-container'>
-        <Header />
-        <Main />
-        <Footer />
+class App extends Component {
+  render() {
+    return (
+      <div className='App'>
+        <div className='App-container'>
+          {/* <Header /> */}
+          <Main/>
+          {/* <Footer /> */}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default App;

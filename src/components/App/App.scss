@@ -1,6 +1,9 @@
 * {
   text-align: center;
 }
+textarea {
+  resize: none;
+}
 .App {
   height: 100vh;
   display: flex;
