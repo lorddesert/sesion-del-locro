@@ -55,7 +55,7 @@ class Login extends Component {
                 {this.state.showLogin ?
                   <PrimaryButton value='Iniciar Sesión' action={this.props.authUser} />
                   :
-                  <PrimaryButton value='Registrate' action={this.props.authUser} />
+                  <PrimaryButton value='Registrate' action={this.props.register} />
                 }
               </div>
               <div className='register'>

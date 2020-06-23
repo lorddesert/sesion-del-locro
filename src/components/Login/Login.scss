@@ -90,7 +90,7 @@ $breakpoint: 768px;
       @include gridArea(title);
       h2 {
         font-family: 'Courier New', Courier, monospace;
-        font-size: 28px;
+        font-size: 24px;
       }
     }
     .errorMsg {
@@ -113,6 +113,7 @@ $breakpoint: 768px;
     }
     .passsword-title, .userName-title {
       justify-content: start;
+      font-size: 14px;
     }
     .passsword-title {
       @include gridArea(passwordTitle);
