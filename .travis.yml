@@ -1,9 +1,9 @@
 language: node_js
 cache:
   directories:
-    - ~!@/.npm
+    - ~/.npm
 node_js:
-  - '9'
+  - '10'
 git:
   depth: 3
 script:
@@ -13,8 +13,8 @@ deploy:
   skip-cleanup: true
   keep-history: true
   github-token: $GITHUB_TOKEN
-  local_dir: dist/
-  target_branch: master
-  commit-message: "Deploy release ${TRAVIS_TAG}"
+  local-dir: dist/
+  target-branch: master
+  commit_message: "Deploy release ${TRAVIS_TAG}"
   on:
     branch: develop
