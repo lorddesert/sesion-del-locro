@@ -1,2 +1,7 @@
 # sesion-del-locro
-A chat saloon where you will can play some games with your friends in real time!
+An app where you can create a chat room special designed for Role Play.
+
+In the chat room you get:
+- * Custom dice. *
+- * Customizable background for chat. *
+- * State message to identify where you end. *
