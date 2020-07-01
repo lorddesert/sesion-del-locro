@@ -1,0 +1,35 @@
+@mixin buttonStyle {
+    // border-radius: 37px;
+    // background: linear-gradient(145deg, #0f684b, #127b59);
+    background: #000;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap');
+
+$button-color: #117353;
+$font-color: #fff;
+
+.Facebook {
+  background: #3b5998 !important;
+}
+.Facebook:hover {
+  box-shadow: 0 0 7px #8b9dc3;
+}
+
+.PrimaryButton {
+  // padding: .5em;
+
+  button {
+    color: $font-color;
+    font-family: 'Lato', Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: .9em;
+    border: none;
+    border-radius: 7px;
+    width: 200px;
+    @include buttonStyle();
+    }
+}

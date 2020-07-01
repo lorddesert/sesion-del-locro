@@ -1,33 +1,35 @@
 import React, { Component } from 'react';
-
 import './Main.scss';
-
 import Chat from '../Chat/Chat';
 import Contacts from '../Contacts/Contacts';
 import Login from '../Login/Login';
-
+import UserConfig from '../userConfig/userConfig';
 import { DB_CONFIG } from '../../config/config';
 import firebase from 'firebase';
 
 class Main extends Component {
   app = !firebase.apps.length ? firebase.initializeApp(DB_CONFIG) : firebase.app();
   db = this.app.database().ref().child('users');
+  storage = this.app.storage().ref().child('users');
 
   state = {
     showLogin: true,
     showLoginOptions: false,
     showRegister: false,
-    onlineUsers: [],
-    user: ' ',
+    showChatRoom: false,
+    chooseRender: 'contacts',
+    chatRooms : [],
+    contacts: [],
     chat: [],
-    receiver: ' '
+    user: ' ',
+    receiver: ' ',
+    inChatRoom: false
   }
-
 
   authUser = e => {
     e.preventDefault();
     const ref = this.db;
-    const userName = document.getElementById('userName').value;
+    const userName = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     const msg = document.getElementById('errorMsg');
 
@@ -41,11 +43,12 @@ class Main extends Component {
        if(user) {
         const authPassword = snapshot.child(`${userName}/password`).val();
         const res = authPassword == `${password}` ? true : false;
+
         if(res) {
           // send in err msg with
           msg.style.color = 'green';
           msg.innerHTML = 'Usuario encontrado.';
-          setTimeout(() => this.setOnlineUsers(userName), 600);
+          setTimeout(() => this.login(userName), 600);
         }
         else {
           msg.innerHTML = 'Password incorrecto.';
@@ -56,15 +59,123 @@ class Main extends Component {
       }
     })
     .catch(err => console.log(err));
-    // const provider = new firebase.auth.FacebookAuthProvider();
-    // firebase.auth().signInWithPopup(provider)
-    // .then(res => {
-    //   // This gives you a Facebook Access Token.
-    //   const token = res.credential.accessToken;
-    //   // The signed-in user info.
-    //   const user = res.user;
-    //   this.findUser(token, user);
-    // });
+  }
+
+  login = userName => {
+    const ref = this.app.database().ref(`users/${userName}`);
+    ref.child('online').set(true);
+
+    ref.once('value')
+    .then(snapshot => {
+      const photo = snapshot.child('photo').val();
+
+      this.setState(state => ({
+        ...state,
+        showLogin: false,
+        user: {
+          userName,
+          photo
+        }
+      }))
+    })
+
+    this.setContacts();
+    this.setChatRooms();
+    ref.child('online').onDisconnect().set(false);
+  }
+
+  register = e => {
+    const userName = document.getElementById('userName').value;
+    let password = document.getElementById('password').value;
+    const msg = document.getElementById('errorMsg');
+    const ref = this.app.database().ref('users');
+    e.preventDefault();
+
+    if(userName == '' || password == '')
+      return false;
+
+    console.log(typeof(NaN));
+    if(!(isNaN(parseInt(password)))) {
+      password = parseInt(password);
+    }
+
+    ref.once('value')
+      .then(snapshot => {
+        const auth = snapshot.hasChild(`${userName}`);
+        if(auth) {
+          msg.style.color = 'red';
+          msg.innerHTML = 'Nombre de usuario no disponible.';
+        }
+        else {
+          const newUser = {
+            userName,
+            contacts: [],
+            online: false,
+            password,
+            photo: false,
+          }
+
+          ref.child(`${userName}`).set(newUser)
+            .then(() => {
+              msg.style.color = 'green';
+              msg.innerHTML = 'Registro completado.';
+              setTimeout(() => location.reload(), 600)
+            })
+            .catch(err => console.log(err));
+        }
+      })
+  }
+
+  setContacts = () => {
+    // const ref = this.app.database().ref(`users/${user}/contacts`);
+    const usersRef = this.app.database().ref('users');
+
+    usersRef.once('value')
+    .then(snapshot => {
+      let contacts = [];
+      const sender = this.state.user.userName;
+      snapshot.forEach(user => {
+        // filter me, and verify only who is online.
+        if(user.val().userName != this.state.user.userName) {
+          const { userName, photo, online } = user.val();
+          // Don't look for /chat , instead look yours chat in their contacts.
+          let chat = user.child(`contacts/${sender}/chat`).val();
+
+          chat = chat ? Object.values(chat) : [];
+          const newContact = {
+            userName,
+            chat,
+            photo,
+            online
+          }
+          contacts.push(newContact);
+        }});
+        return contacts;
+      })
+      .then(contacts => this.setState({contacts}))
+      .catch(err => console.log(err));
+  }
+
+  setChatRooms = () => {
+    const chatRoomRef = this.app.database().ref('chatRooms');
+
+    chatRoomRef.once('value')
+    .then(snapshot => {
+      let chatRooms = [];
+
+      snapshot.forEach(chatRoom => {
+        const newChatRoom = {
+          ...chatRoom.val(),
+          chat: chatRoom.hasChild('chat') ? Object.values(chatRoom.child('chat').val()) : []
+        }
+
+        chatRooms.push(newChatRoom);
+      });
+        return chatRooms;
+      })
+      .then(chatRooms => this.setState({chatRooms}))
+      .catch(err => console.log(err));
+
   }
 
   toggleShowRegister = () => {
@@ -72,44 +183,16 @@ class Main extends Component {
     this.setState(state => ({
       ...state,
       showRegister: !state.showRegister
-    }))
-    
+    }));
   }
 
   toggleShowLogin = () => {
-    this.setOnlineUsers();
     this.setState(state => ({
       ...state,
-              showLoginOptions: !state.showLoginOptions
-            }))
+      showLoginOptions: !state.showLoginOptions
+    }));
   }
 
-  login = userName => {
-    const ref = this.app.database().ref('onlineUsers');
-    const user = userName;
-
-    this.setState(state => ({
-      ...state,
-      showLogin: false,
-      user
-    }))
-
-    ref.child(`${userName}`).set(user);
-    ref.child(`${userName}`).onDisconnect().remove();
-    // this.setOnlineUsers(user);
-  }
-  setOnlineUsers = user => {
-    let users = [];
-    const ref = this.app.database().ref('onlineUsers');
-    ref.once('value')
-    .then(snapshot => {
-      snapshot.forEach(child => this.setMessages(user, child, users));
-      this.setState({onlineUsers: users});
-      this.login(user);
-    })
-    .catch(err => console.log(err));
-  }
-  /* Change for setContacts */
   setMessages = (user, child, users) => {
   /* Remove, in contacts, I will not appear. */
     if(!(child.val() == `${user}`)) {
@@ -118,18 +201,73 @@ class Main extends Component {
         userName: child.child('userName').val(),
         chat
       }
+
       users.push(user);
     }
   }
-  setChat = (messages, receiver) => {
-    console.log('receiver is: ' + receiver);
-    const newMessages = Object.values(messages);
-    this.setState({chat: newMessages, receiver});
+  setChat = receiver => {
+    // console.log('receiver: ', receiver);
+    let i = null;
+
+    for(i = 0; i < this.state.contacts.length; i++)
+      if(this.state.contacts[i].userName === receiver)
+        this.setState({
+          receiver,
+          chat: this.state.contacts[i].chat,
+          inChatRoom: false
+        });
   }
+
+  setChatRoom = receiver => {
+    // console.log('receiver: ', receiver);
+    let i = null;
+    /*
+    if I am in the chatRoom i clicked => setState -> chat: chat of chatRoom(where do I get this?).
+    */
+    // this.setState({receiver, chat: this.state.})
+    for(i = 0; i < this.state.chatRooms.length; i++)
+      if(this.state.chatRooms[i].name === receiver)
+        this.setState({
+          receiver,
+          chat: this.state.chatRooms[i].chat,
+          inChatRoom: true
+        });
+  }
+
+  storageImg = e => {
+    const img = document.getElementById('fileInput').files[0];
+    const ref = this.app.database().ref(`users/${this.state.user.userName}/photo`);
+    let uploadTask = null;
+
+    e.preventDefault();
+    uploadTask = this.storage.child(`${this.state.user.userName}/${img.name}`).put(img);
+    uploadTask.on('state_changed',
+    null,
+    null,
+    () => {
+      // .then(res => console.log(res))
+      uploadTask.snapshot.ref.getDownloadURL()
+      .then(imgURL => {
+        ref.set(imgURL)
+
+        return imgURL;
+      })
+      .then(imgURL => this.setState(state => ({
+        ...state,
+        user: {
+          ...state.user,
+          photo: imgURL
+        }
+      })))
+      .catch(err => console.log(err))
+    })
+  }
+
   setUserChat = messages => {
     // let onlineUsers = this.state.onlineUsers;
     const onlineUsers = [...this.state.onlineUsers];
-    for(let i = 0; i < onlineUsers.length; i++) {
+    const l = onlineUsers.length;
+    for(let i = 0; i < l; i++) {
     // Finding the user that we are talking to...
       if(messages[0].sender == onlineUsers[i].userName) {
         onlineUsers[i].chat = messages;
@@ -138,48 +276,147 @@ class Main extends Component {
     }
   }
 
-  sendMsg = (sender = 'anonymus', receiver) => {
-    // alert(input.value);
-    // it works
+  sendMsg = () => {
+    const sender = this.state.user.userName;
+    const receiver = this.state.receiver;
     const msg = document.getElementById('chatInput');
-    const ref = this.app.database().ref(`onlineUsers/${receiver}/chat`);
-    if(msg.value === '')
-      return false;
+    const senderChat = this.app.database().ref(`users/${sender}/contacts/${receiver}/chat`);
+    const receiverChat = this.app.database().ref(`users/${receiver}/contacts/${sender}/chat`);
     const newMsg = {
       sender,
       content: msg.value
     }
-    ref.once('value')
-      .then(snapshot => {
-        const obj = snapshot.val();
-        const arr = Object.values(obj);
-        ref.push().set(newMsg);
-      })
-      .then(() => {
-        this.scrollBottom();
-        msg.value = '';
-      })
-      .catch(err => console.log(err));
 
+    if(msg.value === '')
+      return false;
+
+    senderChat.push().set(newMsg)
+    .then(() => {
+      this.scrollBottom();
+      msg.value = '';
+    })
+    .then(() => receiverChat.push().set(newMsg))
+    .catch(err => console.log(err));
   }
+
   scrollBottom = () => {
     const chat = document.getElementById('chat');
+
     chat.scrollTo({
       top: (chat.scrollTopMax + 1000),
       behavior: 'smooth'
     });
   }
 
+  saveNewUserInfo = e => {
+    const newUserName = document.getElementById('newUserName').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const userRef = this.app.database().ref(`users/${this.state.user.userName}`);
+    /* NEXT STEP => SAVE A PHOTO. */
+    // const newPhoto = document.getElementById('imgInput');
+    let newUserInfo = {}
+
+    e.preventDefault();
+    userRef.once('value')
+    .then(snapshot => {
+      newUserInfo = {...snapshot.val()}
+        // userName : newUserName,
+        // password : newPassword,
+      return newUserInfo;
+    })
+    .then(newUserInfo => {
+      if(newUserInfo.userName !== newUserName)
+        newUserInfo.userName = newUserName;
+
+      if(newPassword !== '')
+        if(newPassword === confirmPassword)
+          newUserInfo.password = newPassword;
+
+        else {
+          alert('¡Las contraseñas deben ser identicas!');
+          return false;
+        }
+      else {
+        alert('¡Las contraseñas deben ser identicas!');
+        return false;
+      }
+
+      return newUserInfo;
+    })
+    .then(res => {
+      if(res)
+      userRef.set(res)
+      .then(() => alert('Guardado correctamente!') /* only CLOSE the editForm */)
+      .catch(err => console.log(err))
+    })
+    .catch(err => console.log(err))
+
+
+  }
+
+  sendChatRoomMsg = () => {
+    const sender = this.state.user.userName;
+    const receiver = this.state.receiver; // will be the chatRoom we pick.
+    const msg = document.getElementById('chatInput');
+    const receiverChat = this.app.database().ref(`chatRooms/${receiver}/chat`);
+    const newMsg = {
+      sender,
+      content: msg.value
+    }
+
+    if(msg.value === '')
+      return false;
+
+    receiverChat.push().set(newMsg)
+    .then(() => {
+      this.scrollBottom();
+      msg.value = '';
+    })
+    .catch(err => console.log(err));
+  }
+
   componentDidMount = () => {
-    const ref = this.app.database().ref('onlineUsers');
-    ref.on('child_changed', newMsg => {
-      let newChat = [];
-      // console.log(newMsg.child('chat').val());
-      newMsg.child('chat').forEach(msg => {newChat.push(msg.val())});
-      // console.log('newChat:', newChat);
-      this.setChat(newChat, this.state.receiver);
-      this.setUserChat(newChat);
-    });
+    const usersRef = this.app.database().ref('users');
+    const chatRoomRef = this.app.database().ref('chatRooms');
+    /* Put the event only if a msg or a user is set online */
+    /* the problem is that everyone is receiving the newChat, so we need to change that...*/
+    /* i need to be clear in who is the sender and the receiver of this newMsg */
+    /* SOLVED: i put a validation for only the msg's that are send to ME. */
+    usersRef.on('child_changed', child => {
+      if(this.state.receiver != ' ' && child.child('userName').val() == this.state.user.userName) {
+        const chat = child.child(`contacts/${this.state.receiver}/chat`).val();
+        const newChat = Object.values(chat);
+        this.setState({chat: newChat});
+      }
+      /* only if the user scrollHeight is at the bottom */
+      /* when a user connect, this cause an error and not appear the user that is now online */
+      /* the problem is caused because the function is trying to access to a element that doesn't exists.   */
+      // this.scrollBottom();
+      this.setContacts();
+    })
+//   it doesn't update when I send a new msg.
+//   the msg appears to send correctly, but not update MY chat, and i cannot see the changes.
+    chatRoomRef.on('child_changed', child => {
+      if(this.state.receiver != ' ') {
+        let chat = child.child('chat').val();
+        chat = Object.values(chat);
+        console.log(chat);
+        this.setState({ chat });
+      }
+      /* only if the user scrollHeight is at the bottom */
+      /* when a user connect, this cause an error and not appear the user that is now online */
+      /* the problem is caused because the function is trying to access to a element that doesn't exists.   */
+      // this.scrollBottom();
+      /* SOLVED */
+      // There was a problem when i set the state with the new chat, and call setChatRoom, this f(x) overwrite
+      // chat with the past value, because setState is Async.
+    })
+  }
+
+  componentWillUnmount = () => {
+    const ref = this.app.database().ref(`users`);
+    ref.off();
   }
 
   render() {
@@ -193,30 +430,70 @@ class Main extends Component {
               showLoginOptions={this.state.showLoginOptions}
               showRegister={this.state.showRegister}
               authUser={this.authUser}
-              user={this.state.user}
+              user={this.state.user.userName}
               toggleShowRegister={this.toggleShowRegister}
+              register={this.register}
             />
           }
         </div>
       </div>
       );
+      else if(this.state.showChatRoom)
+        return(
+          <div className='Main'>
+            <div className='Main-content'>
+              <UserConfig
+                user={this.state.user}
+                saveNewUserInfo={this.saveNewUserInfo}
+                storageImg={this.storageImg}
+                />
+{/* It will show the users connected in the chatRoom, EVEN I. */}
+              <Contacts
+                app={this.app}
+                user={this.state.user}
+                contacts={this.state.contacts}
+                setChat={this.setChat}
+                chatRooms={this.state.chatRooms}
+                setChatRoom={this.setChatRoom}
+              />
+              <Chat
+                user={this.state.user.userName}
+                sendMsg={this.sendMsg}
+                receiver={this.state.receiver}
+                chat={this.state.chat}
+                sendChatRoomMsg={this.sendChatRoomMsg}
+                inChatRoom={this.state.inChatRoom}
+              />
+            </div>
+          </div>
+        );
     else
       return (
         <div className='Main'>
           <div className='Main-content'>
+            <UserConfig
+              user={this.state.user}
+              saveNewUserInfo={this.saveNewUserInfo}
+              storageImg={this.storageImg}
+            />
             <Contacts
               app={this.app}
               user={this.state.user}
-              onlineUsers={this.state.onlineUsers}
-              setOnlineUsers={this.setOnlineUsers}
+              contacts={this.state.contacts}
               setChat={this.setChat}
+              enterChatRooms={this.enterChatRooms}
+              chooseRender={this.state.chooseRender}
+              chatRooms={this.state.chatRooms}
+              setChatRoom={this.setChatRoom}
+              
             />
             <Chat
-              app={this.app}
-              chat={this.state.chat}
-              user={this.state.user}
+              user={this.state.user.userName}
               sendMsg={this.sendMsg}
               receiver={this.state.receiver}
+              chat={this.state.chat}
+              sendChatRoomMsg={this.sendChatRoomMsg}
+              inChatRoom={this.state.inChatRoom}
             />
           </div>
         </div>

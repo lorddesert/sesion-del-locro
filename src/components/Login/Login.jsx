@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import './Login.scss';
-import locro from './resources/locro.png';
+import locro from './resources/locro.jpg';
 
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import SecondaryButton from '../SecondaryButton/SecondaryButton';
@@ -22,58 +22,26 @@ class Login extends Component {
   render() {
       return (
         <div className='Login'>
-            <form className={this.props.showLogin ? 'Login-form' : 'Register-form'}>
-              <div className='topImg'>
-                <h2>S</h2>
-              </div>
-               <div className='top2Img'>
-                <img src={locro} alt='locro'></img>
-              </div>
-              <div className='title'>
-                {this.state.showLogin ?
-                <h2>Iniciar Sesión</h2>
-                :
-                <h2>Registrarse</h2>
-                }
-              </div>
-              <div className='errorMsg'>
-                <span id='errorMsg'></span>
-              </div>
-              <div className='userName-title'>
-                <span>Nombre de usuario</span>
-              </div>
-               <div className='userName-input'>
-                <input type='text' placeholder='Enter username' id='userName' required/>
-              </div>
-              <div className='passsword-title'>
-                <span>Contraseña</span>
-              </div>
-              <div className='password-input'>
-                <input type='password' placeholder='Enter password' id='password' required/>
-              </div>
-              <div className='submit-btn'>
-                {this.state.showLogin ?
-                  <PrimaryButton value='Iniciar Sesión' action={this.props.authUser} />
-                  :
-                  <PrimaryButton value='Registrate' action={this.props.register} />
-                }
-              </div>
-              <div className='register'>
-                <div>
-                  {this.state.showLogin ?
-                    <p>¿No tienes una cuenta?, <span onClick={this.toggleShow}>¡Registrate!</span></p>
-                  :
-                    <p>¿Ya tienes una cuenta?, <span onClick={this.toggleShow}>¡Inicia sesión!</span></p>
-                  }
-                </div>
-              </div>
-                <div className='bottomLetter'>
-                  <h2>S</h2>
-                </div>
-                <div className='bottom2Img'>
-                  <img src={locro} alt='locro'></img>
-                </div>
+         <img  className='Login-img' src={locro} alt='locro background'/>
+          <div className='Login-form-container'>
+            <h2>Sesion del Locro</h2>
+            <form className='Login-form'>
+              <span id='errorMsg'></span>
+              <label htmlFor='username'>
+                <input type='text' id='username' placeholder='Nombre de usuario'/>
+              </label>
+              <label htmlFor='password'>
+                <input type='password' id='password' placeholder='Contraseña'/>
+              </label>
+              <label htmlFor='submit'>
+                <PrimaryButton id='submit' value='Iniciar sesión' action={this.props.authUser}/>
+              </label>
+            <div className='links'>
+              <a href="#"><span>¿No tienes una cuenta?</span></a>
+              <a href="#"><span>¿No recuerdas tu contraseña?</span></a>
+            </div>
             </form>
+          </div>
         </div>
       );
   }

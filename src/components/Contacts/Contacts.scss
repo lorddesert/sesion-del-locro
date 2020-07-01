@@ -1,4 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap');
 .Contacts {
+  z-index: 1;
+  background: #f0f0f0;
+  color: #000;
   flex: 2;
-  background-color: rebeccapurple;
+  display: flex;
+  flex-direction: column;
+  .Contacts-content {
+    max-width: 20vw;  
+    overflow: auto;
+    flex: 9;
+    display: flex;
+    flex-direction: column;
+    background: #282828;
+    // For administrate the white spaces
+    // justify-content: space-evenly;
+
+    .notContactsFound {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+
+      span {
+        font-size: 1.5em;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        color: #666;
+        opacity: 0.6;
+        padding: .5em;
+        font-weight: bold;
+        font-size: 1.6em;
+        line-height: 1.6em;
+      }
+    }
+  }
+}
+
+.Profile {
+  display: flex;
+  justify-content: space-between !important;
+  border-top: solid 1px #666;
+  background: #3F3F42;
+
+  .Profile-img, .Profile-actions {
+    padding: .5em;
+  }
+  .Profile-img {
+    display: flex;
+    align-items: center;
+  }
+  .Profile-img img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+  }
+  .Profile-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    gap: 5px;
+    width: 33%;
+  }
+  .Action {
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+  .Action-img {
+    fill: #DDCF1B;
+    width: 20px;
+    cursor: pointer;
+  }
+}
+.chat-room {
+  display: flex;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  padding: .5em;
+  color: #DDCF1B;
+  background: #49494D;
+
+  span {
+    text-align: start;
+    flex: 8;
+  }
+
+  img {
+    flex: 4;
+    width: 20px;
+    height: 20px;
+    transform: rotate(-90deg);
+    transition: rotate 200ms ease-in;
+  }
+
+}
+#contacts-display {
+  display: none;
+  flex-direction: column;
+
+}
+
+#userCfg {
+  transition: all ease 0.3s;
+}
+
+.rotate {
+  transition: all ease 0.3s;
+  transform: rotate(-90deg);
+}
+.userCfgPanel {
+  display: none;
+  width: 20vw;
+  // grid-template-columns: repeat(3, 1fr);
+  grid-template-areas: "state"
+                       "userConfig"
+                       "logOut";
+  font-size: 20px;
+  gap: 5px;
+  position: absolute;
+  bottom: 77.7vh;
+  z-index: 8;
+  left: 0;
+  background: #49494D;
+  opacity: 0;
+  transition: 0.1s all ease;
+  transform: translateY(-10px);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  overflow: hidden;
+  button {
+    font-size: 1rem;
+    color: #fff;
+  }
+  .panelOption {
+    font-size: 1rem;
+  }
+
+  .userConfigPanel {
+    grid-area: userConfig;
+  }
+
+  .logOut {
+    grid-area: logOut;
+    button {
+      // color: #da2d56;
+      color: #DDCF1B;
+      font-weight: bold;
+    }
+  }
+}
+.display {
+  // transition: 0.1s all ease;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .Contacts {
+    display: none;
+  }
 }

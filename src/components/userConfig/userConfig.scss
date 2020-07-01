@@ -1,0 +1,148 @@
+@mixin userInfo() {
+  background: #373737;
+  padding: .5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: .5em;
+}
+
+@mixin heading2() {
+  color:#B9B9B9;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: Lato, sans-seirf;
+}
+
+@mixin heading3() {
+  color:#fafafa;
+  font-weight: bold;
+}
+
+.userConfig {
+  display: none;
+  grid-template-columns: repeat(32, 1fr);
+  position: absolute;
+  z-index: 8;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  opacity: 1;
+  transition: 0.1s all ease;
+  overflow: hidden;
+  background: #282828;
+
+  .exitImg {
+    width: 4vw;
+    height: 4vw;
+    margin: 1vh 0 0 1vh;
+    grid-column: 1/2;
+    
+    img {
+      padding: 5px;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.1s all ease;
+      border-radius: 7px;
+    }
+    img:hover {
+      transform: translate(-3px, -3px);
+      background: #ce294e;
+    }
+  }
+
+  .userInfoContainer {
+    // width: 20vw;
+    grid-column: 14/19;
+    display: grid;
+    align-items: center;
+
+  }
+  .userInfo {
+    width: 20vw;
+    @include userInfo();
+
+    
+    
+    .userProfile {
+      display: flex;
+      align-items: center;
+      gap: .7em;
+
+      h3 {
+        @include heading3();
+        font-weight: normal;
+      }
+    }
+
+    img {
+      width: 7vw;
+      height: 7vw;
+      border-radius: 50%;
+    }
+
+    h2 {
+      @include heading2();
+      font-size: 1rem;
+    }
+    .PrimaryButton button {
+      width: 12vw;
+      font-size: 1rem;
+      background: #DDCF1B;
+      color: #000;
+      font-weight: bold;
+    }
+    
+  }
+
+  #editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    text-align: start;
+
+    h2 {
+      font-size: .9em;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: .5em;
+      text-align: start;
+      align-items: center;
+
+      input {
+        background:#242628;
+        border: none;
+        width: 80%;
+        padding: .5em;
+        text-align: start;
+        color:#fff;
+      }
+    }
+    .formButtons {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .SecondaryButton button {
+        color: #f2f2f2;
+      }
+      button {
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+.toggleUserConfig {
+  display: grid !important;
+}
+.toggleEditForm {
+  display: flex !important;
+}
+.toggleEditBtn {
+  display: none;
+}

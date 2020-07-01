@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap');
+
+@mixin buttonStyle {
+  // background: linear-gradient(145deg, #0f684b, #127b59);
+  border: none;
+  color: #000;
+  background: transparent;
+}
+.SecondaryButton {
+  padding: .5em;
+    button {
+      font-family: 'Lato', Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      @include buttonStyle();
+    }
+}
+
+.SecondaryButton button:hover {
+  text-decoration: underline;
+}

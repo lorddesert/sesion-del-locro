@@ -34,11 +34,8 @@ module.exports = {
       {
         test: /\.scss$/i,
         use: [
-          // Creates `style` nodes from JS strings
           'style-loader',
-          // Translates CSS into CommonJS
           'css-loader',
-          // Compiles Sass to CSS
           {
             loader: 'sass-loader',
             options: {
@@ -46,6 +43,13 @@ module.exports = {
             }
           }
         ],
+      },
+      {
+        test: /\.svg$/i,
+        use: {
+          loader: 'svg-url-loader',
+          options: {}
+        }
       },
       {
         test: /\.gif$/i,

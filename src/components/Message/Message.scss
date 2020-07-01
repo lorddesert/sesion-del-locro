@@ -1,0 +1,38 @@
+.Message-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: start;
+  padding: .5em 0;
+}
+.Message-wrapper:last-child {
+  padding: .5em 0 1em 0;
+}
+.Switch {
+  background: #A0E850 !important;
+  margin: 0 2em 0 0 !important;
+}
+.Message {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  color: black;
+  // max-width: 30%;
+  border-radius: 15px;
+  margin-left: 2em;
+  background: #fff;
+  padding: .8em;
+
+  .Message-owner {
+    font-weight: bold;
+  }
+
+  .Message-content {
+    padding: .5em;
+    text-align: start;
+  }
+}
+@media (max-width: 600px) {
+  .Message {
+    max-width: 65%;
+  }
+}
