@@ -40,7 +40,7 @@ class Chat extends Component {
     const max = document.getElementById('max').value;
     let count = 0;
 
-    if(min === '' || max === '')
+    if(min === '' || max === '' || min > max)
       return false;
 
       this.setState(state => ({
@@ -67,7 +67,7 @@ class Chat extends Component {
         this.props.sendChatRoomMsg();
 
       else
-        this.props.sendMsg(this.props.user, this.props.receiver); // this.props.receiver
+        this.props.sendMsg(); // this.props.receiver
   }
 
   componentDidMount() {
@@ -75,7 +75,7 @@ class Chat extends Component {
   }
 
   render() {
-    if(this.props.receiver != ' ') {
+    if(this.props.receiver) {
       return (
       <div className='Chat' >
         <div className='Chat-content' id='chatContent' >
@@ -134,7 +134,7 @@ class Chat extends Component {
               <p>Si no, puedes tomar este consejo de nuestros autoproclamados expertos:</p>
                 <blockquote>
                   <img src={quote} alt='quatation marks'/>
-                  <p>El que me crea que me crea el que no me crea que no me crea. <strong className='autor'>- Unknown</strong></p>
+                  <p>El que me crea que me crea el que no me crea que no me crea. <strong className='autor'>- Desconocido</strong></p>
                   <img src={quote} style={{transform: 'rotate(180deg)'}} alt='quatation marks'/>
                 </blockquote>
               </div>
