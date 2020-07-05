@@ -18,7 +18,7 @@ class Contact extends Component {
 
   render() {
     return (
-      <div className="Contact" onClick={this.props.setChat && (() => this.props.setChat(this.props.contact.userName))}>
+      <div className="Contact" onClick={this.props.setChat && (() => this.props.setChat(this.props.contact.userName, this.props.contact.ref))}>
         <div className="Contact-avatar">
           {this.props.contact.photo ?
             <img id={`contact-${this.props.number}`} src={this.props.contact.photo} alt='contact image'></img>
