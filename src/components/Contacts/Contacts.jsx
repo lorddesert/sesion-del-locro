@@ -102,7 +102,7 @@ class Contacts extends Component {
           </div>
           {this.props.chatRooms[0] &&
             this.props.chatRooms.map((chatRoom, i) => <ChatRoom
-              key={`contact-${i}`}
+              key={`chatRoom-${i}`}
               chatRoom={chatRoom}
               setChatRoom={this.props.setChatRoom}
               number={i}
