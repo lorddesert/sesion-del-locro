@@ -6,10 +6,10 @@ import Login from '../Login/Login';
 import UserConfig from '../userConfig/userConfig';
 import { DB_CONFIG } from '../../config/config';
 import firebase from 'firebase';
+import Register from '../Register/Register';
 
 class Main extends Component {
   app = !firebase.apps.length ? firebase.initializeApp(DB_CONFIG) : firebase.app();
-  db = this.app.database().ref().child('users');
   storage = this.app.storage().ref().child('users');
 
   state = {
@@ -22,13 +22,14 @@ class Main extends Component {
     contacts: [],
     chat: [],
     user: ' ',
-    receiver: ' ',
+    receiver: null,
     inChatRoom: false
   }
 
   authUser = e => {
     e.preventDefault();
-    const ref = this.db;
+
+    const ref = this.app.database().ref().child('users');
     const userName = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     const msg = document.getElementById('errorMsg');
@@ -38,14 +39,35 @@ class Main extends Component {
 
     ref.once('value')
     .then(snapshot => {
+      /* This will be changed for a loop over all the users */
+      /* Need to find the username IN the users, no the ID */
       const user = snapshot.hasChild(`${userName}`);
+      /*
+      User is the input username.
+
+      snapshot.forEach(user => {
+        const username = user.child('username').val();
+        const password = user.child('password').val();
+        if(username === inputUsername)  {
+          if(password === inputPassword) {
+            msg.style.color = 'green';
+            msg.innerHTML = 'Usuario encontrado.';
+            setTimeout(() => this.login(userName), 600);
+          } else {
+            error msg
+          }
+
+        } else {
+          error msg
+        }
+      })
+      */
 
        if(user) {
         const authPassword = snapshot.child(`${userName}/password`).val();
         const res = authPassword == `${password}` ? true : false;
 
         if(res) {
-          // send in err msg with
           msg.style.color = 'green';
           msg.innerHTML = 'Usuario encontrado.';
           setTimeout(() => this.login(userName), 600);
@@ -63,6 +85,7 @@ class Main extends Component {
 
   login = userName => {
     const ref = this.app.database().ref(`users/${userName}`);
+
     ref.child('online').set(true);
 
     ref.once('value')
@@ -74,7 +97,8 @@ class Main extends Component {
         showLogin: false,
         user: {
           userName,
-          photo
+          photo,
+          ref
         }
       }))
     })
@@ -84,6 +108,7 @@ class Main extends Component {
     ref.child('online').onDisconnect().set(false);
   }
 
+  /* Must be applied in the new Register component */
   register = e => {
     const userName = document.getElementById('userName').value;
     let password = document.getElementById('password').value;
@@ -94,7 +119,7 @@ class Main extends Component {
     if(userName == '' || password == '')
       return false;
 
-    console.log(typeof(NaN));
+// Filter if whe find a object parsed.
     if(!(isNaN(parseInt(password)))) {
       password = parseInt(password);
     }
@@ -102,11 +127,11 @@ class Main extends Component {
     ref.once('value')
       .then(snapshot => {
         const auth = snapshot.hasChild(`${userName}`);
+
         if(auth) {
           msg.style.color = 'red';
           msg.innerHTML = 'Nombre de usuario no disponible.';
-        }
-        else {
+        } else {
           const newUser = {
             userName,
             contacts: [],
@@ -134,20 +159,23 @@ class Main extends Component {
     .then(snapshot => {
       let contacts = [];
       const sender = this.state.user.userName;
+
       snapshot.forEach(user => {
         // filter me, and verify only who is online.
         if(user.val().userName != this.state.user.userName) {
           const { userName, photo, online } = user.val();
-          // Don't look for /chat , instead look yours chat in their contacts.
           let chat = user.child(`contacts/${sender}/chat`).val();
 
           chat = chat ? Object.values(chat) : [];
+
           const newContact = {
             userName,
             chat,
             photo,
-            online
+            online,
+            ref: user
           }
+
           contacts.push(newContact);
         }});
         return contacts;
@@ -178,10 +206,12 @@ class Main extends Component {
 
   }
 
-  toggleShowRegister = () => {
-    // change modal for registration.
+  toggleShowRegister = e => {
+    e.preventDefault();
+
     this.setState(state => ({
       ...state,
+      showLogin: !state.showLogin,
       showRegister: !state.showRegister
     }));
   }
@@ -205,13 +235,23 @@ class Main extends Component {
       users.push(user);
     }
   }
-  setChat = receiver => {
-    // console.log('receiver: ', receiver);
+
+  setChat = (receiver, contactRef) => {
     let i = null;
+    const chat = document.getElementById('chat');
+    const contacts = document.getElementById('contacts');
+
+    if(window.innerWidth < 768) {
+      // chat.style.display = 'block';
+      // contacts.style.display = 'none';
+      document.getElementById('main').classList.toggle('show-chat');
+
+    }
 
     for(i = 0; i < this.state.contacts.length; i++)
       if(this.state.contacts[i].userName === receiver)
         this.setState({
+          // receiver: contactRef.ref,
           receiver,
           chat: this.state.contacts[i].chat,
           inChatRoom: false
@@ -219,8 +259,15 @@ class Main extends Component {
   }
 
   setChatRoom = receiver => {
-    // console.log('receiver: ', receiver);
     let i = null;
+
+    const chat = document.getElementById('chat');
+    const contacts = document.getElementById('contacts');
+
+    if(window.innerWidth < 768) {
+      chat.style.display = 'block';
+      contacts.style.display = 'none';
+    }
     /*
     if I am in the chatRoom i clicked => setState -> chat: chat of chatRoom(where do I get this?).
     */
@@ -282,9 +329,10 @@ class Main extends Component {
     const msg = document.getElementById('chatInput');
     const senderChat = this.app.database().ref(`users/${sender}/contacts/${receiver}/chat`);
     const receiverChat = this.app.database().ref(`users/${receiver}/contacts/${sender}/chat`);
+
     const newMsg = {
       sender,
-      content: msg.value
+      content: msg.value,
     }
 
     if(msg.value === '')
@@ -295,8 +343,41 @@ class Main extends Component {
       this.scrollBottom();
       msg.value = '';
     })
-    .then(() => receiverChat.push().set(newMsg))
+    .then(() => receiverChat.child('chat').push().set(newMsg))
     .catch(err => console.log(err));
+  }
+
+  sendMsg2 = () => {
+    /*
+
+
+
+ // First we receive the ref of the contact,
+    // Second we create a new ref pointing to the contact ref,
+    // Choose the new info and set it in the ref we create.
+    // This will work...?
+
+    const ref = this.app.database().ref(contactRef.ref);
+    const newContact = {
+      ...contactRef.val(),
+    }
+
+    console.log(contactRef.ref);
+    ref.set(newContact);
+
+*/
+
+// receiver = reference, of the refence of the contact
+      // console.log(receiver.path.pieces_[1]); // this will return the contact ID
+
+      // This is sending the MSG to -> lorddesert/contacts/chat/lorddesert <- i need to change this to the receiver
+      // Now YES!
+
+      // 1) Send msg to my chat.
+      // 2) Send msg to the receiver chat.
+
+
+      receiver.child(`contacts/${sender}/chat`).push().set(newMsg);
   }
 
   scrollBottom = () => {
@@ -355,18 +436,25 @@ class Main extends Component {
 
   }
 
-  sendChatRoomMsg = () => {
+  sendChatRoomMsg = (diceValue, diceRoll = false) => {
     const sender = this.state.user.userName;
     const receiver = this.state.receiver; // will be the chatRoom we pick.
     const msg = document.getElementById('chatInput');
     const receiverChat = this.app.database().ref(`chatRooms/${receiver}/chat`);
-    const newMsg = {
+
+    let newMsg = {
       sender,
-      content: msg.value
+      content: msg.value,
+      diceRoll
     }
 
-    if(msg.value === '')
+    if(msg.value === '' && !diceRoll)
       return false;
+
+    else if(diceRoll) {
+      // The dice value we obtaind from getRandomNumber
+      newMsg.diceValue = diceValue;
+    }
 
     receiverChat.push().set(newMsg)
     .then(() => {
@@ -424,7 +512,6 @@ class Main extends Component {
       return(
         <div className='Main'>
           <div className='Main-content'>
-          {this.state.showLogin &&
             <Login
               toggleShowLogin={this.toggleShowLogin}
               showLoginOptions={this.state.showLoginOptions}
@@ -434,14 +521,13 @@ class Main extends Component {
               toggleShowRegister={this.toggleShowRegister}
               register={this.register}
             />
-          }
         </div>
       </div>
       );
       else if(this.state.showChatRoom)
         return(
           <div className='Main'>
-            <div className='Main-content'>
+            <div className='Main-content' id='main'>
               <UserConfig
                 user={this.state.user}
                 saveNewUserInfo={this.saveNewUserInfo}
@@ -467,10 +553,19 @@ class Main extends Component {
             </div>
           </div>
         );
+    else if(this.state.showRegister)
+      return(
+        <div className='Main'>
+          <div className='Main-content'>
+            <Register
+            />
+        </div>
+      </div>
+      );
     else
       return (
         <div className='Main'>
-          <div className='Main-content'>
+          <div className='Main-content' id='main'>
             <UserConfig
               user={this.state.user}
               saveNewUserInfo={this.saveNewUserInfo}
