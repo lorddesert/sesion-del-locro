@@ -96,6 +96,7 @@ class Main extends Component {
         ...state,
         showLogin: false,
         user: {
+          // userName : snapshot.child('nickname').val(),
           userName,
           photo,
           ref
@@ -108,10 +109,11 @@ class Main extends Component {
     ref.child('online').onDisconnect().set(false);
   }
 
-  /* Must be applied in the new Register component */
+  /* Must be applied in the new Register component  YES*/
   register = e => {
-    const userName = document.getElementById('userName').value;
+    const userName = document.getElementById('username').value;
     let password = document.getElementById('password').value;
+    const nickname = document.getElementById('nickname').value;
     const msg = document.getElementById('errorMsg');
     const ref = this.app.database().ref('users');
     e.preventDefault();
@@ -134,6 +136,7 @@ class Main extends Component {
         } else {
           const newUser = {
             userName,
+            nickname,
             contacts: [],
             online: false,
             password,
@@ -324,7 +327,7 @@ class Main extends Component {
   }
 
   sendMsg = () => {
-    const sender = this.state.user.userName;
+    const sender = this.state.user.userName; //This will be the nickname
     const receiver = this.state.receiver;
     const msg = document.getElementById('chatInput');
     const senderChat = this.app.database().ref(`users/${sender}/contacts/${receiver}/chat`);
@@ -343,7 +346,7 @@ class Main extends Component {
       this.scrollBottom();
       msg.value = '';
     })
-    .then(() => receiverChat.child('chat').push().set(newMsg))
+    .then(() => receiverChat.push().set(newMsg))
     .catch(err => console.log(err));
   }
 
@@ -367,7 +370,7 @@ class Main extends Component {
 
 */
 
-// receiver = reference, of the refence of the contact
+// receiver = reference, the refence of the contact
       // console.log(receiver.path.pieces_[1]); // this will return the contact ID
 
       // This is sending the MSG to -> lorddesert/contacts/chat/lorddesert <- i need to change this to the receiver
@@ -396,6 +399,8 @@ class Main extends Component {
     const userRef = this.app.database().ref(`users/${this.state.user.userName}`);
     /* NEXT STEP => SAVE A PHOTO. */
     // const newPhoto = document.getElementById('imgInput');
+    // newUserInfo.photo = newPhoto;
+
     let newUserInfo = {}
 
     e.preventDefault();
@@ -413,6 +418,7 @@ class Main extends Component {
       if(newPassword !== '')
         if(newPassword === confirmPassword)
           newUserInfo.password = newPassword;
+
 
         else {
           alert('¡Las contraseñas deben ser identicas!');
@@ -558,6 +564,8 @@ class Main extends Component {
         <div className='Main'>
           <div className='Main-content'>
             <Register
+              toggleShowRegister={this.toggleShowRegister}
+              register={this.register}
             />
         </div>
       </div>
@@ -580,7 +588,6 @@ class Main extends Component {
               chooseRender={this.state.chooseRender}
               chatRooms={this.state.chatRooms}
               setChatRoom={this.setChatRoom}
-              
             />
             <Chat
               user={this.state.user.userName}

@@ -1,7 +1,6 @@
 .Main {
   display: flex;
   flex: 1;
-  overflow: hidden;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   // margin-top: .5em;
 
@@ -10,7 +9,27 @@
    display: flex;
    flex-direction: row;
  }
+
 }
 
-@media(max-width: 600px) {
+a:link, a:active, a:visited {
+  color: #DDCF1B;
+}
+
+input {
+  background: #242628;
+}
+
+
+.show-chat {
+  #chat {
+    display: block;
+  }
+
+  #contacts {
+    display: none;
+  }
+
+}
+@media(max-width: 768px) {
 }
