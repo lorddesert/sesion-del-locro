@@ -67,3 +67,12 @@
 .Contact:last-child {
   border: none;
 }
+@media (max-width: 768px) {
+  .Contact {
+    padding: 1em 0;
+    .Contact-avatar {
+      flex: 0;
+      padding: .5em;
+    }
+  }
+}
