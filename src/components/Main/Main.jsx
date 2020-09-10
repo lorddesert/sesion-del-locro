@@ -241,8 +241,6 @@ class Main extends Component {
 
   setChat = (receiver, contactRef) => {
     let i = null;
-    const chat = document.getElementById('chat');
-    const contacts = document.getElementById('contacts');
 
     if(window.innerWidth < 768) {
       // chat.style.display = 'block';
@@ -264,13 +262,12 @@ class Main extends Component {
   setChatRoom = receiver => {
     let i = null;
 
-    const chat = document.getElementById('chat');
-    const contacts = document.getElementById('contacts');
+    document.getElementById('main').classList.toggle('show-chat');
 
-    if(window.innerWidth < 768) {
-      chat.style.display = 'block';
-      contacts.style.display = 'none';
-    }
+    // if(window.innerWidth < 768) {
+    //   chat.style.display = 'block';
+    //   contacts.style.display = 'none';
+    // }
     /*
     if I am in the chatRoom i clicked => setState -> chat: chat of chatRoom(where do I get this?).
     */
