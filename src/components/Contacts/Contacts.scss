@@ -8,12 +8,12 @@
   display: flex;
   flex-direction: column;
   .Contacts-content {
-    max-width: 20vw;  
+    max-width: 20vw;
     overflow: auto;
     flex: 9;
     display: flex;
     flex-direction: column;
-    background: #282828;
+    background: #242628;
     // For administrate the white spaces
     // justify-content: space-evenly;
 
@@ -41,7 +41,6 @@
 .Profile {
   display: flex;
   justify-content: space-between !important;
-  border-top: solid 1px #666;
   background: #3F3F42;
 
   .Profile-img, .Profile-actions {
@@ -82,7 +81,7 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   padding: .5em;
   color: #DDCF1B;
-  background: #49494D;
+  background: #3F3F42;
 
   span {
     text-align: start;
@@ -159,7 +158,13 @@
 }
 
 @media (max-width: 768px) {
-  .Contacts {
-    display: none;
+  .Contacts-content {
+    max-width: none !important;
+
+  }
+  .userCfgPanel {
+    width: 70vw;
+    bottom: 80.3vh;
+    left: 14vw;
   }
 }

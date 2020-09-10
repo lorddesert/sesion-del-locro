@@ -26,8 +26,7 @@ class Contacts extends Component {
     if(!containsDisplay) {
       userCfgPanel.style.display = 'grid';
       setTimeout(() => userCfgPanel.classList.toggle('display'), 100);
-    }
-    else {
+    } else {
       userCfgPanel.classList.toggle('display');
       setTimeout(() => userCfgPanel.style.display = 'none', 100);
     }
@@ -56,9 +55,10 @@ class Contacts extends Component {
     contactsArrow.style.transition = 'all ease 150ms'
     contactsArrow.style.transform = 'rotate(0deg)';
   }
+
   render() {
     return (
-      <div className='Contacts'>
+      <div className='Contacts' id='contacts'>
         <div className='Contacts-content'>
         <div className='Profile'>
           <div className='Profile-img'>
