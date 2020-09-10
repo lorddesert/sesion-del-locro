@@ -1,0 +1,164 @@
+$black: #242628;
+$yellow: #DDCF1B;
+$header-font-size: 2rem;
+$white: #fff;
+$gray: #A8A8A8;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+
+.Register {
+  background: #111213;
+  flex: 1;
+  overflow: none;
+  
+  .background-title {
+    width: 100%;
+    position: absolute;
+    top: 15%;
+    
+    h2 {
+      text-align: start;
+      opacity: 0.2;
+      color: #fff;
+      font-family: 'Roboto', Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 150px;
+      font-weight: normal;
+      letter-spacing: 45px;
+      text-align: start;
+    }
+
+  }
+
+  header {
+    width: 100%;
+    height: 8vh;
+    border-bottom: 2px solid #fff;
+  }
+
+  main {
+    display: flex;
+    align-items: center;
+    height: 92vh;
+
+    p {
+      color: #fff;
+    }
+
+  }
+
+
+  footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10vh;
+    background: $black;
+    color: $white;
+    width: 100%;
+
+
+  }
+
+
+  form {
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.3em;
+    margin-left: 5em;
+  }
+
+  input {
+    width: 30vw;
+    background: $black;
+    border: none;
+    padding: .5em;
+    text-align: start;
+    color: $white;
+    margin-bottom: .5em;
+  }
+
+ #return {
+   display: flex;
+ }
+
+ #logIn button {
+  padding: .5em 3em;
+ }
+
+  .stepBalls {
+    margin-top: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex: 1;
+
+
+    #ball1, #ball2 {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+
+    }
+    #ball1 {
+      margin-right: 10px;
+    }
+
+  }
+  .stepOne {
+    #ball1 {
+      background: white;
+    }
+    #ball2 {
+      background: $gray;
+    }
+  }
+
+  .stepTwo {
+    #ball2 {
+      background: white;
+    }
+    #ball1 {
+      background: $gray;
+    }
+  }
+  .PrimaryButton button {
+    background: $yellow;
+    color: black;
+    padding: .5em .3em;
+    border-radius: 15px;
+    font-size: 16px;
+  }
+  .SecondaryButton button {
+    color: #fff;
+    background: #000;
+    border: 2px solid #fff;
+    font-size: 18px;
+    border-radius: 36px;
+    padding: .5em;
+  }
+  .imageContainer {
+    display: flex;
+  }
+  #userImage {
+    background: url('https://www.hogar.mapfre.es/media/2018/08/que_son_los_nudos_en_la_madera-1280x720.jpg');
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media(max-width: 768px) {
+  .Register {
+    form {
+      margin: 0;
+      width: 100% !important;
+    }
+  
+    input {
+      width: 80% !important;
+    }
+  }
+}
