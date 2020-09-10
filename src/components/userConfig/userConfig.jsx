@@ -32,9 +32,9 @@ class userConfig extends Component {
     const { photo, userName } = this.props.user;
     if(!this.state.edit)
       return (
-        <div className='userConfig' id='userConfig'>
+        <div className='userConfig' id='userConfig' >
           <div className='exitImg'>
-            <img  src={closeImg} alt='exit' onClick={this.toggleShowUserCfg} />
+            <img src={closeImg} alt='exit' onClick={this.toggleShowUserCfg}/>
           </div>
           <div className='userInfoContainer'>
             <div className='userInfo'>
