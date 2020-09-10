@@ -23,13 +23,13 @@
   .ChatRoom-name {
     display: grid;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
     flex: 3;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1rem;
+    text-align: start !important;
 
     span {
-      padding: 0 2em;
       color: #FFF;
     }
 
