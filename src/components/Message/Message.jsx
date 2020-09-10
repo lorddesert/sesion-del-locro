@@ -16,20 +16,20 @@ class Message extends Component {
     return (
     <div className='Message-wrapper' style={this.justifyContent}>
       <div className={`Message ${this.style}`} >
-         {this.props.sender != this.props.user &&
+        {this.props.sender != this.props.user &&
           <div className='Message-owner' ref={this.msgOwnerRef}>
             <span>
               {this.props.sender}
             </span>
           </div>
-          }
-          <div className='Message-content'>
-            <span>
-              {this.props.content}
-              </span>
-          </div>
+        }
+        <div className='Message-content'>
+          <span>
+            {this.props.content}
+          </span>
         </div>
       </div>
+    </div>
     );
   }
 }

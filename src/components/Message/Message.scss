@@ -29,7 +29,15 @@
   .Message-content {
     padding: .5em;
     text-align: start;
+    word-break: break-all;
   }
+}
+
+.dice-roll {
+  font-size: 3rem;
+  background: #f2f2f2;
+  border-radius: 7px;
+  font-style: italic;
 }
 @media (max-width: 600px) {
   .Message {
