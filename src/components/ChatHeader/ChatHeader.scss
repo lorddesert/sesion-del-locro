@@ -32,3 +32,11 @@ $ligth-blue: rgba(163, 164, 227, 0.1);
   }
 
 }
+
+@media(min-width: 800px) {
+  .ChatHeader {
+    .return {
+      display: none;
+    }
+  }
+}
