@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import './Login.scss';
 import locro from './resources/locro.jpg';
+import logo from './resources/logo.svg';
 
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import SecondaryButton from '../SecondaryButton/SecondaryButton';
@@ -24,7 +25,11 @@ class Login extends Component {
         <div className='Login'>
          <img  className='Login-img' src={locro} alt='locro background'/>
           <div className='Login-form-container'>
-            <h2>Sesion del Locro</h2>
+            <div>
+              <h2>SDL</h2>
+              {/* <img src='https://frasesparami.com/wp-content/uploads/2019/09/imagenes-bonitas.jpg' alt='logo' width='50px' /> */}
+              <img src={logo} alt='logo' width='50px' />
+            </div>
             <form className='Login-form'>
               <span id='errorMsg'></span>
               <label htmlFor='username'>
@@ -37,8 +42,7 @@ class Login extends Component {
                 <PrimaryButton id='submit' value='Iniciar sesión' action={this.props.authUser}/>
               </label>
             <div className='links'>
-              <a href="#"><span>¿No tienes una cuenta?</span></a>
-              <a href="#"><span>¿No recuerdas tu contraseña?</span></a>
+              <SecondaryButton id='link' value='¿No tienes una cuenta?' action={this.props.toggleShowRegister}/>
             </div>
             </form>
           </div>
