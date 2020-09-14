@@ -252,8 +252,8 @@ class Main extends Component {
     for(i = 0; i < this.state.contacts.length; i++)
       if(this.state.contacts[i].userName === receiver)
         this.setState({
-          // receiver: contactRef.ref,
-          receiver,
+          receiver: contactRef.ref,
+          // receiver,
           chat: this.state.contacts[i].chat,
           inChatRoom: false
         });
@@ -376,8 +376,44 @@ class Main extends Component {
       // 1) Send msg to my chat.
       // 2) Send msg to the receiver chat.
 
+      // this.state.receiver.once('value')
+      // .then(res => console.log(res.val()));
+      const msg = document.getElementById('chatInput');
+      let myUsername = this.state.user.userName;
+      let receiverUsername = null;
+      let receiverChat = this.state.receiver.child(`contacts/${myUsername}/chat`);
+      let myChat = null;
+      let newMsg = {};
 
-      receiver.child(`contacts/${sender}/chat`).push().set(newMsg);
+      if(msg.value === '')
+            return false;
+      else
+        newMsg = {
+          sender: myUsername,
+          content: msg.value,
+        };
+
+      //Obtain the receiver username and set my chat.
+      this.state.receiver.once('value')
+      .then(snapshot => {
+        receiverUsername = snapshot.child('userName').val();
+        myChat = this.state.user.ref.child(`contacts/${receiverUsername}/chat`);
+
+        myChat.push().set(newMsg);
+        receiverChat.push().set(newMsg);
+      })
+      .then(() => {
+        this.scrollBottom();
+        msg.value = '';
+      })
+      .catch(err => console.log(err))
+
+      // newMsg = {
+      //   sender,
+      //   content: msg.value,
+      // }
+
+      //this.state.receiver.child(`contacts/${sender}/chat`).push().set(newMsg);
   }
 
   scrollBottom = () => {
@@ -476,9 +512,19 @@ class Main extends Component {
     /* SOLVED: i put a validation for only the msg's that are send to ME. */
     usersRef.on('child_changed', child => {
       if(this.state.receiver != ' ' && child.child('userName').val() == this.state.user.userName) {
-        const chat = child.child(`contacts/${this.state.receiver}/chat`).val();
-        const newChat = Object.values(chat);
-        this.setState({chat: newChat});
+        let receiverUsername = null;
+        let chat = null;
+        let newChat = null;
+
+        this.state.receiver.once('value')
+        .then(snapshot => {
+          receiverUsername = snapshot.child('userName').val()
+          chat = child.child(`contacts/${receiverUsername}/chat`).val();
+          newChat = Object.values(chat);
+
+          this.setState({chat: newChat});
+        })
+        .catch(err => console.log(err))
       }
       /* only if the user scrollHeight is at the bottom */
       /* when a user connect, this cause an error and not appear the user that is now online */
@@ -593,6 +639,7 @@ class Main extends Component {
               chat={this.state.chat}
               sendChatRoomMsg={this.sendChatRoomMsg}
               inChatRoom={this.state.inChatRoom}
+              sendMsg2={this.sendMsg2}
             />
           </div>
         </div>

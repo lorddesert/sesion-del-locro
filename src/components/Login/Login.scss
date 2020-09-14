@@ -1,4 +1,4 @@
-$semi-black: #242628;
+$semi-black: #393d42;
 $black: #1C1919;
 $yellow: #DDCF1B;
 $header-font-size: 2rem;
@@ -13,6 +13,9 @@ $gray: #A8A8A8;
 
 }
 .Login-form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 20%;
   background: $black;
   
@@ -31,26 +34,40 @@ $gray: #A8A8A8;
     gap: 3em;
     align-items: center;
     justify-content: start;
+    p{
+      width: 85%;
+      margin: auto;
+      margin-bottom: 2vh;
+      font-weight: 700;
+      font-size: 14px;
+      font-family: 'Lato', Verdana, Geneva, Tahoma, sans-serif;
+      text-align: start;
+    }
 
     label {
       width: 100%;
     }
     input {
+      border: 1px solid #000 ;
+      transition: all 0.1s ease;
       background: $semi-black;
-      border: none;
       width: 80%;
-      padding: .5em;
-      text-align: center;
+      padding:.5em;
+      text-align: start;
       color: $white;
     }
     .PrimaryButton button {
       background: $yellow;
       color: $black;
+      width: 85%;
+      padding: .5em;
     }
   }
 
 }
-
+.focusedInput {
+  border: 1px solid #DDCF1B !important;
+}
 .Login-img {
   width: 80%;
   // background: url('./resources/locro.jpg');

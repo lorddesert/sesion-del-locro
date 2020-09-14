@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+
 .Message-wrapper {
   display: flex;
   width: 100%;
   justify-content: start;
   padding: .5em 0;
+
 }
 .Message-wrapper:last-child {
   padding: .5em 0 1em 0;
@@ -22,12 +25,18 @@
   background: #fff;
   padding: .8em;
 
+  p {
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    font-weight: 600;
+  }
+
   .Message-owner {
-    font-weight: bold;
+    font-weight: bold !important;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
   }
 
   .Message-content {
-    padding: .5em;
+    padding: .5em .5em .5em 0;
     text-align: start;
     word-break: break-all;
   }

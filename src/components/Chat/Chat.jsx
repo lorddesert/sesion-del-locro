@@ -86,7 +86,8 @@ class Chat extends Component {
         this.props.sendChatRoomMsg();
 
       else
-        this.props.sendMsg(); // this.props.receiver
+        //this.props.sendMsg(); // this.props.receiver
+        this.props.sendMsg2();
   }
 
   componentDidMount() {
