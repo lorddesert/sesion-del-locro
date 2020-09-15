@@ -1,7 +1,7 @@
 $semi-black: #393d42;
 $black: #1C1919;
 $yellow: #DDCF1B;
-$header-font-size: 2rem;
+$header-font-size: 1.5rem;
 $white: #fff;
 $gray: #A8A8A8;
 
@@ -34,7 +34,8 @@ $gray: #A8A8A8;
     gap: 3em;
     align-items: center;
     justify-content: start;
-    p{
+
+    p {
       width: 85%;
       margin: auto;
       margin-bottom: 2vh;

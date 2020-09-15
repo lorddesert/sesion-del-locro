@@ -256,7 +256,7 @@ class Main extends Component {
           // receiver,
           chat: this.state.contacts[i].chat,
           inChatRoom: false
-        });
+        }, this.scrollBottom)
   }
 
   setChatRoom = receiver => {

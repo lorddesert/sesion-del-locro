@@ -86,7 +86,6 @@ class Chat extends Component {
         this.props.sendChatRoomMsg();
 
       else
-        //this.props.sendMsg(); // this.props.receiver
         this.props.sendMsg2();
   }
 
@@ -97,7 +96,7 @@ class Chat extends Component {
   render() {
     if(this.props.receiver) {
       return (
-      <div className='Chat' id='chat'>
+      <div className='Chat'>
         <div className='Chat-content' id='chatContent' >
           <ChatHeader />
           <div className='chat-wrapper'></div>
