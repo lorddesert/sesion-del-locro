@@ -10,7 +10,6 @@ class Contact extends Component {
 
     if(!this.props.contact.online) {
       contactAvatar.style.border = 'none';
-      console.log(`contact-${this.props.number} is offline`);
     } else {
       contactAvatar.style.border = '3px solid green';
     }

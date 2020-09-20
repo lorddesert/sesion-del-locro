@@ -31,7 +31,7 @@ class Login extends Component {
         <div className='Login'>
          <img  className='Login-img' src={locro} alt='locro background'/>
           <div className='Login-form-container'>
-            <div>
+            <div className='Logo'>
               <h2>Sesion del Locro</h2>
               {/* <img src='https://frasesparami.com/wp-content/uploads/2019/09/imagenes-bonitas.jpg' alt='logo' width='50px' /> */}
               <img src={logo} alt='logo' width='50px' />

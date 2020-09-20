@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap');
+
 .Contacts {
   z-index: 1;
   background: #f0f0f0;
@@ -155,16 +154,4 @@
   // transition: 0.1s all ease;
   transform: translateY(0);
   opacity: 1;
-}
-
-@media (max-width: 768px) {
-  .Contacts-content {
-    max-width: none !important;
-
-  }
-  .userCfgPanel {
-    width: 70vw;
-    bottom: 80.3vh;
-    left: 14vw;
-  }
 }

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import './Main.scss';
+import { DB_CONFIG } from '../../config/config';
+
+/*Components */
 import Chat from '../Chat/Chat';
 import Contacts from '../Contacts/Contacts';
 import Login from '../Login/Login';
 import UserConfig from '../userConfig/userConfig';
-import { DB_CONFIG } from '../../config/config';
 import firebase from 'firebase';
 import Register from '../Register/Register';
 
@@ -96,7 +98,7 @@ class Main extends Component {
         ...state,
         showLogin: false,
         user: {
-          // userName : snapshot.child('nickname').val(),
+          nickname : snapshot.child('nickname').val(),
           userName,
           photo,
           ref
@@ -166,7 +168,7 @@ class Main extends Component {
       snapshot.forEach(user => {
         // filter me, and verify only who is online.
         if(user.val().userName != this.state.user.userName) {
-          const { userName, photo, online } = user.val();
+          const { userName, photo, online, nickname } = user.val();
           let chat = user.child(`contacts/${sender}/chat`).val();
 
           chat = chat ? Object.values(chat) : [];
@@ -176,6 +178,7 @@ class Main extends Component {
             chat,
             photo,
             online,
+            nickname,
             ref: user
           }
 
@@ -201,7 +204,7 @@ class Main extends Component {
         }
 
         chatRooms.push(newChatRoom);
-      });
+      })
         return chatRooms;
       })
       .then(chatRooms => this.setState({chatRooms}))
@@ -241,28 +244,42 @@ class Main extends Component {
 
   setChat = (receiver, contactRef) => {
     let i = null;
+    let receiverPhoto = null;
+    let receiverName = null;
 
     if(window.innerWidth < 768) {
       // chat.style.display = 'block';
       // contacts.style.display = 'none';
       document.getElementById('main').classList.toggle('show-chat');
-
     }
 
-    for(i = 0; i < this.state.contacts.length; i++)
+    contactRef.ref.once('value')
+    .then(snapshot => {
+      receiverPhoto = snapshot.child('photo').val();
+      receiverName = snapshot.child('userName').val();
+    })
+    .then(() => {
+      for(i = 0; i < this.state.contacts.length; i++)
       if(this.state.contacts[i].userName === receiver)
         this.setState({
           receiver: contactRef.ref,
-          // receiver,
+          receiverPhoto,
+          receiverName,
+          receiverNickname: this.state.contacts[i].nickname,
           chat: this.state.contacts[i].chat,
           inChatRoom: false
         }, this.scrollBottom)
+    })
+    .catch(err => console.log(err))
+
+    
   }
 
   setChatRoom = receiver => {
     let i = null;
 
-    document.getElementById('main').classList.toggle('show-chat');
+    if(window.innerWidth < 768)
+      document.getElementById('main').classList.toggle('show-chat');
 
     // if(window.innerWidth < 768) {
     //   chat.style.display = 'block';
@@ -277,7 +294,8 @@ class Main extends Component {
         this.setState({
           receiver,
           chat: this.state.chatRooms[i].chat,
-          inChatRoom: true
+          inChatRoom: true,
+          stateMsg: this.state.chatRooms[i].stateMsg
         });
   }
 
@@ -389,7 +407,7 @@ class Main extends Component {
             return false;
       else
         newMsg = {
-          sender: myUsername,
+          sender: this.state.user.nickname,
           content: msg.value,
         };
 
@@ -512,26 +530,17 @@ class Main extends Component {
     /* SOLVED: i put a validation for only the msg's that are send to ME. */
     usersRef.on('child_changed', child => {
       if(this.state.receiver != ' ' && child.child('userName').val() == this.state.user.userName) {
-        let receiverUsername = null;
-        let chat = null;
-        let newChat = null;
+        let chat = child.child(`contacts/${this.state.receiverName}/chat`).val();;
+        let newChat = Object.values(chat);
 
-        this.state.receiver.once('value')
-        .then(snapshot => {
-          receiverUsername = snapshot.child('userName').val()
-          chat = child.child(`contacts/${receiverUsername}/chat`).val();
-          newChat = Object.values(chat);
+        this.setState({chat: newChat});
 
-          this.setState({chat: newChat});
-        })
-        .catch(err => console.log(err))
-      }
       /* only if the user scrollHeight is at the bottom */
       /* when a user connect, this cause an error and not appear the user that is now online */
       /* the problem is caused because the function is trying to access to a element that doesn't exists.   */
       // this.scrollBottom();
       this.setContacts();
-    })
+    }})
 //   it doesn't update when I send a new msg.
 //   the msg appears to send correctly, but not update MY chat, and i cannot see the changes.
     chatRoomRef.on('child_changed', child => {
@@ -573,7 +582,7 @@ class Main extends Component {
         </div>
       </div>
       );
-      else if(this.state.showChatRoom)
+      else if(this.state.inChatRoom)
         return(
           <div className='Main'>
             <div className='Main-content' id='main'>
@@ -598,6 +607,8 @@ class Main extends Component {
                 chat={this.state.chat}
                 sendChatRoomMsg={this.sendChatRoomMsg}
                 inChatRoom={this.state.inChatRoom}
+                chatRoom={this.state.chatRoom}
+                stateMsg={this.state.stateMsg}
               />
             </div>
           </div>
@@ -633,13 +644,16 @@ class Main extends Component {
               setChatRoom={this.setChatRoom}
             />
             <Chat
-              user={this.state.user.userName}
+              user={this.state.user.nickname}
               sendMsg={this.sendMsg}
               receiver={this.state.receiver}
               chat={this.state.chat}
               sendChatRoomMsg={this.sendChatRoomMsg}
               inChatRoom={this.state.inChatRoom}
               sendMsg2={this.sendMsg2}
+              receiverPhoto={this.state.receiverPhoto}
+              receiverName={this.state.receiverName}
+              receiverNickname={this.state.receiverNickname}
             />
           </div>
         </div>

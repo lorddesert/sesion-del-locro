@@ -4,8 +4,18 @@ $ligth-blue: rgba(163, 164, 227, 0.1);
   display: flex;
   align-items: center;
   background: #49494D;
-  height: 10%;
+  flex-direction: column;
   z-index: 8;
+  height: 10%;
+  min-height: 66px;
+  justify-content: space-evenly;
+
+
+  .receiver-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
 
   .return {
     display: flex;
@@ -31,12 +41,4 @@ $ligth-blue: rgba(163, 164, 227, 0.1);
     background: $ligth-blue;
   }
 
-}
-
-@media(min-width: 800px) {
-  .ChatHeader {
-    .return {
-      display: none;
-    }
-  }
 }

@@ -149,16 +149,3 @@ $gray: #A8A8A8;
     height: 100px;
   }
 }
-
-@media(max-width: 768px) {
-  .Register {
-    form {
-      margin: 0;
-      width: 100% !important;
-    }
-  
-    input {
-      width: 80% !important;
-    }
-  }
-}

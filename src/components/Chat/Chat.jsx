@@ -98,7 +98,11 @@ class Chat extends Component {
       return (
       <div className='Chat'>
         <div className='Chat-content' id='chatContent' >
-          <ChatHeader />
+          <ChatHeader
+            receiverPhoto={this.props.receiverPhoto}
+            receiverName={this.props.receiverName}
+            stateMsg={this.props.stateMsg}
+          />
           <div className='chat-wrapper'></div>
           <div className='Chat-messages' id='chat'>
             { this.props.chat.map((msg, i) =>
@@ -108,6 +112,7 @@ class Chat extends Component {
                 sender={`${msg.sender}`}
                 content={msg.content}
                 userNumber={i}
+                nickname={this.props.receiverNickname}
               />)
             }
           </div>

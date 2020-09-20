@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap');
+
+
+
+
 .Main {
   display: flex;
   flex: 1;
@@ -36,4 +44,96 @@ input {
 
 }
 @media(max-width: 768px) {
+  .Main {
+
+    .Chat {
+      width: 100vw;
+      display: none;
+
+      .Chat-content {
+        height: 100%;
+      }
+    
+      .chat-wrapper {
+        width: 100% !important;
+      }
+    
+      .Chat-input-container, .Chat-messages {
+        width: 100vw !important ;
+      }
+    
+      .Chat-input {
+        padding: 0 !important;
+      }
+    
+      .Input-img-container {
+        margin-right: .5em;
+      }
+
+    }
+
+    .ChatHeader {
+      .return {
+        display: none;
+      }
+    }
+
+    .Contacts-content {
+      max-width: none !important;
+
+    }
+
+    .userCfgPanel {
+      width: 70vw;
+      bottom: 80.3vh;
+      left: 14vw;
+    }
+
+    .Contact {
+      padding: 1em 0;
+      .Contact-avatar {
+        flex: 0;
+        padding: .5em;
+      }
+    }
+
+    .Login {
+      flex-direction: column;
+
+      .Login-img {
+        width: 100%;
+
+      }
+
+      .Login-form {
+        gap: 2em !important;
+      }
+
+      .Login-form-container {
+        flex: 1;
+        width: 100%;
+        background: #111213;
+      }
+
+      .links {
+        gap: 2em;
+      }
+    }
+
+    .Message {
+      max-width: 65%;
+    }
+
+    .Register {
+      form {
+        margin: 0;
+        width: 100% !important;
+      }
+    
+      input {
+        width: 80% !important;
+      }
+    }
+
+  }
 }

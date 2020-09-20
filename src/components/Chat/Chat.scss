@@ -208,33 +208,3 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
   transform: translateY(0px);
   opacity: 1;
 }
-
-
-@media(max-width: 768px) {
-  .Chat {
-    width: 100vw;
-    display: none;
-
-  }
-
-  .Chat-content {
-    height: 100%;
-  }
-
-  .chat-wrapper {
-    width: 100% !important;
-  }
-
-  .Chat-input-container, .Chat-messages {
-    width: 100vw !important ;
-  }
-
-  .Chat-input {
-    padding: 0 !important;
-  }
-
-  .Input-img-container {
-    margin-right: .5em;
-  }
-
-}
