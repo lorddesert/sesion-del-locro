@@ -17,8 +17,8 @@ class Contact extends Component {
 
   render() {
     return (
-      <div className="Contact" onClick={this.props.setChat && (() => this.props.setChat(this.props.contact.userName, this.props.contact.ref))}>
-        <div className="Contact-avatar">
+      <div className='Contact' onClick={this.props.setChat && (() => this.props.setChat(this.props.contact.userName, this.props.contact.ref))}>
+        <div className={this.props.contact.online ? 'Contact-avatar online' : 'Contact-avatar'}>
           {this.props.contact.photo ?
             <img id={`contact-${this.props.number}`} src={this.props.contact.photo} alt='contact image'></img>
             :
@@ -27,7 +27,7 @@ class Contact extends Component {
             </div>
           }
         </div>
-        <div className="Contact-name">
+        <div className='Contact-name'>
           <span>{this.props.contact.userName}</span>
         </div>
       </div>
