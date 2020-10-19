@@ -1,0 +1,68 @@
+.Modal, .Modal-content {
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 10;
+}
+
+.Modal {
+  background: rgba(0,0,0,0.5) !important;
+  display: none;
+
+  form {
+    text-align: start;
+    background: #2e2e2e;
+    color: #fff;
+    display: grid;
+    place-items: center;
+    gap: 1em;
+    z-index: 11;
+    transform: translateY(-8vh);
+    opacity: 0;
+    transition: all ease 100ms;
+    padding: 1em;
+    border-radius: 7px;
+
+  }
+  span {
+    color: wheat;
+    background: lightcoral;
+    padding: 1em;
+    z-index: 11;
+  }
+
+  .SecondaryButton button, .PrimaryButton button {
+    padding: .5em !important;
+    font-size: 1rem;
+  }
+  .SecondaryButton button {
+    color: #fff;
+  }
+  
+  .PrimaryButton button {
+    background: #DDCF1B;
+    color: #000;
+  }
+}
+
+.show-modal {
+  display: grid;
+}
+
+.modalTransition {
+  transform: translateY(0vh) !important;
+  opacity: 1 !important;
+}
+
+// for chatRoom craete modal
+
+.diceValues {
+  h3 {
+    font-size: 0.8rem;
+  }
+  display: grid;
+  place-items: start;
+  gap: .5em;
+  padding: .5em;
+}
