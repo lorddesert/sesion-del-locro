@@ -9,6 +9,8 @@ import Login from '../Login/Login';
 import UserConfig from '../userConfig/userConfig';
 import firebase from 'firebase';
 import Register from '../Register/Register';
+import CreateCRModal from '../CreateCRModal/CreateCRModal';
+
 
 class Main extends Component {
   app = !firebase.apps.length ? firebase.initializeApp(DB_CONFIG) : firebase.app();
@@ -19,6 +21,7 @@ class Main extends Component {
     showLoginOptions: false,
     showRegister: false,
     showChatRoom: false,
+    showCRModal: false,
     chooseRender: 'contacts',
     chatRooms : [],
     contacts: [],
@@ -111,7 +114,6 @@ class Main extends Component {
     ref.child('online').onDisconnect().set(false);
   }
 
-  /* Must be applied in the new Register component  YES*/
   register = e => {
     const userName = document.getElementById('username').value;
     let password = document.getElementById('password').value;
@@ -293,9 +295,14 @@ class Main extends Component {
       if(this.state.chatRooms[i].name === receiver)
         this.setState({
           receiver,
+          receiverName: this.state.chatRooms[i].name,
           chat: this.state.chatRooms[i].chat,
           inChatRoom: true,
-          stateMsg: this.state.chatRooms[i].stateMsg
+          stateMsg: this.state.chatRooms[i].stateMsg,
+          diceValues: {
+            min: this.state.chatRooms[i].minDiceValue,
+            max: this.state.chatRooms[i].maxDiceValue
+          }
         });
   }
 
@@ -404,7 +411,7 @@ class Main extends Component {
       let newMsg = {};
 
       if(msg.value === '')
-            return false;
+        return false;
       else
         newMsg = {
           sender: this.state.user.nickname,
@@ -493,11 +500,108 @@ class Main extends Component {
 
   }
 
-  sendChatRoomMsg = (diceValue, diceRoll = false) => {
+  createNewChatRoom = e => {
+    e.persist();
+    e.preventDefault();
+    const ref = this.app.database().ref('chatRooms');
+    const minDiceValue = document.getElementById('minValue').value;
+    const maxDiceValue = document.getElementById('maxValue').value;
+    const name = document.getElementById('chatRoomName').value;
+    const newChatRoom = {
+      // photo,
+      chat: [],
+      name,
+      minDiceValue,
+      maxDiceValue,
+      stateMsg: ''
+    };
+
+    ref.once('value')
+    .then(snapshot => {
+      if(snapshot.child(`${name}`).exists()) {
+        alert('El nombre de la sala no esta disponible.')
+        return false;
+      }
+      else
+        ref.child(`${name}`).set(newChatRoom)
+        .then(() => {
+          this.toggleModal();
+        })
+    })
+    .catch(err => console.log(err))
+
+// I need to check if the name already exists!!
+// The min value CANNOT be bigger than the max value
+// Photo input is missing!
+// if(ref.exists(`${name}`)) {
+//   alert('El nombre de la sala ya esta ocupado.');
+//   return false;
+// }
+// else {
+// }
+  }
+
+  modifyChatRoom = e => {
+    e.persist();
+    e.preventDefault();
+    const newChatRoomName = document.getElementById('chatRoomName').value;
+    const newChatRoomStateMessage = document.getElementById('chatRoomState').value;
+    const diceValues = {
+      min: document.getElementById('minValue').value,
+      max: document.getElementById('maxValue').value
+    };
+
+    if(newChatRoomName === '' && diceValues.min === '' && diceValues.max === '' && newChatRoomStateMessage === '')
+      return false;
+    else if(diceValues.min === '' || diceValues.max === '')
+      return false;
+    else {
+      chatRoomRef.once('value')
+      .then(chatRoom => {
+        let newChatRoom = chatRoom.val();
+
+        if(diceValues.min != '')
+          newChatRoom.maxDiceValue = diceValues.min;
+        else
+          newChatRoom.minDiceValue = this.state.diceValues.min;
+
+        if(diceValues.max != '')
+          newChatRoom.maxDiceValue = diceValues.max;
+        else
+          newChatRoom.maxDiceValue = this.state.diceValues.max;
+
+        if(newChatRoomName != '') {
+          newChatRoom.name = newChatRoomName;
+          console.log(newChatRoomName);
+        }
+        else
+          newChatRoom.name = this.state.receiver;
+
+        if(newChatRoomStateMessage != '')
+          newChatRoom.stateMsg = newChatRoomStateMessage;
+        else
+          newChatRoom.stateMsg = this.state.stateMsg;
+
+        chatRoomRef.set(newChatRoom);
+        this.toggleModal();
+        //this.setState(() => {}, this.toggleModal)
+        console.log(newChatRoom);
+      })
+      .catch(err => console.log(err))
+    }
+  }
+
+  //We aren't gonna receive nothing - NO!, we receive one thing, wich is
+  //Nothing, or a boolean value, if it's true, then send the special message.
+  getRandomNumber = (min, max) => Math.floor(Math.random() * (max + 1 - min)) + min;
+
+  sendChatRoomMsg = (diceRoll = false) => {
     const sender = this.state.user.userName;
     const receiver = this.state.receiver; // will be the chatRoom we pick.
     const msg = document.getElementById('chatInput');
-    const receiverChat = this.app.database().ref(`chatRooms/${receiver}/chat`);
+    /* I need to change this to the actual chatRoom which the one that has the same .name */
+
+    const {min, max} = this.state.diceValues;
 
     let newMsg = {
       sender,
@@ -509,16 +613,81 @@ class Main extends Component {
       return false;
 
     else if(diceRoll) {
-      // The dice value we obtaind from getRandomNumber
-      newMsg.diceValue = diceValue;
+
+      newMsg.content = this.getRandomNumber(parseInt(min), parseInt(max));
     }
 
-    receiverChat.push().set(newMsg)
-    .then(() => {
-      this.scrollBottom();
-      msg.value = '';
+    this.app.database().ref('chatRooms').once('value')
+      .then(chatRooms => {
+        chatRooms.forEach(chatRoom => {
+          console.log(chatRoom.child('name').val()); //undefinedasd
+          if(chatRoom.child('name').val() === receiver) {
+            let newRef = chatRoom.ref
+            console.log(newRef)
+            this.app.database().ref(newRef).child('chat').push().set(newMsg)
+            .then(() => {
+              this.scrollBottom();
+              msg.value = '';
+            })
+            .catch(err => console.log(err)); //this one will do it
+          }
+        })}
+      )
+              // if(chatRoom.name === receiver) {
+              //   console.log(chatRoom.ref);
+              // }
+              // else {
+              //   console.log(chatRoom);
+              // }
+  
+    // // const receiverChat = this.app.database().ref(`chatRooms/${receiver}/chat`);
+    // const {min, max} = this.state.diceValues;
+
+    // let newMsg = {
+    //   sender,
+    //   content: msg.value,
+    //   diceRoll
+    // }
+
+    // if(msg.value === '' && !diceRoll)
+    //   return false;
+
+    // else if(diceRoll) {
+    //   // The dice value we obtaind from getRandomNumber
+    //   // We need to use the min and max value of the chatrooms.
+
+    //   newMsg.content = this.getRandomNumber(parseInt(min), parseInt(max));
+    // }
+
+    // if(msg.value === '' && !diceRoll)
+    //   return false;
+
+    // else if(diceRoll) {
+    //   // The dice value we obtaind from getRandomNumber
+    //   newMsg.content = diceValue;
+    // }
+
+    // receiverChat.push().set(newMsg)
+    // .then(() => {
+    //   this.scrollBottom();
+    //   msg.value = '';
+    // })
+    // .catch(err => console.log(err));
+  }
+
+  handleInputFocus = e => {
+    e.persist();
+    e.preventDefault();
+    e.target.classList.toggle('focusedInput');
+  }
+
+  toggleModal = () => {
+    this.setState(() => ({
+      showCRModal: true
+    }), () => {
+      document.getElementById('modal').classList.toggle('show-modal');
+      setTimeout(() => document.getElementById('modalForm').classList.toggle('modalTransition'), 10);
     })
-    .catch(err => console.log(err));
   }
 
   componentDidMount = () => {
@@ -528,11 +697,53 @@ class Main extends Component {
     /* the problem is that everyone is receiving the newChat, so we need to change that...*/
     /* i need to be clear in who is the sender and the receiver of this newMsg */
     /* SOLVED: i put a validation for only the msg's that are send to ME. */
+
+    /* It works, now i need to send to that contact and set true*/
     usersRef.on('child_changed', child => {
+      let childUserName = child.child('userName').val();
+        this.state.contacts.forEach(contact => {
+          if(contact.userName === childUserName) {
+            let newContacts = [...this.state.contacts];
+            /* find index of the contact, and set the online value to the child changed value */
+            newContacts[newContacts.indexOf(contact)].online = child.child('online').val();
+
+            this.setState({contacts: newContacts});
+          }
+        })
+    /* 
+    
+      this.state.contacts.forEach(contact => {
+        for(j = 0; j < values.length; j++) {
+          if(values === userName) {
+            console.log(userName);
+          }
+          else {
+            console.log(values, userName)
+          }
+        }
+      })
+    */
+
+
+      // for(i = 0; i < this.state.contacts.length; i++) {
+      //   let values = Object.values(this.state.contacts[i]);
+
+      //   for(j = 0; j < values.length; j++) {
+      //     if(values === userName) {
+      //       console.log(userName);
+      //     }
+      //     else {
+      //       console.log(values, userName)
+      //     }
+      //   }
+
+      // }
+
       if(this.state.receiver != ' ' && child.child('userName').val() == this.state.user.userName) {
-        let chat = child.child(`contacts/${this.state.receiverName}/chat`).val();;
+        let chat = child.child(`contacts/${this.state.receiverName}/chat`).val();
         let newChat = Object.values(chat);
 
+        /*Need to be changed to chante the online state of the user. */
         this.setState({chat: newChat});
 
       /* only if the user scrollHeight is at the bottom */
@@ -547,7 +758,6 @@ class Main extends Component {
       if(this.state.receiver != ' ') {
         let chat = child.child('chat').val();
         chat = Object.values(chat);
-        console.log(chat);
         this.setState({ chat });
       }
       /* only if the user scrollHeight is at the bottom */
@@ -586,6 +796,15 @@ class Main extends Component {
         return(
           <div className='Main'>
             <div className='Main-content' id='main'>
+              {this.state.showCRModal &&
+                <CreateCRModal
+                  toggleModal={this.toggleModal}
+                  handleInputFocus={this.handleInputFocus}
+                  createNewChatRoom={this.createNewChatRoom}
+                  modifyChatRoom={this.modifyChatRoom}
+                  inChatRoom={this.state.inChatRoom}
+                />
+              }
               <UserConfig
                 user={this.state.user}
                 saveNewUserInfo={this.saveNewUserInfo}
@@ -599,6 +818,7 @@ class Main extends Component {
                 setChat={this.setChat}
                 chatRooms={this.state.chatRooms}
                 setChatRoom={this.setChatRoom}
+                toggleModal={this.toggleModal}
               />
               <Chat
                 user={this.state.user.userName}
@@ -609,6 +829,8 @@ class Main extends Component {
                 inChatRoom={this.state.inChatRoom}
                 chatRoom={this.state.chatRoom}
                 stateMsg={this.state.stateMsg}
+                receiverName={this.state.receiverName}
+                toggleModal={this.toggleModal}
               />
             </div>
           </div>
@@ -628,6 +850,15 @@ class Main extends Component {
       return (
         <div className='Main'>
           <div className='Main-content' id='main'>
+            {this.state.showCRModal &&
+              <CreateCRModal
+                toggleModal={this.toggleModal}
+                handleInputFocus={this.handleInputFocus}
+                createNewChatRoom={this.createNewChatRoom}
+                modifyChatRoom={this.modifyChatRoom}
+                inChatRoom={this.state.inChatRoom}
+              />
+            }
             <UserConfig
               user={this.state.user}
               saveNewUserInfo={this.saveNewUserInfo}
@@ -642,6 +873,7 @@ class Main extends Component {
               chooseRender={this.state.chooseRender}
               chatRooms={this.state.chatRooms}
               setChatRoom={this.setChatRoom}
+              toggleModal={this.toggleModal}
             />
             <Chat
               user={this.state.user.nickname}
