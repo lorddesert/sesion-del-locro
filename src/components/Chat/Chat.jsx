@@ -30,11 +30,6 @@ class Chat extends Component {
 
   // }
 
-  getRandomNumber = (min, max) => {
-    console.log('numeros: ', min, max);
-    console.log(typeof(min), typeof(max));
-    return Math.floor(Math.random() * (max + 1 - min)) + min;
-  }
 
   /* rollDice = () => {
     BEFORE that we need to change the data structure for add a condition to verify
@@ -102,6 +97,7 @@ class Chat extends Component {
             receiverPhoto={this.props.receiverPhoto}
             receiverName={this.props.receiverName}
             stateMsg={this.props.stateMsg}
+            toggleModal={this.props.toggleModal}
           />
           <div className='chat-wrapper'></div>
           <div className='Chat-messages' id='chat'>
@@ -109,10 +105,11 @@ class Chat extends Component {
               <Message
                 key={`msg-${i}`}
                 user={this.props.user}
-                sender={`${msg.sender}`}
-                content={msg.content}
                 userNumber={i}
                 nickname={this.props.receiverNickname}
+                sender={`${msg.sender}`}
+                content={msg.content}
+                diceRoll={msg.diceRoll}
               />)
             }
           </div>
@@ -123,7 +120,7 @@ class Chat extends Component {
               {this.props.inChatRoom &&
                 <div className='Input-img-container'>
                     {/* this.props.sendChatRoomMsg(this.getRandomNumber(diceMin, diceMax), true) diceRoll = true */}
-                  <div onClick={this.handleEvent} className='Input-img'>
+                  <div onClick={() => this.props.sendChatRoomMsg(true)} className='Input-img'>
                     <img src={dice}></img>
                   </div>
                 </div>
