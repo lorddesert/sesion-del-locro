@@ -7,8 +7,17 @@ import ChatRoom from '../ChatRoom/ChatRoom';
 import './Contacts.scss';
 import altUserImg from './resources/altuser.png';
 import display from './resources/down-arrow.svg'
+import add from './resources/add.svg';
 
 class Contacts extends Component {
+
+  modal = () => {
+    const modal = document.getElementById('modal');
+    const modalForm = document.getElementById('modalForm');
+
+    setTimeout(() => modalForm.classList.toggle('modalTransition'), 10);
+    modal.classList.toggle('show-modal');
+  }
 
   addContact = () => {
     alert('añadir modal para agregar contacto:\nnombre de usuario?\nnickname?');
@@ -96,9 +105,14 @@ class Contacts extends Component {
               number={i}
             />)
           }
-          <div className='chat-room' onClick={() => alert('to chatrooms')}>
+          <div className='chat-room'>
             <span>Salas de chat</span>
-            <img src={display} alt='display'></img>
+            <div className='image-wrapper'>
+              <img src={display} alt='display'></img>
+            </div>
+            <div className='image-wrapper' onClick={this.props.toggleModal}>
+              <img src={add} alt='create new chat room'></img>
+            </div>
           </div>
           {this.props.chatRooms[0] &&
             this.props.chatRooms.map((chatRoom, i) => <ChatRoom
