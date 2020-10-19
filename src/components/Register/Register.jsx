@@ -10,30 +10,33 @@ class Register extends Component {
   render() {
     return(
       <div className='Register'>
-        <header>
-          <div className='logo'>
-            <img src="#" alt="logo"/>
-          </div>
-        </header>
         <SecondaryButton id='return' value='Volver' action={this.props.toggleShowRegister} />
        <main>
         <form className='registerForm'>
-          <span id='errorMsg'></span>
-          <input type="text" id='username' placeholder='Nombre de usuario'/>
-          <input type="text" id='password' placeholder='Contraseña'/>
-          <input type="text" id='nickname' placeholder='Nickname'/>
-          <div className='imageContainer'>
+          <div style={{display: 'flex', placeItems: 'center'}}>
             <div id='userImage'></div>
             <SecondaryButton value='Elegir foto' />
+          </div>
+          <span id='errorMsg'></span>
+          <label htmlFor="username"></label>
+          <h2>Nombre de la sala</h2>
+          <input type="text" id='username' name='username' required onFocus={this.props.handleInputFocus} onBlur={this.props.handleInputFocus}/>
+          <label htmlFor="password"></label>
+          <h2>Contraseña</h2>
+          <input type="text" id='password' name='password' required onFocus={this.props.handleInputFocus} onBlur={this.props.handleInputFocus}/>
+          <label htmlFor="nickname"></label>
+          <h2>Nickname</h2>
+          <input type="text" id='nickname' name='nickname' required onFocus={this.props.handleInputFocus} onBlur={this.props.handleInputFocus}/>
+          {/* <input type="text" id='username' placeholder='Nombre de usuario'/>
+          <input type="text" id='password' placeholder='Contraseña'/>
+          <input type="text" id='nickname' placeholder='Nickname'/> */}
+          <div className='imageContainer'>
           </div>
           <PrimaryButton value='Registrarse' action={this.props.register}/>
           <p>ó</p>
           <SecondaryButton id='logIn' value='Inicia Sesión' action={this.props.toggleShowRegister} />
         </form>
        </main>
-       <footer>
-         <p>Develop with ❤️ by <a href="https://github.com/lorddesert">@lorddesert</a></p>
-       </footer>
       </div>
     )
   }

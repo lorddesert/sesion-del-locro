@@ -4,13 +4,15 @@ $header-font-size: 2rem;
 $white: #fff;
 $gray: #A8A8A8;
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
-
 .Register {
-  background: #111213;
+  background: #1c1c1c;
   flex: 1;
-  overflow: none;
-  
+  display: grid;
+  place-items: center;
+
+  h2 {
+    color: #fff !important
+  }
   .background-title {
     width: 100%;
     position: absolute;
@@ -38,7 +40,6 @@ $gray: #A8A8A8;
   main {
     display: flex;
     align-items: center;
-    height: 92vh;
 
     p {
       color: #fff;
@@ -61,16 +62,14 @@ $gray: #A8A8A8;
 
 
   form {
-    display: flex;
-    width: 50%;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.3em;
-    margin-left: 5em;
+    display: grid;
+    place-items: center;
+    gap: .8em;
+    background: #111213;
+    padding: .8em;
   }
 
   input {
-    width: 30vw;
     background: $black;
     border: none;
     padding: .5em;
@@ -80,8 +79,10 @@ $gray: #A8A8A8;
   }
 
  #return {
-   display: flex;
- }
+   position: absolute;
+   top: 0;
+   left: 0;
+  }
 
  #logIn button {
   padding: .5em 3em;
@@ -134,11 +135,7 @@ $gray: #A8A8A8;
   }
   .SecondaryButton button {
     color: #fff;
-    background: #000;
-    border: 2px solid #fff;
     font-size: 18px;
-    border-radius: 36px;
-    padding: .5em;
   }
   .imageContainer {
     display: flex;
