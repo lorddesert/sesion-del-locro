@@ -25,12 +25,12 @@
     align-items: center;
     justify-content: center;
     flex: 3;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1rem;
     text-align: start !important;
 
     span {
       color: #FFF;
+      font-weight: bold;
     }
 
   }
@@ -50,7 +50,6 @@
 
     span {
       font-size: 28px;
-      font-family: Verdana, Geneva, Tahoma, sans-serif;
       text-shadow: 0 0 5px #FFF;
     }
   }
