@@ -842,6 +842,7 @@ class Main extends Component {
             <Register
               toggleShowRegister={this.toggleShowRegister}
               register={this.register}
+              handleInputFocus={this.handleInputFocus}
             />
         </div>
       </div>
