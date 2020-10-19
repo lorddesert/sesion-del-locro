@@ -1,16 +1,63 @@
 $ligth-blue: rgba(163, 164, 227, 0.1);
 
 .ChatHeader {
-  display: flex;
-  align-items: center;
+  // display: flex;
+  // place-items: center;
+  // background: #49494D;
+  // z-index: 8;
+  // height: 10%;
+  // min-height: 66px;
+
+  display: grid;
   background: #49494D;
-  flex-direction: column;
   z-index: 8;
   height: 10%;
   min-height: 66px;
-  justify-content: space-evenly;
+  position: relative;
+  grid-template-columns: 5vw auto 1fr;
 
+  img {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    transition: 100ms all ease;
+    border-radius: 50px;
+    padding: .5em;
 
+    &:hover {
+      background: #5b5b61
+    }
+  }
+
+  .chatHeader-img, .chatHeader-headings, .more-options {
+    display: grid;
+    place-items: center;
+  }
+
+  .chatHeader-headings {
+    place-items: center start;
+
+      h1 {
+        color: #fafafa;
+        font-size: 1.1rem;
+      }
+      h2 {
+      font-weight: 600;
+      font-family: 'Roboto', Lato, Arial, Helvetica, sans-serif;
+      color: #c3c3c3;
+      font-style: italic;
+    }
+  }
+
+  .more-options {
+  display: grid;
+  place-items: center end;
+  padding-right: 1em;
+
+  img {
+    rotate: 90deg;
+  }
+}
   .receiver-img {
     width: 30px;
     height: 30px;
@@ -18,7 +65,7 @@ $ligth-blue: rgba(163, 164, 227, 0.1);
   }
 
   .return {
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     width: 45px;
@@ -40,5 +87,6 @@ $ligth-blue: rgba(163, 164, 227, 0.1);
   .return-clicked {
     background: $ligth-blue;
   }
+
 
 }
