@@ -40,7 +40,7 @@ class userConfig extends Component {
             <div className='userInfo'>
               <div className='userProfile'>
                 <img src={photo ? photo : ''} alt={userName}/>
-                <div style={{display: 'flex', flexDirection: 'column', gap: '.5em'}}>
+                <div style={{display: 'flex', flexDirection: 'column', gap: '.5em', color: '#fff'}}>
                   <h2>Nombre de usuario</h2>
                   <h3>{userName}</h3>
                 </div>
@@ -68,7 +68,7 @@ class userConfig extends Component {
                   <PrimaryButton
                     action={() => document.getElementById('fileInput').click()}
                     value='Cambiar imagen'
-                    className='primaryConfigBtn'
+                    className='changeImgBtn'
                   />
                   <input type="file" style={{display: 'none'}} id='fileInput' onChange={this.props.storageImg}/>
                 </div>
