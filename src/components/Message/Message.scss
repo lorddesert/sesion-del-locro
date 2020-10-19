@@ -10,8 +10,8 @@
   padding: .5em 0 1em 0;
 }
 .Switch {
-  background: #A0E850 !important;
   margin: 0 2em 0 0 !important;
+  background: #A0E850 !important;
 }
 .Message {
   display: flex;
@@ -42,8 +42,28 @@
 }
 
 .dice-roll {
-  font-size: 3rem;
+  display: grid;
+  place-items: center;
+  font-weight: bold;
   background: #f2f2f2;
   border-radius: 7px;
-  font-style: italic;
+  padding: .5em 1em !important;
+  .Message-owner {
+    margin-bottom: .5em;
+  }
+
+  .Message-content {
+    text-align: start;
+    word-break: break-all;
+    padding: 1em 1.6em;
+    background: #e4e4e4;
+    border-radius: 7px;
+  }
+  p {
+    font-size: 1.6rem;
+    font-style: italic;
+    text-align: center;
+    font-family: 'Poppins', Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 400;
+  }
 }

@@ -21,7 +21,7 @@ class Message extends Component {
 
     return (
       <div className='Message-wrapper' style={this.justifyContent}>
-        <div className={`Message ${this.style}`} >
+        <div className={this.props.diceRoll ? `Message ${this.style} dice-roll` : `Message ${this.style}`} >
           {this.props.sender != this.props.user &&
             <div className='Message-owner' ref={this.msgOwnerRef}>
               <h3>
