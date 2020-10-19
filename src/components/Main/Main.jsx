@@ -541,54 +541,64 @@ class Main extends Component {
 // }
   }
 
+  /* it works, now i need to update it.*/
   modifyChatRoom = e => {
     e.persist();
     e.preventDefault();
+    let chatRoomRef = null;
     const newChatRoomName = document.getElementById('chatRoomName').value;
     const newChatRoomStateMessage = document.getElementById('chatRoomState').value;
     const diceValues = {
       min: document.getElementById('minValue').value,
       max: document.getElementById('maxValue').value
     };
+    this.app.database().ref('chatRooms').once('value')
+    .then(chatRooms => chatRooms.forEach(chatRoom => {
+      if(chatRoom.child('name').val() === this.state.receiver)
+        chatRoomRef = chatRoom.ref;
+      }))
+    .then(() => {
+      if(newChatRoomName === '' && diceValues.min === '' && diceValues.max === '' && newChatRoomStateMessage === '')
+        return false;
+      else if(diceValues.min === '' || diceValues.max === '')
+        return false;
+      else {
+        chatRoomRef.once('value')
+        .then(chatRoom => {
+          let newChatRoom = chatRoom.val();
 
-    if(newChatRoomName === '' && diceValues.min === '' && diceValues.max === '' && newChatRoomStateMessage === '')
-      return false;
-    else if(diceValues.min === '' || diceValues.max === '')
-      return false;
-    else {
-      chatRoomRef.once('value')
-      .then(chatRoom => {
-        let newChatRoom = chatRoom.val();
+          if(diceValues.min != '')
+            newChatRoom.maxDiceValue = diceValues.min;
+          else
+            newChatRoom.minDiceValue = this.state.diceValues.min;
 
-        if(diceValues.min != '')
-          newChatRoom.maxDiceValue = diceValues.min;
-        else
-          newChatRoom.minDiceValue = this.state.diceValues.min;
+          if(diceValues.max != '')
+            newChatRoom.maxDiceValue = diceValues.max;
+          else
+            newChatRoom.maxDiceValue = this.state.diceValues.max;
 
-        if(diceValues.max != '')
-          newChatRoom.maxDiceValue = diceValues.max;
-        else
-          newChatRoom.maxDiceValue = this.state.diceValues.max;
+          if(newChatRoomName != '') {
+            newChatRoom.name = newChatRoomName;
+            console.log(newChatRoomName);
+          }
+          else
+            newChatRoom.name = this.state.receiver;
 
-        if(newChatRoomName != '') {
-          newChatRoom.name = newChatRoomName;
-          console.log(newChatRoomName);
-        }
-        else
-          newChatRoom.name = this.state.receiver;
+          if(newChatRoomStateMessage != '')
+            newChatRoom.stateMsg = newChatRoomStateMessage;
+          else
+            newChatRoom.stateMsg = this.state.stateMsg;
 
-        if(newChatRoomStateMessage != '')
-          newChatRoom.stateMsg = newChatRoomStateMessage;
-        else
-          newChatRoom.stateMsg = this.state.stateMsg;
-
-        chatRoomRef.set(newChatRoom);
-        this.toggleModal();
-        //this.setState(() => {}, this.toggleModal)
-        console.log(newChatRoom);
-      })
-      .catch(err => console.log(err))
-    }
+          chatRoomRef.set(newChatRoom);
+          this.toggleModal();
+          //this.setState(() => {}, this.toggleModal)
+          console.log(newChatRoom);
+        })
+        .then(() => this.setState({receiver: newChatRoomName}))
+        .catch(err => console.log(err))
+      }
+    })
+    .catch(err => console.log(err))
   }
 
   //We aren't gonna receive nothing - NO!, we receive one thing, wich is
@@ -758,7 +768,10 @@ class Main extends Component {
       if(this.state.receiver != ' ') {
         let chat = child.child('chat').val();
         chat = Object.values(chat);
-        this.setState({ chat });
+        this.setState({ chat }, () => {
+          this.setChatRooms();
+          setTimeout(() => this.setChatRoom(this.state.receiver), 50);
+        });
       }
       /* only if the user scrollHeight is at the bottom */
       /* when a user connect, this cause an error and not appear the user that is now online */
