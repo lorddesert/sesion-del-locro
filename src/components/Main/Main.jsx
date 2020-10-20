@@ -591,8 +591,6 @@ class Main extends Component {
 
           chatRoomRef.set(newChatRoom);
           this.toggleModal();
-          //this.setState(() => {}, this.toggleModal)
-          console.log(newChatRoom);
         })
         .then(() => this.setState({receiver: newChatRoomName}))
         .catch(err => console.log(err))
@@ -691,13 +689,25 @@ class Main extends Component {
     e.target.classList.toggle('focusedInput');
   }
 
-  toggleModal = () => {
-    this.setState(() => ({
-      showCRModal: true
-    }), () => {
-      document.getElementById('modal').classList.toggle('show-modal');
-      setTimeout(() => document.getElementById('modalForm').classList.toggle('modalTransition'), 10);
-    })
+  toggleModal = (pressInChatRoom = false) => {
+    if(pressInChatRoom) {
+      this.setState(() => ({
+        showCRModal: true,
+        receiver: false,
+        inChatRoom: false
+      }), () => {
+        document.getElementById('modal').classList.toggle('show-modal');
+        setTimeout(() => document.getElementById('modalForm').classList.toggle('modalTransition'), 10);
+      })
+    }
+    else {
+      this.setState(() => ({
+        showCRModal: true
+      }), () => {
+        document.getElementById('modal').classList.toggle('show-modal');
+        setTimeout(() => document.getElementById('modalForm').classList.toggle('modalTransition'), 10);
+      })
+    }
   }
 
   componentDidMount = () => {
@@ -781,6 +791,13 @@ class Main extends Component {
       // There was a problem when i set the state with the new chat, and call setChatRoom, this f(x) overwrite
       // chat with the past value, because setState is Async.
     })
+
+    chatRoomRef.on('child_added', () => {
+      this.setChatRooms();
+    })
+    chatRoomRef.on('child_removed', () => {
+      this.setChatRooms();
+    })
   }
 
   componentWillUnmount = () => {
@@ -856,6 +873,7 @@ class Main extends Component {
               toggleShowRegister={this.toggleShowRegister}
               register={this.register}
               handleInputFocus={this.handleInputFocus}
+              storageImg={this.storageImg}
             />
         </div>
       </div>
