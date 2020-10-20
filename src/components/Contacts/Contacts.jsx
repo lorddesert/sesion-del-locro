@@ -110,8 +110,8 @@ class Contacts extends Component {
             <div className='image-wrapper'>
               <img src={display} alt='display'></img>
             </div>
-            <div className='image-wrapper' onClick={this.props.toggleModal}>
-              <img src={add} alt='create new chat room'></img>
+            <div className='image-wrapper' onClick={() => this.props.toggleModal(true)}>
+              <img src={add} alt='crear sala de chat'></img>
             </div>
           </div>
           {this.props.chatRooms[0] &&
