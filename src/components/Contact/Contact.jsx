@@ -5,16 +5,6 @@ import altUserImg from './resources/altuser.png';
 
 class Contact extends Component {
 
-  componentDidMount = () => {
-    const contactAvatar = document.getElementById(`contact-${this.props.number}`);
-
-    if(!this.props.contact.online) {
-      contactAvatar.style.border = 'none';
-    } else {
-      contactAvatar.style.border = '3px solid green';
-    }
-  }
-
   render() {
     return (
       <div className='Contact' onClick={this.props.setChat && (() => this.props.setChat(this.props.contact.userName, this.props.contact.ref))}>
