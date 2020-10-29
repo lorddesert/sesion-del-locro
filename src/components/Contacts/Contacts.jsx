@@ -6,7 +6,6 @@ import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import ChatRoom from '../ChatRoom/ChatRoom';
 import './Contacts.scss';
 import altUserImg from './resources/altuser.png';
-import display from './resources/down-arrow.svg'
 import add from './resources/add.svg';
 
 class Contacts extends Component {
@@ -107,9 +106,6 @@ class Contacts extends Component {
           }
           <div className='chat-room'>
             <span>Salas de chat</span>
-            <div className='image-wrapper'>
-              <img src={display} alt='display'></img>
-            </div>
             <div className='image-wrapper' onClick={() => this.props.toggleModal(true)}>
               <img src={add} alt='crear sala de chat'></img>
             </div>

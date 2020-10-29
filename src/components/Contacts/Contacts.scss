@@ -40,7 +40,7 @@
 .Profile {
   display: flex;
   justify-content: space-between !important;
-  background: #3F3F42;
+  background: #1c1c1c;
 
   .Profile-img, .Profile-actions {
     padding: .5em;
@@ -75,13 +75,13 @@
 }
 .chat-room {
   display: grid;
-  grid-template-columns: 1fr 1.5em 1.5em;
+  grid-template-columns: 1fr 1.5em;
   place-items: center;
   font-size: 1rem;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   padding-right: 1em;
   color: #DDCF1B;
-  background: #3F3F42;
+  background: #1c1c1c;
   gap: 2em;
 
   span {

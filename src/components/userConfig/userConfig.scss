@@ -103,6 +103,7 @@
     .formButtons {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      place-items: center;
     
       .SecondaryButton button {
         color: #f2f2f2;
