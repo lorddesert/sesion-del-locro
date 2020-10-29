@@ -171,8 +171,7 @@ class Main extends Component {
 
       snapshot.forEach(user => {
         // filter me, and verify only who is online?
-        if(user.val().userName != this.state.user.username) {
-          console.log(user.val().userName, this.state.user.username);
+        if(user.val().userName != sender) {
           const { userName, photo, online, nickname } = user.val();
           let chat = user.child(`contacts/${sender}/chat`).val();
 
@@ -232,19 +231,6 @@ class Main extends Component {
       ...state,
       showLoginOptions: !state.showLoginOptions
     }));
-  }
-
-  setMessages = (user, child, users) => {
-  /* Remove, in contacts, I will not appear. */
-    if(!(child.val() == `${user}`)) {
-      const chat = Object.values(child.val());
-      const user = {
-        username: child.child('userName').val(),
-        chat
-      }
-
-      users.push(user);
-    }
   }
 
   setChat = (receiver, contactRef) => {
