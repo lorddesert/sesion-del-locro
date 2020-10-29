@@ -35,18 +35,18 @@ class Main extends Component {
     e.preventDefault();
 
     const ref = this.app.database().ref().child('users');
-    const userName = document.getElementById('username').value;
+    const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     const msg = document.getElementById('errorMsg');
 
-    if(userName == '' || password == '')
+    if(username == '' || password == '')
       return false;
 
     ref.once('value')
     .then(snapshot => {
       /* This will be changed for a loop over all the users */
       /* Need to find the username IN the users, no the ID */
-      const user = snapshot.hasChild(`${userName}`);
+      const user = snapshot.hasChild(`${username}`);
       /*
       User is the input username.
 
@@ -57,7 +57,7 @@ class Main extends Component {
           if(password === inputPassword) {
             msg.style.color = 'green';
             msg.innerHTML = 'Usuario encontrado.';
-            setTimeout(() => this.login(userName), 600);
+            setTimeout(() => this.login(username), 600);
           } else {
             error msg
           }
@@ -69,13 +69,13 @@ class Main extends Component {
       */
 
        if(user) {
-        const authPassword = snapshot.child(`${userName}/password`).val();
+        const authPassword = snapshot.child(`${username}/password`).val();
         const res = authPassword == `${password}` ? true : false;
 
         if(res) {
           msg.style.color = 'green';
           msg.innerHTML = 'Usuario encontrado.';
-          setTimeout(() => this.login(userName), 600);
+          setTimeout(() => this.login(username), 600);
         }
         else {
           msg.innerHTML = 'Password incorrecto.';
@@ -88,8 +88,8 @@ class Main extends Component {
     .catch(err => console.log(err));
   }
 
-  login = userName => {
-    const ref = this.app.database().ref(`users/${userName}`);
+  login = username => {
+    const ref = this.app.database().ref(`users/${username}`);
 
     ref.child('online').set(true);
 
@@ -102,7 +102,7 @@ class Main extends Component {
         showLogin: false,
         user: {
           nickname : snapshot.child('nickname').val(),
-          userName,
+          username,
           photo,
           ref
         }
@@ -114,13 +114,15 @@ class Main extends Component {
     ref.child('online').onDisconnect().set(false);
   }
 
-  register = e => {
+  register = async () => {
     const userName = document.getElementById('username').value;
     let password = document.getElementById('password').value;
     const nickname = document.getElementById('nickname').value;
     const msg = document.getElementById('errorMsg');
     const ref = this.app.database().ref('users');
-    e.preventDefault();
+    const photo = await this.getRegisterImg(userName); //Returns undefined
+    console.log(photo);
+    // e.preventDefault();
 
     if(userName == '' || password == '')
       return false;
@@ -144,14 +146,14 @@ class Main extends Component {
             contacts: [],
             online: false,
             password,
-            photo: false,
+            photo
           }
 
           ref.child(`${userName}`).set(newUser)
             .then(() => {
               msg.style.color = 'green';
               msg.innerHTML = 'Registro completado.';
-              setTimeout(() => location.reload(), 600)
+              setTimeout(() => location.reload(), 1000)
             })
             .catch(err => console.log(err));
         }
@@ -165,11 +167,12 @@ class Main extends Component {
     usersRef.once('value')
     .then(snapshot => {
       let contacts = [];
-      const sender = this.state.user.userName;
+      const sender = this.state.user.username;
 
       snapshot.forEach(user => {
-        // filter me, and verify only who is online.
-        if(user.val().userName != this.state.user.userName) {
+        // filter me, and verify only who is online?
+        if(user.val().userName != this.state.user.username) {
+          console.log(user.val().userName, this.state.user.username);
           const { userName, photo, online, nickname } = user.val();
           let chat = user.child(`contacts/${sender}/chat`).val();
 
@@ -236,7 +239,7 @@ class Main extends Component {
     if(!(child.val() == `${user}`)) {
       const chat = Object.values(child.val());
       const user = {
-        userName: child.child('userName').val(),
+        username: child.child('userName').val(),
         chat
       }
 
@@ -308,11 +311,11 @@ class Main extends Component {
 
   storageImg = e => {
     const img = document.getElementById('fileInput').files[0];
-    const ref = this.app.database().ref(`users/${this.state.user.userName}/photo`);
+    const ref = this.app.database().ref(`users/${this.state.user.username}/photo`);
     let uploadTask = null;
 
     e.preventDefault();
-    uploadTask = this.storage.child(`${this.state.user.userName}/${img.name}`).put(img);
+    uploadTask = this.storage.child(`${this.state.user.username}/${img.name}`).put(img);
     uploadTask.on('state_changed',
     null,
     null,
@@ -335,21 +338,25 @@ class Main extends Component {
     })
   }
 
-  setUserChat = messages => {
-    // let onlineUsers = this.state.onlineUsers;
-    const onlineUsers = [...this.state.onlineUsers];
-    const l = onlineUsers.length;
-    for(let i = 0; i < l; i++) {
-    // Finding the user that we are talking to...
-      if(messages[0].sender == onlineUsers[i].userName) {
-        onlineUsers[i].chat = messages;
-        this.setState({onlineUsers});
-      }
+  async getRegisterImg (username) {
+    const img = document.getElementById('fileInput').files[0];
+    let newUserStorage = this.storage.child(`${username}/${img.name}`);
+    let uploadTask = null, imgURL = null;
+    try {
+
+      uploadTask = await newUserStorage.put(img);
+      imgURL = await newUserStorage.getDownloadURL();
+
+      return imgURL;
+    } catch (error) {
+      console.log(error);
+      console.log(uploadTask, imgURL);
+      alert('Ha ocurrido un error inesperado.');
     }
   }
 
   sendMsg = () => {
-    const sender = this.state.user.userName; //This will be the nickname
+    const sender = this.state.user.username; //This will be the nickname
     const receiver = this.state.receiver;
     const msg = document.getElementById('chatInput');
     const senderChat = this.app.database().ref(`users/${sender}/contacts/${receiver}/chat`);
@@ -404,7 +411,7 @@ class Main extends Component {
       // this.state.receiver.once('value')
       // .then(res => console.log(res.val()));
       const msg = document.getElementById('chatInput');
-      let myUsername = this.state.user.userName;
+      let myUsername = this.state.user.username;
       let receiverUsername = null;
       let receiverChat = this.state.receiver.child(`contacts/${myUsername}/chat`);
       let myChat = null;
@@ -454,7 +461,7 @@ class Main extends Component {
     const newUserName = document.getElementById('newUserName').value;
     const newPassword = document.getElementById('newPassword').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
-    const userRef = this.app.database().ref(`users/${this.state.user.userName}`);
+    const userRef = this.app.database().ref(`users/${this.state.user.username}`);
     /* NEXT STEP => SAVE A PHOTO. */
     // const newPhoto = document.getElementById('imgInput');
     // newUserInfo.photo = newPhoto;
@@ -465,7 +472,7 @@ class Main extends Component {
     userRef.once('value')
     .then(snapshot => {
       newUserInfo = {...snapshot.val()}
-        // userName : newUserName,
+        // username : newUserName,
         // password : newPassword,
       return newUserInfo;
     })
@@ -604,7 +611,7 @@ class Main extends Component {
   getRandomNumber = (min, max) => Math.floor(Math.random() * (max + 1 - min)) + min;
 
   sendChatRoomMsg = (diceRoll = false) => {
-    const sender = this.state.user.userName;
+    const sender = this.state.user.username;
     const receiver = this.state.receiver; // will be the chatRoom we pick.
     const msg = document.getElementById('chatInput');
     /* I need to change this to the actual chatRoom which the one that has the same .name */
@@ -734,11 +741,11 @@ class Main extends Component {
     
       this.state.contacts.forEach(contact => {
         for(j = 0; j < values.length; j++) {
-          if(values === userName) {
-            console.log(userName);
+          if(values === username) {
+            console.log(username);
           }
           else {
-            console.log(values, userName)
+            console.log(values, username)
           }
         }
       })
@@ -749,17 +756,17 @@ class Main extends Component {
       //   let values = Object.values(this.state.contacts[i]);
 
       //   for(j = 0; j < values.length; j++) {
-      //     if(values === userName) {
-      //       console.log(userName);
+      //     if(values === username) {
+      //       console.log(username);
       //     }
       //     else {
-      //       console.log(values, userName)
+      //       console.log(values, username)
       //     }
       //   }
 
       // }
 
-      if(this.state.receiver != ' ' && child.child('userName').val() == this.state.user.userName) {
+      if(this.state.receiver != ' ' && child.child('userName').val() == this.state.user.username) {
         let chat = child.child(`contacts/${this.state.receiverName}/chat`).val();
         let newChat = Object.values(chat);
 
@@ -791,7 +798,6 @@ class Main extends Component {
       // There was a problem when i set the state with the new chat, and call setChatRoom, this f(x) overwrite
       // chat with the past value, because setState is Async.
     })
-
     chatRoomRef.on('child_added', () => {
       this.setChatRooms();
     })
@@ -815,7 +821,7 @@ class Main extends Component {
               showLoginOptions={this.state.showLoginOptions}
               showRegister={this.state.showRegister}
               authUser={this.authUser}
-              user={this.state.user.userName}
+              user={this.state.user.username}
               toggleShowRegister={this.toggleShowRegister}
               register={this.register}
             />
@@ -851,7 +857,7 @@ class Main extends Component {
                 toggleModal={this.toggleModal}
               />
               <Chat
-                user={this.state.user.userName}
+                user={this.state.user.username}
                 sendMsg={this.sendMsg}
                 receiver={this.state.receiver}
                 chat={this.state.chat}

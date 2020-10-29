@@ -21,6 +21,7 @@
   "homepage": "https://github.com/lorddesert/sesion-del-locro#readme",
   "dependencies": {
     "@babel/core": "^7.9.0",
+    "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
     "babel-loader": "^8.1.0",
@@ -40,7 +41,7 @@
     "html-webpack-plugin": "^4.0.4",
     "node-sass": "^4.14.1",
     "postcss-loader": "^3.0.0",
-    "resolve-url-loader": "^3.1.1",
+    "resolve-url-loader": "^3.1.2",
     "sass-loader": "^8.0.2",
     "svg-inline-loader": "^0.8.2",
     "webpack": "^4.42.1",
