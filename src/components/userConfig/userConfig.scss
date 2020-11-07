@@ -1,6 +1,3 @@
-@mixin userInfo() {
-
-}
 
 .userConfig {
   display: none;
@@ -14,6 +11,17 @@
   background: #3a3a3a;
   place-items: center;
 
+  .displayInfo {
+    display: flex;
+    flex-direction: column;
+    gap: .5em ;
+    color: #fff;
+    place-items: start;
+
+    h2 {
+      color: #DDCF1B;
+    }
+  }
   .exitImg {
     position: absolute;
     left: 0;

@@ -29,7 +29,7 @@ class userConfig extends Component {
   }
 
   render() {
-    const { photo, userName } = this.props.user;
+    const { photo, username, nickname } = this.props.user;
     if(!this.state.edit)
       return (
         <div className='userConfig' id='userConfig' >
@@ -39,10 +39,12 @@ class userConfig extends Component {
           <div className='userInfoContainer'>
             <div className='userInfo'>
               <div className='userProfile'>
-                <img src={photo ? photo : ''} alt={userName}/>
-                <div style={{display: 'flex', flexDirection: 'column', gap: '.5em', color: '#fff'}}>
+                <img src={photo ? photo : ''} alt={username}/>
+                <div className='displayInfo'>
                   <h2>Nombre de usuario</h2>
-                  <h3>{userName}</h3>
+                  <h3>{username}</h3>
+                  <h2>Nickname</h2>
+                  <h3>{nickname}</h3>
                 </div>
               </div>
               <PrimaryButton
@@ -64,7 +66,7 @@ class userConfig extends Component {
             <div className='userInfoContainer'>
               <div className='userInfo'>
                 <div className='userProfile'>
-                  <img src={photo ? photo : ''} alt={userName}/>
+                  <img src={photo ? photo : ''} alt={username}/>
                   <PrimaryButton
                     action={() => document.getElementById('fileInput').click()}
                     value='Cambiar imagen'
@@ -75,7 +77,7 @@ class userConfig extends Component {
                 <form id='editForm'>
                   <label htmlFor='newUserName'>
                     <h2>Nombre de usuario</h2>
-                    <input type="text" id='newUserName' defaultValue={this.props.user.userName} />
+                    <input type="text" id='newUserName' defaultValue={this.props.user.username} />
                   </label>
                   <label htmlFor='newPassword'>
                     <h2>Nueva contraseña</h2>
