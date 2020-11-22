@@ -9,12 +9,13 @@ $ligth-blue: rgba(163, 164, 227, 0.1);
   // min-height: 66px;
 
   display: grid;
+  place-items: center end;
   background: #49494D;
   z-index: 8;
   height: 10%;
   min-height: 66px;
   position: relative;
-  grid-template-columns: 5vw auto 1fr;
+  grid-template-columns: auto auto auto 1fr;
 
   img {
     cursor: pointer;
