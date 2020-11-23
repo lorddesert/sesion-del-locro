@@ -75,8 +75,7 @@ class Chat extends Component {
       }, 40);
   }
 
-  handleEvent = e => {
-    if(e.keyCode === 13)
+  handleEvent = () => {
       if(this.props.inChatRoom)
         this.props.sendChatRoomMsg();
 
@@ -85,7 +84,7 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener('keyup', this.handleEvent);
+    document.addEventListener('keyup', e => e.key === 'Enter'? this.handleEvent() : console.log(e.key));
   }
 
   render() {
@@ -120,13 +119,13 @@ class Chat extends Component {
               {this.props.inChatRoom &&
                 <div className='Input-img-container'>
                     {/* this.props.sendChatRoomMsg(this.getRandomNumber(diceMin, diceMax), true) diceRoll = true */}
-                  <div onClick={() => this.props.sendChatRoomMsg(true)} className='Input-img'>
+                  <div onClick={() => this.props.sendChatRoomMsg(true)} className='Input-img' onTouchStart={() => this.props.sendChatRoomMsg(true)}>
                     <img src={dice}></img>
                   </div>
                 </div>
               }
               <div className='Input-img-container'>
-                <div onClick={() => this.handleEvent} className='Input-img'>
+                <div onClick={this.handleEvent} className='Input-img' onTouchStart={this.handleEvent}>
                   <img src={sendImg}></img>
                 </div>
               </div>
