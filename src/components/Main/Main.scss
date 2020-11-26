@@ -91,6 +91,7 @@ input, .quotes, #errorMsg{
       .return {
         display: none;
       }
+      grid-template-columns: repeat(3, auto) 1fr !important;
     }
 
     .Contacts-content {
