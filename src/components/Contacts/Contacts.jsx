@@ -23,10 +23,10 @@ class Contacts extends Component {
   }
 
   toggleRotate = () => {
-    userCfg = document.getElementById('userCfg');
+    let userCfg = document.getElementById('userCfg');
     // fileInput = document.getElementById('fileInput');
     // console.log(fileInput);
-    userCfgPanel = document.getElementById('userCfgPanel');
+    let userCfgPanel = document.getElementById('userCfgPanel');
 
     userCfg.classList.toggle('rotate');
     const containsDisplay = userCfgPanel.classList.contains('display');
