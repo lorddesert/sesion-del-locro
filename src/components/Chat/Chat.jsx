@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Message from '../Message/Message';
-import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import ChatHeader from '../ChatHeader/ChatHeader';
 
 import './Chat.scss';
@@ -14,67 +13,6 @@ class Chat extends Component {
     showNumber : false
   }
 
-  /* It will roll automacly, it doesn't gonna show the panel */
-  // showDice = () => {
-  //   const dice = document.getElementById('dice');
-
-  //   if(dice.style.display === 'flex') {
-  //     dice.classList.toggle('show-dice');
-  //     setTimeout(() => dice.style.display = 'none', 50)
-  //   }
-
-  //   else {
-  //     dice.style.display = 'flex';
-  //     setTimeout(() => dice.classList.add('show-dice'), 50);
-  //   }
-
-  // }
-
-
-  /* rollDice = () => {
-    BEFORE that we need to change the data structure for add a condition to verify
-    if the MSG is a dice roll or not, something like => diceRoll: true || false
-
-    if(msg.diceRoll) {
-      msg.classList.add('diceRollMsg');
-    }
-
-    1) We get the MIN and MAX value of the dice in the chatRoom settings (something like that).
-    2) Get a random number.
-    3) Show it like special MSG
-
-  }
-
-  */
-
-  rollDice = () => {
-    console.log(`min: ${min}, max: ${max}`);
-    const min = document.getElementById('min').value;
-    const max = document.getElementById('max').value;
-    let count = 0;
-
-    if(min === '' || max === '' || min > max)
-      return false;
-
-      this.setState(state => ({
-        showNumber: !state.showNumber
-      }));
-
-      const interval = setInterval(() => {
-        const number = document.getElementById('number');
-        const randomNumber = this.getRandomNumber(parseInt(min), parseInt(max));
-        number.innerText = `${randomNumber}`
-        count++;
-
-        if(count == 20) {
-          clearInterval(interval);
-          setTimeout(() => this.setState({showNumber: false}), 1000);
-
-        }
-
-      }, 40);
-  }
-
   handleEvent = () => {
       if(this.props.inChatRoom)
         this.props.sendChatRoomMsg();
@@ -84,7 +22,7 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener('keyup', e => e.key === 'Enter'? this.handleEvent() : console.log(e.key));
+    document.addEventListener('keyup', e => e.key === 'Enter'? this.handleEvent() : null);
   }
 
   render() {
@@ -97,6 +35,7 @@ class Chat extends Component {
             receiverName={this.props.receiverName}
             stateMsg={this.props.stateMsg}
             toggleModal={this.props.toggleModal}
+            inChatRoom={this.props.inChatRoom}
           />
           <div className='chat-wrapper'></div>
           <div className='Chat-messages' id='chat'>
@@ -119,13 +58,13 @@ class Chat extends Component {
               {this.props.inChatRoom &&
                 <div className='Input-img-container'>
                     {/* this.props.sendChatRoomMsg(this.getRandomNumber(diceMin, diceMax), true) diceRoll = true */}
-                  <div onClick={() => this.props.sendChatRoomMsg(true)} className='Input-img' onTouchStart={() => this.props.sendChatRoomMsg(true)}>
+                  <div onClick={() => this.props.sendChatRoomMsg(true)} className='Input-img' onTouchEnd={() => this.props.sendChatRoomMsg(true)}>
                     <img src={dice}></img>
                   </div>
                 </div>
               }
               <div className='Input-img-container'>
-                <div onClick={this.handleEvent} className='Input-img' onTouchStart={this.handleEvent}>
+                <div onClick={this.handleEvent} className='Input-img' onTouchEnd={this.handleEvent}>
                   <img src={sendImg}></img>
                 </div>
               </div>
@@ -157,9 +96,6 @@ class Chat extends Component {
       )
     }
   }
-      /*
-        <Dice />
-      */
 }
 
 export default Chat;
