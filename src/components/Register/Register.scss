@@ -85,75 +85,80 @@ $gray: #A8A8A8;
     color: $white;
     margin-bottom: .5em;
     border: 1px solid #111213;
+    width: calc(100% - 1em);
   }
 
- #return {
-   position: absolute;
-   top: 0;
-   left: 0;
-  }
-
- #logIn button {
-  padding: .5em 3em;
- }
-
-  .stepBalls {
-    margin-top: 50px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    flex: 1;
+  // .stepBalls {
+  //   margin-top: 50px;
+  //   width: 100%;
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   flex-direction: row;
+  //   flex: 1;
 
 
-    #ball1, #ball2 {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
+  //   #ball1, #ball2 {
+  //     width: 15px;
+  //     height: 15px;
+  //     border-radius: 50%;
 
-    }
-    #ball1 {
-      margin-right: 10px;
-    }
+  //   }
+  //   #ball1 {
+  //     margin-right: 10px;
+  //   }
 
-  }
-  .stepOne {
-    #ball1 {
-      background: white;
-    }
-    #ball2 {
-      background: $gray;
-    }
-  }
+  // }
+  // .stepOne {
+  //   #ball1 {
+  //     background: white;
+  //   }
+  //   #ball2 {
+  //     background: $gray;
+  //   }
+  // }
 
-  .stepTwo {
-    #ball2 {
-      background: white;
-    }
-    #ball1 {
-      background: $gray;
-    }
-  }
+  // .stepTwo {
+  //   #ball2 {
+  //     background: #fff;
+  //   }
+  //   #ball1 {
+  //     background: $gray;
+  //   }
+  // }
+
   .PrimaryButton button {
     background: $yellow;
     color: black;
     padding: .5em .3em;
-    border-radius: 15px;
+    border-radius: 7px;
     font-size: 16px;
   }
-  .SecondaryButton button {
-    color: #fff;
-    font-size: 18px;
+
+  .SecondaryButton {
+    padding: 0 !important;
+    border-radius: 7px;
+
+    button {
+      border: 1px solid #fff;
+      width: 200px;
+      color: #fff;
+      font-size: 18px;
+      border-radius: 7px;
+      padding: .5em .2em;
+    }
   }
+
   .imageContainer {
     display: flex;
   }
+
   #userImage {
     background: url('https://www.hogar.mapfre.es/media/2018/08/que_son_los_nudos_en_la_madera-1280x720.jpg');
     width: 100px;
     height: 100px;
   }
+
   .changeImgBtn {
     background-color: #3A3A3A !important;
     color: #fff !important;

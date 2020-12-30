@@ -27,11 +27,10 @@ class Register extends Component {
   render() {
     return(
       <div className='Register'>
-        <SecondaryButton id='return' value='Volver' action={this.props.toggleShowRegister} />
-       <main>
+      <main>
         <form className='registerForm'>
           <div style={{display: 'flex', placeItems: 'center'}}>
-           <img src={this.state.img} alt='imagen del usuario'/>
+            <img src={this.state.img} alt='imagen del usuario'/>
             <PrimaryButton
               action={e => {
                 e.persist()
@@ -59,10 +58,10 @@ class Register extends Component {
           <div className='imageContainer'>
           </div>
           <PrimaryButton value='Registrarse' action={this.handleEvent}/>
-          <p>ó</p>
+          <p><strong>ó</strong></p>
           <SecondaryButton id='logIn' value='Inicia Sesión' action={this.props.toggleShowRegister} />
         </form>
-       </main>
+      </main>
       </div>
     )
   }
