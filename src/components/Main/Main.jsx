@@ -10,11 +10,13 @@ import UserConfig from '../userConfig/userConfig';
 import firebase from 'firebase';
 import Register from '../Register/Register';
 import CreateCRModal from '../CreateCRModal/CreateCRModal';
+import Modal from '../Modal/Modal';
 
 
 class Main extends Component {
   app = !firebase.apps.length ? firebase.initializeApp(DB_CONFIG) : firebase.app();
   storage = this.app.storage().ref().child('users');
+  auth = this.app.auth();
 
   state = {
     showLogin: true,
@@ -33,6 +35,10 @@ class Main extends Component {
 
   authUser = e => {
     e.preventDefault();
+
+    /* 
+    this.auth.signInWithCustom
+    */
 
     const ref = this.app.database().ref().child('users');
     const username = document.getElementById('username').value;
@@ -127,7 +133,7 @@ class Main extends Component {
     if(userName == '' || password == '')
       return false;
 
-// Filter if whe find a object parsed.
+// Filter if we find a object parsed.
     if(!(isNaN(parseInt(password)))) {
       password = parseInt(password);
     }
@@ -292,7 +298,7 @@ class Main extends Component {
             min: this.state.chatRooms[i].minDiceValue,
             max: this.state.chatRooms[i].maxDiceValue
           }
-        });
+        }, this.scrollBottom);
   }
 
   storageImg = e => {
@@ -358,7 +364,7 @@ class Main extends Component {
 
     senderChat.push().set(newMsg)
     .then(() => {
-      this.scrollBottom();
+      this.scrollBottom(true);
       msg.value = '';
     })
     .then(() => receiverChat.push().set(newMsg))
@@ -421,7 +427,7 @@ class Main extends Component {
         receiverChat.push().set(newMsg);
       })
       .then(() => {
-        this.scrollBottom();
+        this.scrollBottom(true);
         msg.value = '';
       })
       .catch(err => console.log(err))
@@ -434,13 +440,20 @@ class Main extends Component {
       //this.state.receiver.child(`contacts/${sender}/chat`).push().set(newMsg);
   }
 
-  scrollBottom = () => {
+  scrollBottom = (smooth = false) => {
+    console.log('smooth', smooth);
     const chat = document.getElementById('chat');
 
-    chat.scrollTo({
-      top: (chat.scrollTopMax + 1000),
-      behavior: 'smooth'
-    });
+    if(smooth && typeof smooth === 'boolean') {
+      chat.scrollTo({
+        top: (chat.scrollTopMax + 1000),
+        behavior: 'smooth'
+      });
+    } else {
+      chat.scrollTo({
+        top: (chat.scrollTopMax + 1000)
+      });
+    }
   }
 
   saveNewUserInfo = e => {
@@ -545,6 +558,7 @@ class Main extends Component {
       min: document.getElementById('minValue').value,
       max: document.getElementById('maxValue').value
     };
+
     this.app.database().ref('chatRooms').once('value')
     .then(chatRooms => chatRooms.forEach(chatRoom => {
       if(chatRoom.child('name').val() === this.state.receiver)
@@ -621,13 +635,11 @@ class Main extends Component {
     this.app.database().ref('chatRooms').once('value')
       .then(chatRooms => {
         chatRooms.forEach(chatRoom => {
-          console.log(chatRoom.child('name').val()); //undefinedasd
           if(chatRoom.child('name').val() === receiver) {
             let newRef = chatRoom.ref
-            console.log(newRef)
             this.app.database().ref(newRef).child('chat').push().set(newMsg)
             .then(() => {
-              this.scrollBottom();
+              this.scrollBottom(true);
               msg.value = '';
             })
             .catch(err => console.log(err)); //this one will do it
@@ -682,12 +694,12 @@ class Main extends Component {
     e.target.classList.toggle('focusedInput');
   }
 
-  toggleModal = (pressInChatRoom = false) => {
-    if(pressInChatRoom) {
+  toggleModal = (createChatRoom = false) => {
+    if(createChatRoom && typeof createChatRoom === 'boolean') {
       this.setState(() => ({
         showCRModal: true,
+        inChatRoom: false,
         receiver: false,
-        inChatRoom: false
       }), () => {
         document.getElementById('modal').classList.toggle('show-modal');
         setTimeout(() => document.getElementById('modalForm').classList.toggle('modalTransition'), 10);
@@ -770,10 +782,14 @@ class Main extends Component {
     chatRoomRef.on('child_changed', child => {
       if(this.state.receiver != ' ') {
         let chat = child.child('chat').val();
-        chat = Object.values(chat);
+
+        chat ? chat = Object.values(chat) : chat = [];
+
         this.setState({ chat }, () => {
           this.setChatRooms();
-          setTimeout(() => this.setChatRoom(this.state.receiver), 50);
+          setTimeout(() => {
+            this.setChatRoom(this.state.receiver);
+          }, 50);
         });
       }
       /* only if the user scrollHeight is at the bottom */
@@ -874,6 +890,7 @@ class Main extends Component {
       return (
         <div className='Main'>
           <div className='Main-content' id='main'>
+          <Modal closeModal={this.toggleModal} />
             {this.state.showCRModal &&
               <CreateCRModal
                 toggleModal={this.toggleModal}

@@ -105,6 +105,18 @@ input, .quotes, #errorMsg{
       left: 0;
     }
 
+    .userInfoContainer {
+      display: grid;
+      width: 100vw !important;
+      height: 90vh !important;
+
+      .closed .userProfile {
+        justify-content: space-between !important;
+      }
+    }
+
+
+
     .Contact {
       padding: 1em 0;
       .Contact-avatar {
@@ -118,6 +130,7 @@ input, .quotes, #errorMsg{
 
       .Login-img {
         width: 100%;
+        height: 20%;
 
       }
 
@@ -144,10 +157,6 @@ input, .quotes, #errorMsg{
       form {
         margin: 0;
         width: 100% !important;
-      }
-    
-      input {
-        width: 80% !important;
       }
     }
 
