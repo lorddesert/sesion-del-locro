@@ -75,35 +75,37 @@
 }
 .chat-room {
   display: grid;
-  grid-template-columns: 1fr 1.5em;
-  place-items: center;
+  grid-template-columns: 1fr 33%;
+  place-items: center start;
   font-size: 1rem;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  padding-right: 1em;
+  gap: 2em;
+
   color: #DDCF1B;
   background: #1c1c1c;
-  gap: 2em;
 
   span {
     text-align: start;
-    flex: 8;
+    padding-left: .5em;
   }
 
   .image-wrapper {
-    border-radius: 50%;
-    padding: .5em;
-    width: 100%;
+    display: grid;
+    place-items: center;
     cursor: pointer;
-    transform: rotate(-90deg);
-    transition: rotate 300ms ease-in;
+    width: 100%;
 
-    &:hover {
-      background: #48484b;
-    }
   }
 
   img {
-    width: 100%;
+    width: 20px;
+    height: 20px;
+    padding: 1em;
+
+    &:hover {
+      background: #48484b;
+      border-radius: 50%;
+    }
   }
 
 }
