@@ -11,10 +11,10 @@ class Message extends Component {
     /* msg.classList.toggle('myMsg?') */
    if(this.props.user) {
     if(this.props.sender == this.props.user) {
-      this.justifyContent = {justifyContent: 'end'}
+      this.justifyContent = {justifyContent: 'flex-end'}
       this.style = 'Switch';
     } else {
-      this.justifyContent = {justifyContent: 'start'}
+      this.justifyContent = {justifyContent: 'flex-start'}
       this.style = '';
     }
    }
