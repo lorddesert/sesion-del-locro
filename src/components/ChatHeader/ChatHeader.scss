@@ -6,7 +6,7 @@ $ligth-blue: rgba(163, 164, 227, 0.1);
   background: #49494D;
   z-index: 8;
   height: 10%;
-  min-height: 66px;
+  min-height: 50px;
   position: relative;
   grid-template-columns: repeat(2, auto) 1fr;
 
@@ -26,6 +26,10 @@ $ligth-blue: rgba(163, 164, 227, 0.1);
   .chatHeader-img, .chatHeader-headings, .more-options {
     display: grid;
     place-items: center;
+  }
+
+  .chatHeader-img {
+    margin-right: .7em;
   }
 
   .chatHeader-headings {
@@ -49,7 +53,7 @@ $ligth-blue: rgba(163, 164, 227, 0.1);
   padding-right: 1em;
 
   img {
-    rotate: 90deg;
+    transform: rotate(90deg);
   }
 }
   .receiver-img {

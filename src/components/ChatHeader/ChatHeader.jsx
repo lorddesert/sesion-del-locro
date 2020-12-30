@@ -3,7 +3,7 @@ import React from 'react';
 import './ChatHeader.scss';
 import arrow from './resources/arrow.svg';
 import altImg from './resources/altuser.png';
-import moreOptions from './resources/more-options.svg';
+import options from './resources/more-options.svg';
 
 
 function toggleClass () {
@@ -13,7 +13,7 @@ function toggleClass () {
 const ChatHeader = props => {
   return (
     <div className='ChatHeader'>
-      <div className='return' id='return' onClick={toggleClass}>
+      <div className='return' id='return' onClick={toggleClass} >
         <img src={arrow} alt='Volver' />
       </div>
       <div className='chatHeader-img'>
@@ -25,9 +25,11 @@ const ChatHeader = props => {
           <h2>{props.stateMsg}</h2>
         }
       </div>
-      <div className='more-options'>
-        <img src={moreOptions} alt="mas opciones" onClick={props.toggleModal}/>
-      </div>
+      {props.inChatRoom &&
+        <div className='more-options'>
+          <img src={options} alt="mas opciones" onClick={props.toggleModal} onTouchEnd={props.toggleModal}/>
+        </div>
+      }
     </div>
   );
 }
