@@ -12,17 +12,24 @@ class userConfig extends Component {
 
   toggleShowUserCfg = e => {
     const userCfgRef = document.getElementById('userConfig');
-
+    let userInfoContainer = document.getElementById('userInfoContainer');
     e.preventDefault();
 
     if(this.state.edit)
-      this.toggleEditForm();
+    this.toggleEditForm();
+
+    if(!userInfoContainer.classList.contains('closed'))
+    userInfoContainer.classList.toggle('closed');
 
     userCfgRef.classList.toggle('toggleUserConfig');
 
   }
 
   toggleEditForm = () => {
+    let userInfoContainer = document.getElementById('userInfoContainer');
+
+    userInfoContainer.classList.toggle('closed');
+
     this.setState(state => ({
       edit: !state.edit
     }));
@@ -36,15 +43,19 @@ class userConfig extends Component {
           <div className='exitImg'>
             <img src={closeImg} alt='exit' onClick={this.toggleShowUserCfg}/>
           </div>
-          <div className='userInfoContainer'>
+          <div className='userInfoContainer closed' id='userInfoContainer'>
             <div className='userInfo'>
               <div className='userProfile'>
                 <img src={photo ? photo : ''} alt={username}/>
                 <div className='displayInfo'>
-                  <h2>Nombre de usuario</h2>
-                  <h3>{username}</h3>
-                  <h2>Nickname</h2>
-                  <h3>{nickname}</h3>
+                  <hgroup>
+                    <h2>Nombre de usuario</h2>
+                    <h3>{username}</h3>
+                  </hgroup>
+                  <hgroup>
+                    <h2>Nickname</h2>
+                    <h3>{nickname}</h3>
+                  </hgroup>
                 </div>
               </div>
               <PrimaryButton
@@ -60,10 +71,7 @@ class userConfig extends Component {
       else
         return(
           <div className='userConfig' id='userConfig'>
-            <div className='exitImg'>
-              <img  src={closeImg ? closeImg : ''} alt='exit' onClick={this.toggleShowUserCfg} />
-            </div>
-            <div className='userInfoContainer'>
+            <div className='userInfoContainer' id='userInfoContainer'>
               <div className='userInfo'>
                 <div className='userProfile'>
                   <img src={photo ? photo : ''} alt={username}/>
