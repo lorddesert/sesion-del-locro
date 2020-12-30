@@ -96,6 +96,7 @@ class Main extends Component {
 
   login = username => {
     const ref = this.app.database().ref(`users/${username}`);
+    // const ref = this.app.database().ref(`users/${this.auth.currentUser.id}`) Check the syntax.
 
     ref.child('online').set(true);
 
@@ -140,6 +141,7 @@ class Main extends Component {
 
     ref.once('value')
       .then(snapshot => {
+        // This will change for check if the email is registered?
         const auth = snapshot.hasChild(`${userName}`);
 
         if(auth) {
@@ -345,30 +347,6 @@ class Main extends Component {
       console.log(uploadTask, imgURL);
       alert('Ha ocurrido un error inesperado.');
     }
-  }
-
-  sendMsg = () => {
-    const sender = this.state.user.username; //This will be the nickname
-    const receiver = this.state.receiver;
-    const msg = document.getElementById('chatInput');
-    const senderChat = this.app.database().ref(`users/${sender}/contacts/${receiver}/chat`);
-    const receiverChat = this.app.database().ref(`users/${receiver}/contacts/${sender}/chat`);
-
-    const newMsg = {
-      sender,
-      content: msg.value,
-    }
-
-    if(msg.value === '')
-      return false;
-
-    senderChat.push().set(newMsg)
-    .then(() => {
-      this.scrollBottom(true);
-      msg.value = '';
-    })
-    .then(() => receiverChat.push().set(newMsg))
-    .catch(err => console.log(err));
   }
 
   sendMsg2 = () => {
