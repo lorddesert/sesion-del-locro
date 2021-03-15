@@ -77,8 +77,8 @@
   display: grid;
   grid-template-columns: 1fr 33%;
   place-items: center start;
-  font-size: 1rem;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 14px;
+  font-family: 'Poppins', Verdana, Geneva, Tahoma, sans-serif;
   gap: 2em;
 
   color: #DDCF1B;
@@ -135,7 +135,7 @@
   grid-template-areas: "state"
                        "userConfig"
                        "logOut";
-  font-size: 20px;
+  font-size: 14px;
   background: #49494D;
   opacity: 0;
   transition: 0.1s all ease;
@@ -146,8 +146,10 @@
     padding: .5em 0 !important;
   }
   button {
-    font-size: 1rem;
+    font-size: 14px !important;
     color: #fff;
+    font-family: 'Poppins', Verdana, Geneva, Tahoma, sans-serif !important;
+    font-weight: 800;
   }
   .panelOption {
     font-size: 1rem;
