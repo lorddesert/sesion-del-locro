@@ -24,11 +24,12 @@
 
   p {
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
-    font-weight: 600;
+    font-weight: 400;
   }
 
   .Message-owner {
     font-weight: bold !important;
+    font-size: 15px;
     font-family: 'Poppins', Arial, Helvetica, sans-serif;
   }
 
@@ -38,6 +39,7 @@
 
     p {
       text-align: start;
+      font-size: 14.2px;
     }
   }
 }
@@ -52,6 +54,8 @@
 
   .Message-owner {
     margin-bottom: .5em;
+    font-size: 14px;
+
   }
 
   .Message-content {
@@ -60,6 +64,7 @@
     padding: 1em 1.6em;
     background: #e4e4e4;
     border-radius: 7px;
+
   }
 
   p {
