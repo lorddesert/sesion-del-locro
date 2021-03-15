@@ -22,14 +22,14 @@
   .ChatRoom-name {
     display: grid;
     flex: 3;
-    font-size: 1rem;
+    font-size: 14px;
     text-align: start !important;
     place-items: center start;
     padding-left: .6em;
 
     span {
       color: #FFF;
-      font-weight: bold;
+      font-weight: 400;
     }
 
   }
