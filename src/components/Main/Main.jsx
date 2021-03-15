@@ -36,13 +36,19 @@ class Main extends Component {
     chat: [],
   };
 
-  login = async () => {
+  login = async (currentUser = false) => {
     try {
-      if (this.state.user) {
+      let ref = null;
+      if (currentUser) {
+        ref = this.app.database().ref(`users/${this.auth.currentUser.uid}`);
+
         this.setState(
           {
-            ...state,
             showLogin: false,
+            showRegister: false,
+            user: {
+              ref,
+            },
           },
           () => {
             this.setContacts();
@@ -51,9 +57,6 @@ class Main extends Component {
           }
         );
       } else {
-        const ref = this.app
-          .database()
-          .ref(`users/${this.auth.currentUser.id}`);
         let email = document.getElementById("email").value;
         let password = document.getElementById("password").value;
 
@@ -61,11 +64,12 @@ class Main extends Component {
           email,
           password
         );
+        ref = this.app.database().ref(`users/${user.uid}`);
 
         this.setState(
           {
-            ...state,
             showLogin: false,
+            showRegister: false,
             user,
           },
           () => {
@@ -76,6 +80,7 @@ class Main extends Component {
         );
       }
     } catch (error) {
+      let err = error;
       switch (error.code) {
         case "auth/invalid-email":
           toastr.error("El email es invalido.");
@@ -94,6 +99,7 @@ class Main extends Component {
           break;
 
         default:
+          console.log(err);
           toastr.error("Un error ocurrio, intente de nuevo mas tarde.");
           break;
       }
@@ -104,7 +110,6 @@ class Main extends Component {
   beginRegister = () => {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    let user = null;
 
     this.auth
       .createUserWithEmailAndPassword(email, password)
@@ -131,68 +136,39 @@ class Main extends Component {
             break;
         }
       });
-    //     const userName = document.getElementById('username').value;
-    //     let password = document.getElementById('password').value;
-    //     const nickname = document.getElementById('nickname').value;
-    //     const msg = document.getElementById('errorMsg');
-    //     const ref = this.app.database().ref('users');
-    //     const photo = await this.getRegisterImg(userName); //Returns undefined
-    //     console.log(photo);
-    //     // e.preventDefault();
-
-    //     if(userName == '' || password == '')
-    //       return false;
-
-    // // Filter if we find a object parsed.
-    //     if(!(isNaN(parseInt(password)))) {
-    //       password = parseInt(password);
-    //     }
-
-    //     ref.once('value')
-    //       .then(snapshot => {
-    //         // This will change for check if the email is registered?
-    //         const auth = snapshot.hasChild(`${userName}`);
-
-    //         if(auth) {
-    //           msg.style.color = 'red';
-    //           msg.innerHTML = 'Nombre de usuario no disponible.';
-    //         } else {
-    //           const newUser = {
-    //             userName,
-    //             nickname,
-    //             contacts: [],
-    //             online: false,
-    //             password,
-    //             photo
-    //           }
-
-    //           ref.child(`${userName}`).set(newUser)
-    //             .then(() => {
-    //               msg.style.color = 'green';
-    //               msg.innerHTML = 'Registro completado.';
-    //               setTimeout(() => location.reload(), 1000)
-    //             })
-    //             .catch(err => console.log(err));
-    //         }
-    //       })
   };
 
-  //soft animation.
+  //soft slide animation.
 
   endRegister = async () => {
     try {
+      const { uid, email } = this.state.user;
       const nickname = document.getElementById("nickname").value;
-      const photo = await this.getRegisterImg(this.state.user.uid);
+      const photo = await this.getRegisterImg(uid);
+      let userNewInfo = {};
 
-      await this.state.user.updateProfile({
-        displayName: nickname,
-        photoURL: photo,
+      if (photo)
+        userNewInfo = {
+          displayName: nickname,
+          photoURL: photo,
+        };
+      else
+        userNewInfo = {
+          displayName: nickname,
+        };
+
+      await this.state.user.updateProfile(userNewInfo);
+      console.log(this.auth.currentUser);
+      debugger;
+      await this.app.database().ref("users").child(`${uid}`).set({
+        nickname: this.auth.currentUser.displayName,
+        photo: this.auth.currentUser.photoURL,
+        online: true,
+        email,
       });
 
-      this.login();
-
-      //login
-      //notification?
+      toastr.success("Registro completado.", "¡Listo!");
+      this.login(true);
     } catch (error) {
       console.log(error);
       alert("Ocurrio un error inesperado, intente de nuevo en unos minutos.");
@@ -207,25 +183,22 @@ class Main extends Component {
 
   //optimizing finished.
   setContacts = async () => {
-    // const ref = this.app.database().ref(`users/${user}/contacts`);
     try {
       let contacts = [];
       const usersRef = this.app.database().ref("users");
-      const sender = this.state.user.username; // Will be change to nickname or displayName
+      const sender = this.auth.currentUser.uid;
+      const myNickname = this.auth.currentUser.displayName;
 
       let snapshot = await usersRef.once("value");
 
       snapshot.forEach((user) => {
-        // filter me, and verify only who is online?
-        if (user.val().userName != sender) {
-          //If the UID is not equal
-          const { userName, photo, online, nickname } = user.val(); //Values will be the auth values? will be replied the values of auth?
+        if (user.val().nickname !== myNickname) {
+          const { photo, online, nickname } = user.val();
           let chat = user.child(`contacts/${sender}/chat`).val();
 
           chat = chat ? Object.values(chat) : [];
 
           const newContact = {
-            userName,
             chat,
             photo,
             online,
@@ -290,8 +263,6 @@ class Main extends Component {
     let receiverName = null;
 
     if (window.innerWidth < 768) {
-      // chat.style.display = 'block';
-      // contacts.style.display = 'none';
       document.getElementById("main").classList.toggle("show-chat");
     }
 
@@ -299,11 +270,11 @@ class Main extends Component {
       .once("value")
       .then((snapshot) => {
         receiverPhoto = snapshot.child("photo").val();
-        receiverName = snapshot.child("userName").val();
+        receiverName = snapshot.child("nickname").val();
       })
       .then(() => {
         for (i = 0; i < this.state.contacts.length; i++)
-          if (this.state.contacts[i].userName === receiver)
+          if (this.state.contacts[i].nickname === receiver)
             this.setState(
               {
                 receiver: contactRef.ref,
@@ -325,14 +296,6 @@ class Main extends Component {
     if (window.innerWidth < 768)
       document.getElementById("main").classList.toggle("show-chat");
 
-    // if(window.innerWidth < 768) {
-    //   chat.style.display = 'block';
-    //   contacts.style.display = 'none';
-    // }
-    /*
-    if I am in the chatRoom i clicked => setState -> chat: chat of chatRoom(where do I get this?).
-    */
-    // this.setState({receiver, chat: this.state.})
     for (i = 0; i < this.state.chatRooms.length; i++)
       if (this.state.chatRooms[i].name === receiver)
         this.setState(
@@ -363,7 +326,6 @@ class Main extends Component {
       .child(`${this.state.user.username}/${img.name}`)
       .put(img);
     uploadTask.on("state_changed", null, null, () => {
-      // .then(res => console.log(res))
       uploadTask.snapshot.ref
         .getDownloadURL()
         .then((imgURL) => {
@@ -387,14 +349,18 @@ class Main extends Component {
   async getRegisterImg(uid) {
     try {
       const img = document.getElementById("fileInput").files[0];
-      let newUserStorage = this.storage.child(`${uid}/${img.name}`);
-      let uploadTask = null;
-      let imgURL = null;
+      if (!img) {
+        return false;
+      } else {
+        let newUserStorage = this.storage.child(`${uid}/${img.name}`);
+        let uploadTask = null;
+        let imgURL = null;
 
-      uploadTask = await newUserStorage.put(img);
-      imgURL = await newUserStorage.getDownloadURL();
+        uploadTask = await newUserStorage.put(img);
+        imgURL = await newUserStorage.getDownloadURL();
 
-      return imgURL;
+        return imgURL;
+      }
     } catch (error) {
       console.log(error);
       console.log(uploadTask, imgURL);
@@ -403,47 +369,18 @@ class Main extends Component {
   }
 
   sendMsg2 = () => {
-    /*
-
-
-
- // First we receive the ref of the contact,
-    // Second we create a new ref pointing to the contact ref,
-    // Choose the new info and set it in the ref we create.
-    // This will work...?
-
-    const ref = this.app.database().ref(contactRef.ref);
-    const newContact = {
-      ...contactRef.val(),
-    }
-
-    console.log(contactRef.ref);
-    ref.set(newContact);
-
-*/
-
-    // receiver = reference, the refence of the contact
-    // console.log(receiver.path.pieces_[1]); // this will return the contact ID
-
-    // This is sending the MSG to -> lorddesert/contacts/chat/lorddesert <- i need to change this to the receiver
-    // Now YES!
-
-    // 1) Send msg to my chat.
-    // 2) Send msg to the receiver chat.
-
-    // this.state.receiver.once('value')
-    // .then(res => console.log(res.val()));
     const msg = document.getElementById("chatInput");
-    let myUsername = this.state.user.username;
+    let myUid = this.auth.currentUser.uid;
     let receiverUsername = null;
-    let receiverChat = this.state.receiver.child(`contacts/${myUsername}/chat`);
+    let receiverUid = this.state.receiver.getKey();
+    let receiverChat = this.state.receiver.child(`contacts/${myUid}/chat`);
     let myChat = null;
     let newMsg = {};
 
-    if (msg.value === "") return false;
+    if (!msg.value) return false;
     else
       newMsg = {
-        sender: this.state.user.nickname,
+        sender: this.auth.currentUser.displayName,
         content: msg.value,
       };
 
@@ -451,38 +388,33 @@ class Main extends Component {
     this.state.receiver
       .once("value")
       .then((snapshot) => {
-        receiverUsername = snapshot.child("userName").val();
-        myChat = this.state.user.ref.child(`contacts/${receiverUsername}/chat`);
+        receiverUsername = snapshot.child("displayName").val();
+        myChat = this.state.user.ref.child(`contacts/${receiverUid}/chat`);
 
         myChat.push().set(newMsg);
+        msg.value = "";
         receiverChat.push().set(newMsg);
       })
       .then(() => {
         this.scrollBottom(true);
-        msg.value = "";
       })
-      .catch((err) => console.log(err));
-
-    // newMsg = {
-    //   sender,
-    //   content: msg.value,
-    // }
-
-    //this.state.receiver.child(`contacts/${sender}/chat`).push().set(newMsg);
+      .catch((err) => {
+        toastr.error("Upps, something happened!", "Sending message");
+        console.log(err);
+      });
   };
 
   scrollBottom = (smooth = false) => {
-    console.log("smooth", smooth);
     const chat = document.getElementById("chat");
 
     if (smooth && typeof smooth === "boolean") {
       chat.scrollTo({
-        top: chat.scrollTopMax + 1000,
+        top: chat.scrollHeight,
         behavior: "smooth",
       });
     } else {
       chat.scrollTo({
-        top: chat.scrollTopMax + 1000,
+        top: chat.scrollHeight,
       });
     }
   };
@@ -494,10 +426,6 @@ class Main extends Component {
     const userRef = this.app
       .database()
       .ref(`users/${this.state.user.username}`);
-    /* NEXT STEP => SAVE A PHOTO. */
-    // const newPhoto = document.getElementById('imgInput');
-    // newUserInfo.photo = newPhoto;
-
     let newUserInfo = {};
 
     e.preventDefault();
@@ -505,8 +433,6 @@ class Main extends Component {
       .once("value")
       .then((snapshot) => {
         newUserInfo = { ...snapshot.val() };
-        // username : newUserName,
-        // password : newPassword,
         return newUserInfo;
       })
       .then((newUserInfo) => {
@@ -571,16 +497,6 @@ class Main extends Component {
             });
       })
       .catch((err) => console.log(err));
-
-    // I need to check if the name already exists!!
-    // The min value CANNOT be bigger than the max value
-    // Photo input is missing!
-    // if(ref.exists(`${name}`)) {
-    //   alert('El nombre de la sala ya esta ocupado.');
-    //   return false;
-    // }
-    // else {
-    // }
   };
 
   /* it works, now i need to update it.*/
@@ -654,7 +570,7 @@ class Main extends Component {
     Math.floor(Math.random() * (max + 1 - min)) + min;
 
   sendChatRoomMsg = (diceRoll = false) => {
-    const sender = this.state.user.username;
+    const sender = this.auth.currentUser.displayName;
     const receiver = this.state.receiver; // will be the chatRoom we pick.
     const msg = document.getElementById("chatInput");
     /* I need to change this to the actual chatRoom which the one that has the same .name */
@@ -690,50 +606,10 @@ class Main extends Component {
                 this.scrollBottom(true);
                 msg.value = "";
               })
-              .catch((err) => console.log(err)); //this one will do it
+              .catch((err) => console.log(err));
           }
         });
       });
-    // if(chatRoom.name === receiver) {
-    //   console.log(chatRoom.ref);
-    // }
-    // else {
-    //   console.log(chatRoom);
-    // }
-
-    // // const receiverChat = this.app.database().ref(`chatRooms/${receiver}/chat`);
-    // const {min, max} = this.state.diceValues;
-
-    // let newMsg = {
-    //   sender,
-    //   content: msg.value,
-    //   diceRoll
-    // }
-
-    // if(msg.value === '' && !diceRoll)
-    //   return false;
-
-    // else if(diceRoll) {
-    //   // The dice value we obtaind from getRandomNumber
-    //   // We need to use the min and max value of the chatrooms.
-
-    //   newMsg.content = this.getRandomNumber(parseInt(min), parseInt(max));
-    // }
-
-    // if(msg.value === '' && !diceRoll)
-    //   return false;
-
-    // else if(diceRoll) {
-    //   // The dice value we obtaind from getRandomNumber
-    //   newMsg.content = diceValue;
-    // }
-
-    // receiverChat.push().set(newMsg)
-    // .then(() => {
-    //   this.scrollBottom();
-    //   msg.value = '';
-    // })
-    // .catch(err => console.log(err));
   };
 
   handleInputFocus = (e) => {
@@ -783,17 +659,15 @@ class Main extends Component {
   componentDidMount = () => {
     const usersRef = this.app.database().ref("users");
     const chatRoomRef = this.app.database().ref("chatRooms");
-    /* Put the event only if a msg or a user is set online */
-    /* the problem is that everyone is receiving the newChat, so we need to change that...*/
-    /* i need to be clear in who is the sender and the receiver of this newMsg */
-    /* SOLVED: i put a validation for only the msg's that are send to ME. */
 
-    /* It works, now i need to send to that contact and set true*/
     usersRef.on("child_changed", (child) => {
-      let childUserName = child.child("userName").val();
+      let childUserName = child.child("nickname").val();
+      const receiverUid = this.state.receiver.getKey();
+
       this.state.contacts.forEach((contact) => {
-        if (contact.userName === childUserName) {
+        if (contact.nickname === childUserName) {
           let newContacts = [...this.state.contacts];
+          let newChat = [];
           /* find index of the contact, and set the online value to the child changed value */
           newContacts[newContacts.indexOf(contact)].online = child
             .child("online")
@@ -802,51 +676,21 @@ class Main extends Component {
           this.setState({ contacts: newContacts });
         }
       });
-      /* 
-    
-      this.state.contacts.forEach(contact => {
-        for(j = 0; j < values.length; j++) {
-          if(values === username) {
-            console.log(username);
-          }
-          else {
-            console.log(values, username)
-          }
-        }
-      })
-    */
 
-      // for(i = 0; i < this.state.contacts.length; i++) {
-      //   let values = Object.values(this.state.contacts[i]);
-
-      //   for(j = 0; j < values.length; j++) {
-      //     if(values === username) {
-      //       console.log(username);
-      //     }
-      //     else {
-      //       console.log(values, username)
-      //     }
-      //   }
-
-      // }
-
+      //If my one of my chat's has changed, find wich and update it.
       if (
-        this.state.receiver != " " &&
-        child.child("userName").val() == this.state.user.username
+        this.state.receiver !== " " &&
+        child.child("nickname").val() === this.auth.currentUser.displayName
       ) {
-        let chat = child
-          .child(`contacts/${this.state.receiverName}/chat`)
-          .val();
+        //indetify the user that we need to change the chat in out state contacts, and set the contacts again.
+        const receiverUid = this.state.receiver.getKey();
+        let chat = child.child(`contacts/${receiverUid}/chat`).val();
         let newChat = Object.values(chat);
 
         /*Need to be changed to chante the online state of the user. */
-        this.setState({ chat: newChat });
-
-        /* only if the user scrollHeight is at the bottom */
-        /* when a user connect, this cause an error and not appear the user that is now online */
-        /* the problem is caused because the function is trying to access to a element that doesn't exists.   */
-        // this.scrollBottom();
-        this.setContacts();
+        this.setState({ chat: newChat }, () => {
+          setTimeout(() => this.setContacts(), 50);
+        });
       }
     });
     //   it doesn't update when I send a new msg.
@@ -864,20 +708,20 @@ class Main extends Component {
           }, 50);
         });
       }
-      /* only if the user scrollHeight is at the bottom */
-      /* when a user connect, this cause an error and not appear the user that is now online */
-      /* the problem is caused because the function is trying to access to a element that doesn't exists.   */
-      // this.scrollBottom();
-      /* SOLVED */
-      // There was a problem when i set the state with the new chat, and call setChatRoom, this f(x) overwrite
-      // chat with the past value, because setState is Async.
     });
+
     chatRoomRef.on("child_added", () => {
       this.setChatRooms();
     });
+
     chatRoomRef.on("child_removed", () => {
       this.setChatRooms();
     });
+  };
+
+  componentDidUpdate = () => {
+    if (this.state.showLogin && this.auth.currentUser)
+      this.setState({ showLogin: false }, () => this.login(true));
   };
 
   componentWillUnmount = () => {
@@ -937,9 +781,10 @@ class Main extends Component {
               chatRooms={this.state.chatRooms}
               setChatRoom={this.setChatRoom}
               toggleModal={this.toggleModal}
+              auth={this.auth}
             />
             <Chat
-              user={this.state.user.username}
+              user={this.auth.currentUser.displayName}
               sendMsg={this.sendMsg}
               receiver={this.state.receiver}
               chat={this.state.chat}
@@ -966,6 +811,7 @@ class Main extends Component {
               handleInputFocus={this.handleInputFocus}
               storageImg={this.storageImg}
               beginRegister={this.beginRegister}
+              user={this.state.user}
             />
           </div>
         </div>
@@ -999,6 +845,7 @@ class Main extends Component {
               chatRooms={this.state.chatRooms}
               setChatRoom={this.setChatRoom}
               toggleModal={this.toggleModal}
+              auth={this.auth}
             />
             <Chat
               user={this.state.user.nickname}

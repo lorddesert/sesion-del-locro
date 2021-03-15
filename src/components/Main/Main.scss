@@ -1,13 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap');
 
 .Main {
   display: flex;
   flex: 1;
   font-family: 'Roboto', Geneva, Tahoma, sans-serif;
-  // margin-top: .5em;
+  font-weight: 400;
   overflow: auto;
+  // margin-top: .5em;
+
+
   h1, h2, h3, h4, h5 {
     font-family: 'Poppins', Verdana, Geneva, Tahoma, sans-serif;
   }
