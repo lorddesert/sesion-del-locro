@@ -11,7 +11,6 @@ import UserConfig from "../userConfig/userConfig";
 import firebase from "firebase";
 import Register from "../Register/Register";
 import CreateCRModal from "../CreateCRModal/CreateCRModal";
-import Modal from "../Modal/Modal";
 
 class Main extends Component {
   app = !firebase.apps.length
@@ -41,13 +40,14 @@ class Main extends Component {
       let ref = null;
       if (currentUser) {
         ref = this.app.database().ref(`users/${this.auth.currentUser.uid}`);
-
+        let authCurrentUser = this.auth.currentUser;
         this.setState(
           {
             showLogin: false,
             showRegister: false,
             user: {
               ref,
+              ...authCurrentUser,
             },
           },
           () => {
