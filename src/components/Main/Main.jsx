@@ -619,7 +619,7 @@ class Main extends Component {
   };
 
   toggleModal = (createChatRoom = false) => {
-    if (createChatRoom && typeof createChatRoom === "boolean") {
+    if (createChatRoom) {
       this.setState(
         () => ({
           showCRModal: true,
@@ -633,7 +633,7 @@ class Main extends Component {
               document
                 .getElementById("modalForm")
                 .classList.toggle("modalTransition"),
-            10
+            100
           );
         }
       );
@@ -820,7 +820,6 @@ class Main extends Component {
       return (
         <div className="Main">
           <div className="Main-content" id="main">
-            <Modal closeModal={this.toggleModal} />
             {this.state.showCRModal && (
               <CreateCRModal
                 toggleModal={this.toggleModal}
