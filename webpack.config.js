@@ -32,7 +32,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(scss|min.css)$/i,
+        test: /\.(scss|min.css|css)$/i,
         use: [
           'style-loader',
           'css-loader',
