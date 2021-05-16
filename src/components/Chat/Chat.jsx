@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import Message from "../Message/Message";
 import ChatHeader from "../ChatHeader/ChatHeader";
 
@@ -8,21 +8,83 @@ import quote from "./resources/quote.svg";
 import dice from "./resources/dice.svg";
 
 const Chat = (props) => {
-  const handleEvent = useCallback((e) => {
-    if (e.key === "Enter") {
-      console.log("Enter pressed!!");
-      if (props.inChatRoom) props.sendChatRoomMsg();
-      else props.sendMsg2();
-    }
-  });
-
   useEffect(() => {
-    window.addEventListener("keyup", handleEvent);
+    if(props.inChatRoom || props.receiverNickname) {
+      window.addEventListener("keyup", handleEvent);
+      console.log('Event listener subscribed!')
 
-    return () => window.removeEventListener("keyup", handleEvent);
-  }, []);
+      return () => window.removeEventListener("keyup", handleEvent);
+    }
+  }, [props.inChatRoom]);
+
+  const handleEvent = (e) => {
+      if (e.key === "Enter") 
+        if(props.receiverNickname) 
+          props.sendMsg2();
+        else
+          props.sendChatRoomMsg();
+    };
+
 
   if (props.receiver) {
+    if(props.inChatRoom) {
+       return (
+        <div className="Chat">
+          <div className="Chat-content" id="chatContent">
+            <ChatHeader
+              receiverPhoto={props.receiverPhoto}
+              receiverName={props.receiverName}
+              stateMsg={props.stateMsg}
+              toggleModal={props.toggleModal}
+              inChatRoom={props.inChatRoom}
+            />
+            <div className="chat-wrapper"></div>
+            <div className="Chat-messages" id="chat">
+              {props.chat.map((msg, i) => (
+                <Message
+                  key={`msg-${i}`}
+                  user={props.user}
+                  userNumber={i}
+                  sender={`${msg.sender}`}
+                  content={msg.content}
+                  diceRoll={msg.diceRoll}
+                />
+              ))
+              }
+            </div>
+            <div className="Chat-input-container">
+              <div className="Chat-input">
+                <input
+                  type="text"
+                  id="chatInput"
+                  placeholder="Escribe un mensaje"
+                  autoFocus
+                />
+              </div>
+              <div className="Input-img-container">
+                <div
+                  onClick={() => props.sendChatRoomMsg(true)}
+                  className="Input-img"
+                  onTouchEnd={() => props.sendChatRoomMsg(true)}
+                >
+                  <img src={dice}></img>
+                </div>
+              </div>
+              <div className="Input-img-container">
+                <div
+                  onClick={() => props.sendChatRoomMsg()}
+                  className="Input-img"
+                  onTouchEnd={() => props.sendChatRoomMsg()}
+                  id="sendMsg"
+                >
+                  <img src={sendImg}></img>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="Chat">
         <div className="Chat-content" id="chatContent">
@@ -35,17 +97,18 @@ const Chat = (props) => {
           />
           <div className="chat-wrapper"></div>
           <div className="Chat-messages" id="chat">
-            {props.chat.map((msg, i) => (
-              <Message
-                key={`msg-${i}`}
-                user={props.user}
-                userNumber={i}
-                nickname={props.receiverNickname}
-                sender={`${msg.sender}`}
-                content={msg.content}
-                diceRoll={msg.diceRoll}
-              />
-            ))}
+            {
+              props.chat.map((msg, i) => (
+                <Message
+                  key={`msg-${i}`}
+                  user={props.user}
+                  userNumber={i}
+                  nickname={props.receiverNickname}
+                  sender={`${msg.sender}`}
+                  content={msg.content}
+                />
+              ))
+            }
           </div>
           <div className="Chat-input-container">
             <div className="Chat-input">
@@ -56,23 +119,11 @@ const Chat = (props) => {
                 autoFocus
               />
             </div>
-            {props.inChatRoom && (
-              <div className="Input-img-container">
-                {/* props.sendChatRoomMsg(getRandomNumber(diceMin, diceMax), true) diceRoll = true */}
-                <div
-                  onClick={() => props.sendChatRoomMsg(true)}
-                  className="Input-img"
-                  onTouchEnd={() => props.sendChatRoomMsg(true)}
-                >
-                  <img src={dice}></img>
-                </div>
-              </div>
-            )}
             <div className="Input-img-container">
               <div
-                onClick={() => handleEvent(props)}
+                onClick={() => props.sendChatRoomMsg()}
                 className="Input-img"
-                onTouchEnd={() => handleEvent(props)}
+                onTouchEnd={() => props.sendChatRoomMsg()}
                 id="sendMsg"
               >
                 <img src={sendImg}></img>
@@ -82,6 +133,8 @@ const Chat = (props) => {
         </div>
       </div>
     );
+
+  // Fallback background.
   } else {
     return (
       <div className="Chat" id="chat">
