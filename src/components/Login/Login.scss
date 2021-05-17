@@ -53,21 +53,24 @@ $gray: #A8A8A8;
       width: 100%;
     }
     input {
-      border: 1px solid #000 ;
       transition: all 0.1s ease;
-      background: $semi-black;
       width: 80%;
       padding:.5em;
-      text-align: start;
+      
+      border: 1px solid #000 ;
+      background: $semi-black;
       color: $white;
+      text-align: start;
       font-size: 14px;
+      font-weight: 400;
     }
     .PrimaryButton button {
       background: $yellow;
       color: $black;
       width: 85%;
       padding: .5em;
-      font-size: 1rem;
+      font-weight: 600;
+      font-family: 'Roboto', Verdana, Geneva, Tahoma, sans-serif;
     }
   }
 
@@ -87,8 +90,8 @@ $gray: #A8A8A8;
 
   #link button {
     color: $gray;
-    font-size: 1rem;
     font-size: 14px;
+    font-weight: 400;
   }
 
   #link button:hover {
