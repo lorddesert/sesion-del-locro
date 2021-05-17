@@ -1,18 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap");
 
 .Main {
   display: flex;
   flex: 1;
-  font-family: 'Roboto', Geneva, Tahoma, sans-serif;
+  font-family: "Roboto", Geneva, Tahoma, sans-serif;
   font-weight: 400;
   overflow: auto;
   // margin-top: .5em;
 
-
-  h1, h2, h3, h4, h5 {
-    font-family: 'Poppins', Verdana, Geneva, Tahoma, sans-serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
   }
 
   .Main-content {
@@ -20,23 +23,26 @@
     display: flex;
     flex-direction: row;
   }
-
 }
 
-a:link, a:active, a:visited {
-  color: #DDCF1B;
+a:link,
+a:active,
+a:visited {
+  color: #ddcf1b;
 }
 
 input {
   border: 1px solid #000;
   transition: all 0.1s ease;
   background: #393d42;
-  padding: .5em;
+  padding: 0.5em;
   text-align: start;
   color: #fff;
 }
 
-input, .quotes, #errorMsg{
+input,
+.quotes,
+#errorMsg {
   font-weight: bold;
 }
 
@@ -48,17 +54,14 @@ input, .quotes, #errorMsg{
   #contacts {
     display: none;
   }
-
 }
-@media(max-width: 768px) {
+@media (max-width: 768px) {
   .Main {
-
     .show-chat .ChatHeader {
       .return {
         display: flex !important;
       }
     }
-  
 
     .Chat {
       width: 100vw;
@@ -71,23 +74,23 @@ input, .quotes, #errorMsg{
       .Chat-content {
         height: 100%;
       }
-    
+
       .chat-wrapper {
         width: 100% !important;
       }
-    
-      .Chat-input-container, .Chat-messages {
+
+      .Chat-input-container,
+      .Chat-messages {
         width: 100vw !important ;
       }
-    
+
       .Chat-input {
         padding: 0 !important;
       }
-    
-      .Input-img-container {
-        margin-right: .5em;
-      }
 
+      .Input-img-container {
+        margin-right: 0.5em;
+      }
     }
 
     .ChatHeader {
@@ -99,32 +102,28 @@ input, .quotes, #errorMsg{
 
     .Contacts-content {
       max-width: none !important;
-
     }
 
     .userCfgPanel {
       width: 100vw;
-      bottom: 80.3vh;
       left: 0;
     }
 
     .userInfoContainer {
-      display: grid;
-      width: 100vw !important;
-      height: 90vh !important;
+      // display: grid;
+      // width: 100vw !important;
+      // height: 90vh !important;
 
       .closed .userProfile {
         justify-content: space-between !important;
       }
     }
 
-
-
     .Contact {
       padding: 1em 0;
       .Contact-avatar {
         flex: 0;
-        padding: .5em;
+        padding: 0.5em;
       }
     }
 
@@ -134,7 +133,6 @@ input, .quotes, #errorMsg{
       .Login-img {
         width: 100%;
         height: 20%;
-
       }
 
       .Login-form {
@@ -162,6 +160,5 @@ input, .quotes, #errorMsg{
         width: 100% !important;
       }
     }
-
   }
 }
