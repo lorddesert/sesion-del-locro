@@ -46,7 +46,7 @@ class userConfig extends Component {
                 <img src={photoURL ? photoURL : ""} alt={displayName} />
                 <div className="displayInfo">
                   <hgroup>
-                    <h2>email</h2>
+                    <h2>Email</h2>
                     <h3>{email}</h3>
                   </hgroup>
                   <hgroup>
