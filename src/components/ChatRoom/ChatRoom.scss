@@ -1,18 +1,19 @@
 .ChatRoom {
   display: flex;
   flex-direction: row;
-  border-bottom: solid 2px #666;
-  padding: .5em 0;
+  border-bottom: solid 1px #3a3a3a;
+  padding: 0.5em 0;
   width: 100%;
   .ChatRoom-image {
     display: grid;
     justify-content: center;
-    padding: .5em;
+    padding: 0 0.5em;
+
     img {
       width: 45px;
       height: 45px;
       border-radius: 50%;
-      border: 2px solid #e3e3e3;
+      border: 2px solid transparent;
     }
     // img {
     //   width: 50px;
@@ -25,13 +26,12 @@
     font-size: 14px;
     text-align: start !important;
     place-items: center start;
-    padding-left: .6em;
+    padding-left: 0.6em;
 
     span {
-      color: #FFF;
+      color: #fff;
       font-weight: 400;
     }
-
   }
 
   .alternative-img {
@@ -49,12 +49,12 @@
 
     span {
       font-size: 28px;
-      text-shadow: 0 0 5px #FFF;
+      text-shadow: 0 0 5px #fff;
     }
   }
 }
 .ChatRoom:hover {
-  background: #49494D;
+  background: #49494d;
   cursor: pointer;
 }
 
