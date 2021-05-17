@@ -38,9 +38,13 @@ class Main extends Component {
   login = async (currentUser = false) => {
     try {
       let ref = null;
+      let authCurrentUser = this.auth.currentUser;
+
       if (currentUser) {
         ref = this.app.database().ref(`users/${this.auth.currentUser.uid}`);
-        let authCurrentUser = this.auth.currentUser;
+
+        toastr.success("Sesion abierta detectada");
+
         this.setState(
           {
             showLogin: false,
@@ -596,6 +600,7 @@ class Main extends Component {
         chatRooms.forEach((chatRoom) => {
           if (chatRoom.child("name").val() === receiver) {
             let newRef = chatRoom.ref;
+ 
             this.app
               .database()
               .ref(newRef)
@@ -785,12 +790,11 @@ class Main extends Component {
             />
             <Chat
               user={this.auth.currentUser.displayName}
-              sendMsg={this.sendMsg}
               receiver={this.state.receiver}
               chat={this.state.chat}
               sendChatRoomMsg={this.sendChatRoomMsg}
               inChatRoom={this.state.inChatRoom}
-              chatRoom={this.state.chatRoom}
+              // chatRoom={this.state.chatRoom}
               stateMsg={this.state.stateMsg}
               receiverName={this.state.receiverName}
               toggleModal={this.toggleModal}
@@ -847,7 +851,7 @@ class Main extends Component {
               auth={this.auth}
             />
             <Chat
-              user={this.state.user.nickname}
+              user={this.auth.currentUser.displayName}
               sendMsg={this.sendMsg}
               receiver={this.state.receiver}
               chat={this.state.chat}
