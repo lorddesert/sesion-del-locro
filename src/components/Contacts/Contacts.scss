@@ -1,4 +1,3 @@
-
 .Contacts {
   z-index: 1;
   background: #f0f0f0;
@@ -28,7 +27,7 @@
         font-family: Verdana, Geneva, Tahoma, sans-serif;
         color: #666;
         opacity: 0.6;
-        padding: .5em;
+        padding: 0.5em;
         font-weight: bold;
         font-size: 1.6em;
         line-height: 1.6em;
@@ -42,8 +41,9 @@
   justify-content: space-between !important;
   background: #1c1c1c;
 
-  .Profile-img, .Profile-actions {
-    padding: .5em;
+  .Profile-img,
+  .Profile-actions {
+    padding: 0.5em;
   }
   .Profile-img {
     display: flex;
@@ -62,13 +62,13 @@
     width: 33%;
   }
   .Action {
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .Action-img {
-    fill: #DDCF1B;
+    fill: #ddcf1b;
     width: 20px;
     cursor: pointer;
   }
@@ -78,15 +78,15 @@
   grid-template-columns: 1fr 33%;
   place-items: center start;
   font-size: 14px;
-  font-family: 'Poppins', Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
   gap: 2em;
 
-  color: #DDCF1B;
+  color: #ddcf1b;
   background: #1c1c1c;
 
   span {
     text-align: start;
-    padding-left: .5em;
+    padding-left: 0.5em;
   }
 
   .image-wrapper {
@@ -94,7 +94,6 @@
     place-items: center;
     cursor: pointer;
     width: 100%;
-
   }
 
   img {
@@ -107,12 +106,10 @@
       border-radius: 50%;
     }
   }
-
 }
 #contacts-display {
   display: none;
   flex-direction: column;
-
 }
 
 #userCfg {
@@ -132,39 +129,44 @@
   z-index: 8;
   left: 52px;
   top: 66px;
-  grid-template-areas: "state"
-                       "userConfig"
-                       "logOut";
+  grid-template-areas:
+    "state"
+    "userConfig"
+    "logOut";
   font-size: 14px;
-  background: #49494D;
+  background: #49494d;
   opacity: 0;
   transition: 0.1s all ease;
   transform: translateY(-10px);
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   overflow: hidden;
   .SecondaryButton {
-    padding: .5em 0 !important;
+    padding: 0.5em 0 !important;
   }
   button {
     font-size: 14px !important;
     color: #fff;
-    font-family: 'Poppins', Verdana, Geneva, Tahoma, sans-serif !important;
+    font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif !important;
     font-weight: 800;
   }
   .panelOption {
     font-size: 1rem;
-    margin-right: 1em;
+    margin: 0 1em;
   }
 
-  .userConfigPanel {
+  .config {
     grid-area: userConfig;
+
+    button {
+      color: #fff !important;
+    }
   }
 
   .logOut {
     grid-area: logOut;
     button {
       // color: #da2d56;
-      color: #DDCF1B;
+      color: #ddcf1b;
       font-weight: bold;
     }
   }
@@ -173,4 +175,19 @@
   // transition: 0.1s all ease;
   transform: translateY(0);
   opacity: 1;
+}
+
+.alt-user-img {
+  padding: 0.15em;
+  background: #ff9966; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #ff5e62,
+    #ff9966
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #ff5e62,
+    #ff9966
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }

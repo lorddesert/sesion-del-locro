@@ -73,7 +73,11 @@ class Contacts extends Component {
                   alt={`${this.props.user.nickname}`}
                 ></img>
               ) : (
-                <img src={altUserImg} alt={this.props.user.nickname} />
+                <img
+                  className="alt-user-img"
+                  src={altUserImg}
+                  alt={this.props.user.nickname}
+                />
               )}
             </div>
             <div className="Profile-actions">
@@ -89,7 +93,7 @@ class Contacts extends Component {
               </div>
             </div>
             <div className="userCfgPanel" id="userCfgPanel">
-              <div className="panelOption userConfigPanel">
+              <div className="panelOption config">
                 <SecondaryButton
                   value="Ajustes de usuario"
                   action={this.toggleUserConfig}
