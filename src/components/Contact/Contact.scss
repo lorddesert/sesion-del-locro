@@ -1,23 +1,20 @@
 .Contact {
   display: flex;
   flex-direction: row;
-  border-bottom: solid 1px #3A3A3A;
-  padding: .5em 0;
+  border-bottom: solid 1px #3a3a3a;
+  padding: 0.5em 0;
   width: 100%;
   .Contact-avatar {
     flex: 0.9;
     display: grid;
     justify-content: center;
-    padding: 0 .2em;
+    padding: 0 0.2em;
     img {
       width: 45px;
       height: 45px;
       border-radius: 50%;
-      border: 2px solid #242628;
+      border: 2px solid transparent;
     }
-    // img {
-    //   width: 50px;
-    // }
   }
 
   .Contact-name {
@@ -25,16 +22,15 @@
     align-items: center;
     justify-content: start;
     flex: 3;
-    font-family: 'Roboto', Geneva, Tahoma, sans-serif;
+    font-family: "Roboto", Geneva, Tahoma, sans-serif;
     font-size: 14px;
     font-weight: 400;
-    
+
     span {
-      padding-left: .5em;
-      color: #FFF;
+      padding-left: 0.5em;
+      color: #fff;
       text-align: start;
     }
-
   }
 
   .alternative-img {
@@ -52,7 +48,7 @@
   }
 }
 .Contact:hover {
-  background: #49494D;
+  background: #49494d;
   cursor: pointer;
 }
 
@@ -62,9 +58,8 @@
 
 .online {
   img {
-    border: #49FF9D 2px solid !important;
+    border: #49ff9d 2px solid !important;
   }
 }
 @media (max-width: 768px) {
- 
 }
