@@ -33,6 +33,7 @@ class Register extends Component {
   };
 
   render() {
+    const { displayName, email } = this.props.user;
     if (!this.props.stepTwo) {
       return (
         <div className="Register">
@@ -46,10 +47,11 @@ class Register extends Component {
                 required
                 onFocus={this.props.handleInputFocus}
                 onBlur={this.props.handleInputFocus}
+                defaultValue={email ? email : ""}
               />
               <label htmlFor="password">Contraseña</label>
               <input
-                type="text"
+                type="password"
                 id="password"
                 name="password"
                 required
@@ -92,7 +94,6 @@ class Register extends Component {
                   onChange={this.getRegisterImg}
                 />
               </div>
-              <span id="errorMsg"></span>
               <label htmlFor="nickname">Nickname</label>
               <input
                 type="text"
@@ -101,16 +102,9 @@ class Register extends Component {
                 required
                 onFocus={this.props.handleInputFocus}
                 onBlur={this.props.handleInputFocus}
+                defaultValue={displayName ? displayName : ""}
               />
               <PrimaryButton value="Listo" action={this.handleEvent} />
-              <p>
-                <strong>ó</strong>
-              </p>
-              <SecondaryButton
-                id="return"
-                value="Volver"
-                action={this.props.setStepTwo}
-              />
             </form>
           </main>
         </div>
