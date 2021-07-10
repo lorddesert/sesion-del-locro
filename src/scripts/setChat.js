@@ -1,34 +1,35 @@
-const setChat = (receiver, contactRef) => {
-    let i = null;
-    let receiverPhoto = null;
-    let receiverName = null;
+import scrollBottom from './scrollBottom'
+
+const setChat = async (receiver, contactRef) => {
+  try {
+    let i = null
+    let receiverPhoto = null
+    let receiverName = null
 
     if (window.innerWidth < 768) {
-      document.getElementById("main").classList.toggle("show-chat");
+      document.getElementById("main").classList.toggle("show-chat")
     }
 
-    contactRef.ref
-      .once("value")
-      .then((snapshot) => {
-        receiverPhoto = snapshot.child("photo").val();
-        receiverName = snapshot.child("nickname").val();
-      })
-      .then(() => {
-        for (i = 0; i < this.state.contacts.length; i++)
-          if (this.state.contacts[i].nickname === receiver)
-            this.setState(
-              {
-                receiver: contactRef.ref,
-                receiverPhoto,
-                receiverName,
-                receiverNickname: this.state.contacts[i].nickname,
-                chat: this.state.contacts[i].chat,
-                inChatRoom: false,
-              },
-              this.scrollBottom
-            );
-      })
-      .catch((err) => console.log(err));
-  };
+    const snapshot = await contactRef.ref.once("value")
+    receiverPhoto = snapshot.child("photo").val()
+    receiverName = snapshot.child("nickname").val()
 
-  export default setChat;
+    for (i = 0; i < this.state.contacts.length; i++)
+      if (state.contacts[i].nickname === receiver)
+        setState(
+          {
+            receiver: contactRef.ref,
+            receiverPhoto,
+            receiverName,
+            receiverNickname: this.state.contacts[i].nickname,
+            chat: this.state.contacts[i].chat,
+            inChatRoom: false,
+          },
+          )
+          scrollBottom()
+  } catch (error) {
+    console.log(error)    
+  }
+}
+
+  export default setChat

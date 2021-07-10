@@ -18,7 +18,6 @@ class Main extends Component {
     : firebase.app();
   storage = this.app.storage().ref().child("users");
   auth = this.app.auth();
-
   
   state = {
     showLogin: true,

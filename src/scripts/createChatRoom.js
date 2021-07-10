@@ -1,7 +1,12 @@
+import firebase from 'firebase/app';
+import toggleModal from './toggleModal'
+
 const createNewChatRoom = (e) => {
     e.persist();
     e.preventDefault();
-    const ref = this.app.database().ref("chatRooms");
+    const app = firebase.app()
+
+    const ref = app.database().ref("chatRooms");
     const minDiceValue = document.getElementById("minValue").value;
     const maxDiceValue = document.getElementById("maxValue").value;
     const name = document.getElementById("chatRoomName").value;
@@ -25,7 +30,7 @@ const createNewChatRoom = (e) => {
             .child(`${name}`)
             .set(newChatRoom)
             .then(() => {
-              this.toggleModal();
+              toggleModal();
             });
       })
       .catch((err) => console.log(err));

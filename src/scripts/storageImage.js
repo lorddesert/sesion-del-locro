@@ -1,16 +1,22 @@
 import { storage } from "firebase";
+import firebase from 'firebase/app'
 
-const storageImg = (e) => {
+const app = firebase.app()
+
+const storageImg = async (e) => {
     const img = document.getElementById("fileInput").files[0];
-    const ref = this.app
+    const ref = app
       .database()
-      .ref(`users/${this.state.user.username}/photo`);
+      .ref(`users/${state.user.username}/photo`);
+
     let uploadTask = null;
 
     e.preventDefault();
-    uploadTask = this.storage
-      .child(`${this.state.user.username}/${img.name}`)
+
+    uploadTask = storage
+      .child(`${state.user.username}/${img.name}`)
       .put(img);
+      
     uploadTask.on("state_changed", null, null, () => {
       uploadTask.snapshot.ref
         .getDownloadURL()

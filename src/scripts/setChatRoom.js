@@ -1,4 +1,4 @@
-import setChat from "./setChat";
+import scrollBottom from './scrollBottom'
 
 const setChatRoom = (receiver) => {
     let i = null;
@@ -20,7 +20,7 @@ const setChatRoom = (receiver) => {
               max: this.state.chatRooms[i].maxDiceValue,
             },
           },
-          this.scrollBottom
+          scrollBottom()
         );
   };
 

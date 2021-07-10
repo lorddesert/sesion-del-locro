@@ -1,10 +1,13 @@
+// import firebase from 'firebase/app'
+import "firebase/storage"
+
 async function getRegisterImg(uid) {
     try {
       const img = document.getElementById("fileInput").files[0];
       if (!img) {
         return false;
       } else {
-        let newUserStorage = this.storage.child(`${uid}/${img.name}`);
+        let newUserStorage = storage.child(`${uid}/${img.name}`);
         let uploadTask = null;
         let imgURL = null;
 

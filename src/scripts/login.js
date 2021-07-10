@@ -1,10 +1,14 @@
+import 'firebase/auth'
+import 'firebase/database'
+import 'toastr'
+
 const login = async (currentUser = false) => {
     try {
       let ref = null;
-      let authCurrentUser = this.auth.currentUser;
+      let authCurrentUser = auth.currentUser;
 
       if (currentUser) {
-        ref = this.app.database().ref(`users/${this.auth.currentUser.uid}`);
+        ref = database().ref(`users/${auth.currentUser.uid}`);
 
         toastr.success("Sesion abierta detectada");
 
@@ -18,8 +22,8 @@ const login = async (currentUser = false) => {
             },
           },
           () => {
-            this.setContacts();
-            this.setChatRooms();
+            setContacts();
+            setChatRooms();
             ref.child("online").onDisconnect().set(false);
           }
         );
@@ -27,11 +31,11 @@ const login = async (currentUser = false) => {
         let email = document.getElementById("email").value;
         let password = document.getElementById("password").value;
 
-        let { user } = await this.auth.signInWithEmailAndPassword(
+        let { user } = await auth.signInWithEmailAndPassword(
           email,
           password
         );
-        ref = this.app.database().ref(`users/${user.uid}`);
+        ref = database().ref(`users/${user.uid}`);
 
         this.setState(
           {
@@ -40,8 +44,8 @@ const login = async (currentUser = false) => {
             user,
           },
           () => {
-            this.setContacts();
-            this.setChatRooms();
+            setContacts();
+            setChatRooms();
             ref.child("online").onDisconnect().set(false);
           }
         );
