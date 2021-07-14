@@ -27,7 +27,7 @@ class Login extends Component {
   render() {
     return (
       <div className="Login">
-        <img className="Login-img" src={locro} alt="locro background" />
+        <div className="Login-img" />
         <div className="Login-form-container">
           <div className="Logo">
             <h1>Sesion del Locro</h1>

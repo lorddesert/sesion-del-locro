@@ -39,25 +39,32 @@ class Register extends Component {
         <div className="Register">
           <main>
             <form className="registerForm">
-              <label htmlFor="email">Email</label>
-              <input
-                type="text"
-                id="email"
-                name="email"
-                required
-                onFocus={this.props.handleInputFocus}
-                onBlur={this.props.handleInputFocus}
-                defaultValue={email ? email : ""}
-              />
-              <label htmlFor="password">Contraseña</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                required
-                onFocus={this.props.handleInputFocus}
-                onBlur={this.props.handleInputFocus}
-              />
+              <label htmlFor="email">
+                <h2>Email</h2>
+                <input
+                  type="text"
+                  id="email"
+                  name="email"
+                  required
+                  onFocus={this.props.handleInputFocus}
+                  onBlur={this.props.handleInputFocus}
+                  defaultValue={email ? email : ""}
+                  placeholder="example@hotmail.com"
+                />
+              </label>
+
+              <label htmlFor="password">
+                <h2>Contraseña</h2>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  required
+                  onFocus={this.props.handleInputFocus}
+                  onBlur={this.props.handleInputFocus}
+                />
+              </label>
+  
               <PrimaryButton value="Continuar" action={this.handleEvent} />
               <p>
                 <strong>ó</strong>

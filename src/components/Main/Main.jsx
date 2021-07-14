@@ -115,11 +115,11 @@ class Main extends Component {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    this.auth
-      .createUserWithEmailAndPassword(email, password)
+    this.auth.createUserWithEmailAndPassword(email, password)
       .then((res) => {
         this.setState({ user: res.user }, () => {
-          this.setStepTwo();
+          // this.setStepTwo();
+          this.login();
         });
       })
       .catch((error) => {

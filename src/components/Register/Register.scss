@@ -19,9 +19,11 @@ $gray: #a8a8a8;
   }
 
   label {
+    display: grid;
     color: #fff !important;
     text-align: start;
-    font-weight: 600;
+    font-weight: normal;
+    font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
   }
   .background-title {
     width: 100%;
@@ -67,9 +69,14 @@ $gray: #a8a8a8;
 
   form {
     display: grid;
-    gap: 0.8em;
+    gap: 1.5em;
     background: #111213;
     padding: 0.8em;
+  }
+
+  h2 {
+    text-align: start;
+    font-size: 14px;
   }
 
   input {
@@ -79,8 +86,15 @@ $gray: #a8a8a8;
     text-align: start;
     color: $white;
     margin-bottom: 0.5em;
-    border: 1px solid #111213;
-    width: calc(100% - 1em);
+    font-weight: normal;
+    margin-top: 2vh;
+    width: inherit;
+    border: 1px solid #000;
+
+  }
+
+  #logIn button{
+    font-weight: normal !important;
   }
 
   // .stepBalls {
@@ -137,7 +151,7 @@ $gray: #a8a8a8;
       border: 1px solid #fff;
       width: 200px;
       color: #fff;
-      font-size: 18px;
+      font-size: 16px;
       border-radius: 7px;
       padding: 0.5em 0.2em;
     }
