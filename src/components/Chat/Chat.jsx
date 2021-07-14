@@ -121,9 +121,9 @@ const Chat = (props) => {
             </div>
             <div className="Input-img-container">
               <div
-                onClick={() => props.sendChatRoomMsg()}
+                onClick={() => props.sendMsg2()}
                 className="Input-img"
-                onTouchEnd={() => props.sendChatRoomMsg()}
+                onTouchEnd={() => props.sendMsg2()}
                 id="sendMsg"
               >
                 <img src={sendImg}></img>
