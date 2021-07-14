@@ -20,7 +20,7 @@ const sendMsg = async () => {
       }
 
     //Obtain the receiver username and set my chat.
-    const shapshot = await state.receiver.once("value")
+    const snapshot = await state.receiver.once("value")
 
     receiverUsername = snapshot.child("displayName").val()
     myChat = state.user.ref.child(`contacts/${receiverUid}/chat`)
