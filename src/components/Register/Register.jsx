@@ -53,6 +53,20 @@ class Register extends Component {
                 />
               </label>
 
+              <label htmlFor="nickname">
+                <h2>Nickname</h2>
+                <input
+                  type="text"
+                  id="nickname"
+                  name="nickname"
+                  required
+                  onFocus={this.props.handleInputFocus}
+                  onBlur={this.props.handleInputFocus}
+                  defaultValue={email ? email : ""}
+                  placeholder="zawarudo123"
+                />
+              </label>
+
               <label htmlFor="password">
                 <h2>Contraseña</h2>
                 <input
