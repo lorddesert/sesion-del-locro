@@ -45,6 +45,8 @@ class Main extends Component {
 
         toastr.success("Sesion abierta detectada");
 
+        console.log(this.auth.currentUser)
+
         this.setState(
           {
             showLogin: false,
@@ -111,18 +113,31 @@ class Main extends Component {
   };
 
   //Necesito conseguir primero el usuario, y luego mandar la actualización.
-  beginRegister = () => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+  beginRegister = async () => {
+    try {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const displayName = document.querySelector("#nickname").value;
 
-    this.auth.createUserWithEmailAndPassword(email, password)
-      .then((res) => {
-        this.setState({ user: res.user }, () => {
+        const user = await this.auth.createUserWithEmailAndPassword(email, password);
+        await this.auth.currentUser.updateProfile({displayName})
+
+        await this.app.database().ref("users").child(`${this.auth.currentUser.uid}`).set({
+          nickname: this.auth.currentUser.displayName,
+          photo: this.auth.currentUser.photoURL,
+          online: true,
+          email,
+        });
+  
+        toastr.success("Registro completado.", "¡Listo!");
+        
+        this.setState({ user }, () => {
           // this.setStepTwo();
           this.login();
-        });
-      })
-      .catch((error) => {
+        })
+
+      }
+      catch(error) {
         switch (error.code) {
           case "auth/weak-password":
             alert("La contraeña es muy debil, intente usando otra.");
@@ -139,7 +154,7 @@ class Main extends Component {
             console.log(error);
             break;
         }
-      });
+      }
   };
 
   //soft slide animation.
@@ -667,6 +682,7 @@ class Main extends Component {
 
     usersRef.on("child_changed", (child) => {
       let childUserName = child.child("nickname").val();
+      console.log(childUserName)
       const receiverUid = this.state.receiver.getKey();
 
       this.state.contacts.forEach((contact) => {
@@ -688,8 +704,10 @@ class Main extends Component {
         child.child("nickname").val() === this.auth.currentUser.displayName
       ) {
         //indetify the user that we need to change the chat in out state contacts, and set the contacts again.
+        // debugger;
         const receiverUid = this.state.receiver.getKey();
         let chat = child.child(`contacts/${receiverUid}/chat`).val();
+        console.log(child.child(`contacts/`).val(), receiverUid)
         let newChat = Object.values(chat);
 
         /*Need to be changed to chante the online state of the user. */
