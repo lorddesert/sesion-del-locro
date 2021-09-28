@@ -1,15 +1,14 @@
-import React, { Component } from "react";
+import React, { useCallback } from "react";
 import "./userConfig.scss";
 import closeImg from "./resources/close.svg";
 import PrimaryButton from "../PrimaryButton/PrimaryButton";
 import SecondaryButton from "../SecondaryButton/SecondaryButton";
 
-class userConfig extends Component {
-  state = {
-    edit: false,
-  };
+const userConfig = props => {
 
-  toggleShowUserCfg = (e) => {
+  const [edit, setEdit] = useState(false)
+
+  const toggleShowUserCfg = useCallback((e) => {
     const userCfgRef = document.getElementById("userConfig");
     let userInfoContainer = document.getElementById("userInfoContainer");
     e.preventDefault();
@@ -20,21 +19,19 @@ class userConfig extends Component {
       userInfoContainer.classList.toggle("closed");
 
     userCfgRef.classList.toggle("toggleUserConfig");
-  };
+  }, []);
 
-  toggleEditForm = () => {
+  const toggleEditForm = useCallback(() => {
     let userInfoContainer = document.getElementById("userInfoContainer");
 
-    userInfoContainer.classList.toggle("closed");
+    userInfoContainer.cslassList.toggle("closed");
 
-    this.setState((state) => ({
-      edit: !state.edit,
-    }));
-  };
+    setEdit(!edit)
+  }, []);
 
-  render() {
-    const { photoURL, displayName, email } = this.props.user;
-    if (!this.state.edit)
+  const { photoURL, displayName, email } = props.user;
+
+    if (!edit)
       return (
         <div className="userConfig" id="userConfig">
           <div className="exitImg">
@@ -56,7 +53,7 @@ class userConfig extends Component {
                 </div>
               </div>
               <PrimaryButton
-                action={this.toggleEditForm}
+                action={toggleEditForm}
                 value="Editar"
                 id="editBtn"
                 className="primaryConfigBtn"
@@ -81,7 +78,7 @@ class userConfig extends Component {
                   type="file"
                   style={{ display: "none" }}
                   id="fileInput"
-                  onChange={this.props.storageImg}
+                  onChange={props.storageImg}
                 />
               </div>
               <form id="editForm">
@@ -90,7 +87,7 @@ class userConfig extends Component {
                   <input
                     type="text"
                     id="newdisplayName"
-                    defaultValue={this.props.user.displayName}
+                    defaultValue={user.displayName}
                   />
                 </label>
                 <label htmlFor="newPassword">
@@ -113,11 +110,11 @@ class userConfig extends Component {
                 </label>
                 <div className="formButtons">
                   <SecondaryButton
-                    action={this.toggleShowUserCfg}
+                    action={toggleShowUserCfg}
                     value="Cancelar"
                   />
                   <PrimaryButton
-                    action={this.props.saveNewUserInfo}
+                    action={props.saveNewUserInfo}
                     value="Guardar"
                   />
                 </div>
@@ -126,7 +123,6 @@ class userConfig extends Component {
           </div>
         </div>
       );
-  }
 }
 
 export default userConfig;
