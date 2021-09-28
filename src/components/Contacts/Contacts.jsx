@@ -1,87 +1,129 @@
-import React, { Component } from "react";
-import "./Contacts.scss";
+import React, { useCallback } from "react"
+import Context from '../../context/GlobalContext'
+import "./Contacts.scss"
 
 // Components
-import Contact from "../Contact/Contact";
-import SecondaryButton from "../SecondaryButton/SecondaryButton";
-import ChatRoom from "../ChatRoom/ChatRoom";
+import Contact from "../Contact/Contact"
+import SecondaryButton from "../SecondaryButton/SecondaryButton"
+import ChatRoom from "../ChatRoom/ChatRoom"
 
-import altUserImg from "./resources/altuser.png";
-import add from "./resources/add.svg";
+import altUserImg from "./resources/altuser.png"
+import add from "./resources/add.svg"
 
-class Contacts extends Component {
-  modal = () => {
-    const modal = document.getElementById("modal");
-    const modalForm = document.getElementById("modalForm");
+const Contacts = props => {
 
-    setTimeout(() => modalForm.classList.toggle("modalTransition"), 10);
-    modal.classList.toggle("show-modal");
-  };
+  const { app, auth } = Context.globalContext
 
-  addContact = () => {
-    alert("añadir modal para agregar contacto:\nnombre de usuario?\nnickname?");
-  };
+  const [contacts, setContacts] = useState([])
 
-  toggleRotate = () => {
-    let userCfg = document.getElementById("userCfg");
-    let userCfgPanel = document.getElementById("userCfgPanel");
+  const setContacts = useCallback(async () => {
+    try {
+      let contacts = []
+      const usersRef = app.database().ref("users")
+      const sender = auth.currentUser.uid
+      const myNickname = auth.currentUser.displayName
 
-    userCfg.classList.toggle("rotate");
-    const containsDisplay = userCfgPanel.classList.contains("display");
+      let snapshot = await usersRef.once("value")
+
+      snapshot.forEach((user) => {
+        if (user.val().nickname !== myNickname) {
+          const { photo, online, nickname } = user.val()
+          let chat = user.child(`contacts/${sender}/chat`).val()
+
+          chat = chat ? Object.values(chat) : []
+
+          const newContact = {
+            chat,
+            photo,
+            online,
+            nickname,
+            ref: user,
+          }
+
+          contacts.push(newContact)
+        }
+      })
+
+      setContacts(contacts)
+    } catch (error) {
+      alert('Ups, an error in Contacts comp. has happened, open DEV tools for more info.')
+      console.log(error)
+    }
+  })
+
+  const [chatRooms, setChatRooms] = useState([])
+
+  const modal = useCallback(() => {
+    const modal = document.getElementById("modal")
+    const modalForm = document.getElementById("modalForm")
+
+    setTimeout(() => modalForm.classList.toggle("modalTransition"), 10)
+    modal.classList.toggle("show-modal")
+  })
+
+  const addContact = useCallback(() => {
+    alert("añadir modal para agregar contacto:\nnombre de usuario?\nnickname?")
+  })
+
+  const toggleRotate = useCallback(() => {
+    let userCfg = document.getElementById("userCfg")
+    let userCfgPanel = document.getElementById("userCfgPanel")
+
+    userCfg.classList.toggle("rotate")
+    const containsDisplay = userCfgPanel.classList.contains("display")
 
     if (!containsDisplay) {
-      userCfgPanel.style.display = "grid";
-      setTimeout(() => userCfgPanel.classList.toggle("display"), 100);
+      userCfgPanel.style.display = "grid"
+      setTimeout(() => userCfgPanel.classList.toggle("display"), 100)
     } else {
-      userCfgPanel.classList.toggle("display");
-      setTimeout(() => (userCfgPanel.style.display = "none"), 100);
+      userCfgPanel.classList.toggle("display")
+      setTimeout(() => (userCfgPanel.style.display = "none"), 100)
     }
-  };
+  })
 
-  toggleUserConfig = () => {
-    this.toggleRotate();
+  const toggleUserConfig = useCallback(() => {
+    this.toggleRotate()
     setTimeout(() => {
-      const ref = document.getElementById("userConfig");
-      ref.classList.toggle("toggleUserConfig");
-    }, 150);
-  };
+      const ref = document.getElementById("userConfig")
+      ref.classList.toggle("toggleUserConfig")
+    }, 150)
+  })
 
-  disconnect = () => {
-    this.props.auth.signOut();
-    window.location.reload();
-  };
+  const disconnect = useCallback(() => {
+    this.props.auth.signOut()
+    window.location.reload()
+  })
 
-  displayContacts = () => {
-    const contacts = document.getElementById("contacts-display");
-    const contactsArrow = document.getElementById("contacts-arrow");
+  const displayContacts = useCallback(() => {
+    const contacts = document.getElementById("contacts-display")
+    const contactsArrow = document.getElementById("contacts-arrow")
 
-    contacts.style.display = "flex";
-    contacts.style.alignItems = "start";
-    contactsArrow.style.transition = "all ease 150ms";
-    contactsArrow.style.transform = "rotate(0deg)";
-  };
+    contacts.style.display = "flex"
+    contacts.style.alignItems = "start"
+    contactsArrow.style.transition = "all ease 150ms"
+    contactsArrow.style.transform = "rotate(0deg)"
+  })
 
-  render() {
     return (
       <div className="Contacts" id="contacts">
         <div className="Contacts-content">
           <div className="Profile">
             <div className="Profile-img">
-              {this.props.user.photo ? (
+              {props.user.photo ? (
                 <img
-                  src={this.props.user.photo}
-                  alt={`${this.props.user.nickname}`}
+                  src={props.user.photo}
+                  alt={`${props.user.nickname}`}
                 ></img>
               ) : (
                 <img
                   className="alt-user-img"
                   src={altUserImg}
-                  alt={this.props.user.nickname}
+                  alt={props.user.nickname}
                 />
               )}
             </div>
             <div className="Profile-actions">
-              <div className="Action" onClick={this.toggleRotate}>
+              <div className="Action" onClick={toggleRotate}>
                 <svg
                   id="userCfg"
                   className="Action-img"
@@ -96,23 +138,23 @@ class Contacts extends Component {
               <div className="panelOption config">
                 <SecondaryButton
                   value="Ajustes de usuario"
-                  action={this.toggleUserConfig}
+                  action={toggleUserConfig}
                 />
               </div>
               <div className="panelOption logOut">
                 <SecondaryButton
                   value="Cerrar Sesión"
-                  action={this.disconnect}
+                  action={disconnect}
                 />
               </div>
             </div>
           </div>
           {/* onClick will be changed with "enterChatRoom"  */}
-          {this.props.contacts.map((contact, i) => (
+          {props.contacts.map((contact, i) => (
             <Contact
               key={`contact-${i}`}
               contact={contact}
-              setChat={this.props.setChat}
+              setChat={props.setChat}
               number={i}
             />
           ))}
@@ -120,24 +162,24 @@ class Contacts extends Component {
             <span>Salas de chat</span>
             <div
               className="image-wrapper"
-              onClick={() => this.props.toggleModal(true)}
+              onClick={() => props.toggleModal(true)}
             >
               <img src={add} alt="crear sala de chat"></img>
             </div>
           </div>
-          {this.props.chatRooms[0] &&
-            this.props.chatRooms.map((chatRoom, i) => (
+          {props.chatRooms[0] &&
+            props.chatRooms.map((chatRoom, i) => (
               <ChatRoom
                 key={`chatRoom-${i}`}
                 chatRoom={chatRoom}
-                setChatRoom={this.props.setChatRoom}
+                setChatRoom={props.setChatRoom}
                 number={i}
               />
             ))}
         </div>
       </div>
-    );
-  }
+    )
+
 }
 
-export default Contacts;
+export default Contacts

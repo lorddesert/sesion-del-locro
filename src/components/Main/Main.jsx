@@ -471,16 +471,13 @@ const Main = () => {
             storageImg={storageImg}
           />
           <Contacts
-            app={app}
-            user={state.user}
-            contacts={state.contacts}
-            setChat={setChat}
-            enterChatRooms={enterChatRooms}
-            chooseRender={state.chooseRender}
-            chatRooms={state.chatRooms}
-            setChatRoom={setChatRoom}
-            toggleModal={toggleModal}
-            auth={auth}
+            // contacts={state.contacts}
+            // setChat={setChat}
+            // enterChatRooms={enterChatRooms}
+            // chooseRender={state.chooseRender}
+            // chatRooms={state.chatRooms}
+            // setChatRoom={setChatRoom}
+            // toggleModal={toggleModal}
           />
           <Chat
             user={auth.currentUser.displayName}
