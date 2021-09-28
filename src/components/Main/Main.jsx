@@ -38,9 +38,31 @@ const Main = () => {
     chat: [],
   })
 
+  const [showLogin, setShowLogin] = useState(true)
+
+  const [stepTwo, setStepTwo] = useState(false)
+
+  const [showLoginOptions, setShowLoginOptions] = useState(false)
+
+  const [showRegister, setShowRegister] = useState(false)
+  
+  const [showChatRoom, setShowChatRoom] = useState(false)
+
+  const [showCRModal, setShowCRModal] = useState(false)
+
+  const [chooseRender, setChooseRender] = useState("contacts")
+  
+  // stepTwo: false,
+  // showLoginOptions: false,
+  // showRegister: false,
+  // showChatRoom: false,
+  // showCRModal: false,
+  // chooseRender: "contacts",
 
   const login = async (currentUser = false) => {
     try {
+      const { auth, app } = globalContext
+      
       let ref = null;
       let authCurrentUser = auth.currentUser;
 
@@ -76,6 +98,9 @@ const Main = () => {
         );
         ref = app.database().ref(`users/${user.uid}`);
 
+        /* 
+          setUser
+        */
         setState(
           {
             showLogin: false,
@@ -116,93 +141,114 @@ const Main = () => {
     }
   };
 
+  // useEffect(() => {
+  //   setState(
+  //     {
+  //       showLogin: false,
+  //       showRegister: false,
+  //       user: {
+  //         ref,
+  //         ...authCurrentUser,
+  //       },
+  //     },
+  //     () => {
+  //       setContacts();
+  //       setChatRooms();
+  //       ref.child("online").onDisconnect().set(false);
+  //     }
+  //   );
+  //   return () => {
+  //     cleanup
+  //   }
+  // }, [input])
+
   //Necesito conseguir primero el usuario, y luego mandar la actualización.
-  const beginRegister = async () => {
-    try {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const displayName = document.querySelector("#nickname").value;
+  // const beginRegister = async () => {
+  //   try {
+  //     const email = document.getElementById("email").value;
+  //     const password = document.getElementById("password").value;
+  //     const displayName = document.querySelector("#nickname").value;
 
-      const user = await this.auth.createUserWithEmailAndPassword(email, password);
-      await this.auth.currentUser.updateProfile({ displayName })
+  //     const user = await this.auth.createUserWithEmailAndPassword(email, password);
+  //     await this.auth.currentUser.updateProfile({ displayName })
 
-      await this.app.database().ref("users").child(`${this.auth.currentUser.uid}`).set({
-        nickname: this.auth.currentUser.displayName,
-        photo: this.auth.currentUser.photoURL,
-        online: true,
-        email,
-      });
+  //     await this.app.database().ref("users").child(`${this.auth.currentUser.uid}`).set({
+  //       nickname: this.auth.currentUser.displayName,
+  //       photo: this.auth.currentUser.photoURL,
+  //       online: true,
+  //       email,
+  //     });
 
-      toastr.success("Registro completado.", "¡Listo!");
+  //     toastr.success("Registro completado.", "¡Listo!");
 
-      this.setState({ user }, () => {
-        // this.setStepTwo();
-        this.login();
-      })
+  //     this.setState({ user }, () => {
+  //       // this.setStepTwo();
+  //       this.login();
+  //     })
 
-    }
-    catch (error) {
-      switch (error.code) {
-        case "auth/weak-password":
-          alert("La contraeña es muy debil, intente usando otra.");
-          break;
-        case "auth/email-already-in-use":
-          alert("El email ya esta en uso, pruebe con otro.");
-          break;
-        case "auth/operation-not-allowed":
-          alert("Email o contraseña no validos.");
-          break;
+  //   }
+  //   catch (error) {
+  //     switch (error.code) {
+  //       case "auth/weak-password":
+  //         alert("La contraeña es muy debil, intente usando otra.");
+  //         break;
+  //       case "auth/email-already-in-use":
+  //         alert("El email ya esta en uso, pruebe con otro.");
+  //         break;
+  //       case "auth/operation-not-allowed":
+  //         alert("Email o contraseña no validos.");
+  //         break;
 
-        default:
-          alert("Un error ha ocurrido, intente en unos minutos.");
-          console.log(error);
-          break;
-      }
-    }
-  };
+  //       default:
+  //         alert("Un error ha ocurrido, intente en unos minutos.");
+  //         console.log(error);
+  //         break;
+  //     }
+  //   }
+  // };
 
-  //soft slide animation.
+  // //soft slide animation.
 
-  const endRegister = async () => {
-    try {
-      const { uid, email } = this.state.user;
-      const nickname = document.getElementById("nickname").value;
-      const photo = await this.getRegisterImg(uid);
-      let userNewInfo = {};
+  // const endRegister = async () => {
+  //   try {
+  //     const { uid, email } = this.state.user;
+  //     const nickname = document.getElementById("nickname").value;
+  //     const photo = await this.getRegisterImg(uid);
+  //     let userNewInfo = {};
 
-      if (photo)
-        userNewInfo = {
-          displayName: nickname,
-          photoURL: photo,
-        };
-      else
-        userNewInfo = {
-          displayName: nickname,
-        };
+  //     if (photo)
+  //       userNewInfo = {
+  //         displayName: nickname,
+  //         photoURL: photo,
+  //       };
+  //     else
+  //       userNewInfo = {
+  //         displayName: nickname,
+  //       };
 
-      await this.state.user.updateProfile(userNewInfo);
-      console.log(this.auth.currentUser);
-      debugger;
-      await this.app.database().ref("users").child(`${uid}`).set({
-        nickname: this.auth.currentUser.displayName,
-        photo: this.auth.currentUser.photoURL,
-        online: true,
-        email,
-      });
+  //     await this.state.user.updateProfile(userNewInfo);
+  //     console.log(this.auth.currentUser);
+  //     debugger;
+  //     await this.app.database().ref("users").child(`${uid}`).set({
+  //       nickname: this.auth.currentUser.displayName,
+  //       photo: this.auth.currentUser.photoURL,
+  //       online: true,
+  //       email,
+  //     });
 
-      toastr.success("Registro completado.", "¡Listo!");
-      this.login(true);
-    } catch (error) {
-      console.log(error);
-      alert("Ocurrio un error inesperado, intente de nuevo en unos minutos.");
-    }
-  };
+  //     toastr.success("Registro completado.", "¡Listo!");
+  //     this.login(true);
+  //   } catch (error) {
+  //     console.log(error);
+  //     alert("Ocurrio un error inesperado, intente de nuevo en unos minutos.");
+  //   }
+  // };
 
-  const setStepTwo = () => {
-    this.setState((state) => ({
-      stepTwo: !state.stepTwo,
-    }));
-  };
+  // const setStepTwo = () => {
+  //   this.setState((state) => ({
+  //     stepTwo: !state.stepTwo,
+  //   }));
+  // };
 
   const toggleShowRegister = (e) => {
     e.preventDefault();
