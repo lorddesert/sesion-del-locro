@@ -1,31 +1,30 @@
 import React, { useState } from 'react'
-import firebase from "firebase/app"
-import storage from 'firebase/storage'
+import firebase from "firebase"
 import { DB_CONFIG } from '../config/config'
 
 
 const app = !firebase.apps.length
 ? firebase.initializeApp(DB_CONFIG)
 : firebase.app()
-const auth = app.auth
+const storage = app.storage()
+const auth = app.auth() // I need the reference here?
 
 const initialContext = {
-    // app,
-    // // usersStorage,
-    // auth,
-    // user: "",
-
-    // They will be shared between Chat and Contacts
+    app,
+    storage,
+    auth,
+    user: "",
 }
 
-console.log(initialContext)
+const Context = React.createContext(initialContext)
 
-const Context = React.createContext({})
+export function GlobalContextProvider ({ children }) {
+    const [ globalContext, setGlobalContext ] = useState(initialContext)
 
-export const GlobalContext = ({ children }) => {
-    const [ global, setGlobal ] = useState({initialContext})
-
-    return <Context.Provider value={global, setGlobal}>
+    return <Context.Provider value={{globalContext, setGlobalContext}}>
         {children}
     </Context.Provider>
 }
+
+export default Context
+

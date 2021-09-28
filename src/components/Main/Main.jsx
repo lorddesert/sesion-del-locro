@@ -1,37 +1,40 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useState, useContext } from "react";
 import "./Main.scss";
-import { DB_CONFIG } from "../../config/config";
-import toastr from "toastr";
+import Context from '../../context/GlobalContext'
+import toastr from "toastr"; // ? Should we use this?
 
 /*Components */
 import Chat from "../Chat/Chat";
 import Contacts from "../Contacts/Contacts";
 import Login from "../Login/Login";
 import UserConfig from "../userConfig/userConfig";
-import firebase from "firebase";
 import Register from "../Register/Register";
 import CreateCRModal from "../CreateCRModal/CreateCRModal";
 
 const Main = () => {
-  const app = !firebase.apps.length
-    ? firebase.initializeApp(DB_CONFIG)
-    : firebase.app();
-  const storage = app.storage().ref().child("users");
-  const auth = app.auth();
+  const { globalContext } = useContext(Context)
 
   const [state, setState] = useState({
+    // State of Main to handle the view
     showLogin: true,
     stepTwo: false,
     showLoginOptions: false,
     showRegister: false,
     showChatRoom: false,
     showCRModal: false,
-    inChatRoom: false,
-    receiver: null,
     chooseRender: "contacts",
+    
+    // Maybe
+    // receiver: null,
+    // inChatRoom: false,
     user: " ",
+    
+    // This is only needed for Contacts
     chatRooms: [],
     contacts: [],
+
+
+    // Only for chat?
     chat: [],
   })
 
@@ -219,78 +222,90 @@ const Main = () => {
   };
 
 
-  useEffect(() => {
-    const usersRef = app.database().ref("users");
-    const chatRoomRef = app.database().ref("chatRooms");
+  // ! All the effect will be in Different components
+  // // useEffect(() => {
+  // //   const usersRef = globalContext.app.database().ref("users");
 
-    usersRef.on("child_changed", (child) => {
-      let childUserName = child.child("nickname").val();
-      console.log(childUserName)
-      const receiverUid = state.receiver.getKey();
+  //   // const chatRoomRef = globalContext.app.database().ref("chatRooms");
 
-      this.state.contacts.forEach((contact) => {
-        if (contact.nickname === childUserName) {
-          let newContacts = [ ...state.contacts ];
-          let newChat = [];
-          /* find index of the contact, and set the online value to the child changed value */
-          newContacts[ newContacts.indexOf(contact) ].online = child
-            .child("online")
-            .val();
+  //   // usersRef.on("child_changed", (child) => {
+  //   //   let childUserName = child.child("nickname").val()
+  //   //   const receiverUid = state.receiver.getKey()
+  //   // }
 
-          this.setState({ contacts: newContacts });
-        }
-      });
+    
+  // !    /* This logic will go in Contacts component, I think */
+  //     // this.state.contacts.forEach((contact) => {
+  //     //   if (contact.nickname === childUserName) {
+  //     //     let newContacts = [ ...state.contacts ];
+  //     //     let newChat = [];
+  //     //     /* find index of the contact, and set the online value to the child changed value */
+  //     //     newContacts[ newContacts.indexOf(contact) ].online = child
+  //     //       .child("online")
+  //     //       .val();
 
-      //If my one of my chat's has changed, find wich and update it.
-      if (
-        this.state.receiver !== " " &&
-        child.child("nickname").val() === this.auth.currentUser.displayName
-      ) {
-        //indetify the user that we need to change the chat in out state contacts, and set the contacts again.
-        // debugger;
-        const receiverUid = this.state.receiver.getKey();
-        let chat = child.child(`contacts/${receiverUid}/chat`).val();
-        console.log(child.child(`contacts/`).val(), receiverUid)
-        let newChat = Object.values(chat);
-
-        /*Need to be changed to chante the online state of the user. */
-        this.setState({ chat: newChat }, () => {
-          setTimeout(() => this.setContacts(), 50);
-        });
-      }
-    });
-    //   it doesn't update when I send a new msg.
-    //   the msg appears to send correctly, but not update MY chat, and i cannot see the changes.
-    chatRoomRef.on("child_changed", (child) => {
-      if (this.state.receiver != " ") {
-        let chat = child.child("chat").val();
-
-        chat ? (chat = Object.values(chat)) : (chat = []);
-
-        this.setState({ chat }, () => {
-          this.setChatRooms();
-          setTimeout(() => {
-            this.setChatRoom(this.state.receiver);
-          }, 50);
-        });
-      }
-    });
-
-    chatRoomRef.on("child_added", () => {
-      this.setChatRooms();
-    });
-
-    chatRoomRef.on("child_removed", () => {
-      this.setChatRooms();
-    });
+  //     //     this.setState({ contacts: newContacts });
+  //     //   }
+  //     // });
 
 
-    return () => {
-      const ref = app.database().ref('users');
-      ref.off();
-    }
-  }, [])
-  
+  //!     // This will be in Contacts component too.
+  //     //If my one of my chat's has changed, find wich and update it.
+  //   //   if (
+  //   //     this.state.receiver !== " " &&
+  //   //     child.child("nickname").val() === this.auth.currentUser.displayName
+  //   //   ) {
+  //   //     //indetify the user that we need to change the chat in out state contacts, and set the contacts again.
+  //   //     // debugger;
+  //   //     const receiverUid = this.state.receiver.getKey();
+  //   //     let chat = child.child(`contacts/${receiverUid}/chat`).val();
+  //   //     console.log(child.child(`contacts/`).val(), receiverUid)
+  //   //     let newChat = Object.values(chat);
+
+  //   //     /*Need to be changed to chante the online state of the user. */
+  //   //     this.setState({ chat: newChat }, () => {
+  //   //       setTimeout(() => this.setContacts(), 50);
+  //   //     });
+  //   //   }
+  //   // });
+
+
+  //!   // This will be in Chat component
+  //   // //   it doesn't update when I send a new msg.
+  //   // //   the msg appears to send correctly, but not update MY chat, and i cannot see the changes.
+  //   // chatRoomRef.on("child_changed", (child) => {
+  //   //   if (this.state.receiver != " ") {
+  //   //     let chat = child.child("chat").val();
+
+  //   //     chat ? (chat = Object.values(chat)) : (chat = []);
+
+  //   //     this.setState({ chat }, () => {
+  //   //       this.setChatRooms();
+  //   //       setTimeout(() => {
+  //   //         this.setChatRoom(this.state.receiver);
+  //   //       }, 50);
+  //   //     });
+  //   //   }
+  //   // });
+
+  //!   // This will be in ChatRoom/Chat component
+  //   // chatRoomRef.on("child_added", () => {
+  //   //   this.setChatRooms();
+  //   // });
+
+  //   // chatRoomRef.on("child_removed", () => {
+  //   //   this.setChatRooms();
+  //   // });
+
+
+
+  //   return () => {
+  //     const ref = globalContext.app.database().ref('users');
+  //     ref.off();
+  //   }
+    
+  // }, [])
+
 
   /* Supuesto auto login */
   // const componentDidUpdate = () => {
@@ -307,6 +322,8 @@ const Main = () => {
     closeButton: true,
     newestOnTop: false,
   };
+
+  // Login
   if (state.showLogin)
     return (
       <div className="Main">
@@ -324,6 +341,8 @@ const Main = () => {
         </div>
       </div>
     );
+
+    // ChatRoom
   else if (state.inChatRoom)
     return (
       <div className="Main">
@@ -367,6 +386,8 @@ const Main = () => {
         </div>
       </div>
     );
+
+    // Register
   else if (state.showRegister)
     return (
       <div className="Main">
@@ -432,4 +453,4 @@ const Main = () => {
     );
 }
 
-export default Main;
+export default Main

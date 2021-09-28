@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { GlobalContextProvider } from '../../context/GlobalContext'
 
 import './App.scss';
 // reset and normalize css
@@ -8,18 +9,17 @@ import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 
-class App extends Component {
-  render() {
-    return (
-      <div className='App'>
-        <div className='App-container'>
-          {/* <Header /> */}
-          <Main/>
-          {/* <Footer /> */}
-        </div>
+const App = () => {
+  return (<GlobalContextProvider>
+    <div className='App'>
+      <div className='App-container'>
+        {/* <Header /> */}
+        <Main />
+        {/* <Footer /> */}
       </div>
-    );
-  }
+    </div>
+  </GlobalContextProvider>
+  )
 }
 
 export default App;
