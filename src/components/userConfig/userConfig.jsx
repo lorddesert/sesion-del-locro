@@ -1,4 +1,6 @@
-import React, { useCallback } from "react";
+import React, { useState, useCallback, useContext } from "react";
+import GlobalContext from '../../context/GlobalContext'
+
 import "./userConfig.scss";
 import closeImg from "./resources/close.svg";
 import PrimaryButton from "../PrimaryButton/PrimaryButton";
@@ -13,7 +15,7 @@ const userConfig = props => {
     let userInfoContainer = document.getElementById("userInfoContainer");
     e.preventDefault();
 
-    if (this.state.edit) this.toggleEditForm();
+    if (edit) toggleEditForm();
 
     if (!userInfoContainer.classList.contains("closed"))
       userInfoContainer.classList.toggle("closed");
@@ -21,7 +23,7 @@ const userConfig = props => {
     userCfgRef.classList.toggle("toggleUserConfig");
   }, []);
 
-  const toggleEditForm = useCallback(() => {
+  const toggleEditForm = useCallback(() => {s
     let userInfoContainer = document.getElementById("userInfoContainer");
 
     userInfoContainer.cslassList.toggle("closed");
@@ -29,13 +31,15 @@ const userConfig = props => {
     setEdit(!edit)
   }, []);
 
-  const { photoURL, displayName, email } = props.user;
+  const { globalContext } = useContext(GlobalContext);
+  const { auth } = globalContext
+  const { photoURL, displayName, email } = auth.currentUser
 
     if (!edit)
       return (
         <div className="userConfig" id="userConfig">
           <div className="exitImg">
-            <img src={closeImg} alt="exit" onClick={this.toggleShowUserCfg} />
+            <img src={closeImg} alt="exit" onClick={toggleShowUserCfg} />
           </div>
           <div className="userInfoContainer closed" id="userInfoContainer">
             <div className="userInfo">

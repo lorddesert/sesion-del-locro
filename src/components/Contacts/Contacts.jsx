@@ -1,5 +1,5 @@
-import React, { useCallback } from "react"
-import Context from '../../context/GlobalContext'
+import React, { useState, useCallback, useEffect, useContext } from "react"
+import GlobalContext from '../../context/GlobalContext'
 import "./Contacts.scss"
 
 // Components
@@ -12,25 +12,26 @@ import add from "./resources/add.svg"
 
 const Contacts = props => {
 
-  const { app, auth } = Context.globalContext
+  const { Context } = useContext(GlobalContext)
+  console.log(Context)
 
   const [contacts, setContacts] = useState([])
 
-  const setContacts = useCallback(async () => {
+  useEffect(async () => {
     try {
-      let contacts = []
-      const usersRef = app.database().ref("users")
-      const sender = auth.currentUser.uid
-      const myNickname = auth.currentUser.displayName
+      let contacts = [];
+      const usersRef = app.database().ref("users");
+      const sender = auth.currentUser.uid;
+      const myNickname = auth.currentUser.displayName;
 
-      let snapshot = await usersRef.once("value")
+      let snapshot = await usersRef.once("value");
 
       snapshot.forEach((user) => {
         if (user.val().nickname !== myNickname) {
-          const { photo, online, nickname } = user.val()
-          let chat = user.child(`contacts/${sender}/chat`).val()
+          const { photo, online, nickname } = user.val();
+          let chat = user.child(`contacts/${sender}/chat`).val();
 
-          chat = chat ? Object.values(chat) : []
+          chat = chat ? Object.values(chat) : [];
 
           const newContact = {
             chat,
@@ -38,20 +39,41 @@ const Contacts = props => {
             online,
             nickname,
             ref: user,
-          }
+          };
 
-          contacts.push(newContact)
+          contacts.push(newContact);
         }
-      })
+      });
 
-      setContacts(contacts)
+      setContacts(contacts);
     } catch (error) {
-      alert('Ups, an error in Contacts comp. has happened, open DEV tools for more info.')
-      console.log(error)
-    }
-  })
+      console.log(error);
+    }}, [contacts])
 
   const [chatRooms, setChatRooms] = useState([])
+
+  useEffect(async () => {
+    try {
+      const chatRoomRef = app.database().ref("chatRooms");
+      const snapshot = await chatRoomRef.once("value");
+      let chatRooms = [];
+
+      snapshot.forEach((chatRoom) => {
+        const newChatRoom = {
+          ...chatRoom.val(),
+          chat: chatRoom.hasChild("chat")
+            ? Object.values(chatRoom.child("chat").val())
+            : [],
+        };
+
+        chatRooms.push(newChatRoom);
+      });
+
+      setChatRooms(chatRooms)
+    } catch (error) {
+      console.log(error);
+    }
+  }, [ chatRooms ])
 
   const modal = useCallback(() => {
     const modal = document.getElementById("modal")
@@ -109,18 +131,22 @@ const Contacts = props => {
         <div className="Contacts-content">
           <div className="Profile">
             <div className="Profile-img">
-              {props.user.photo ? (
+              {/* {props.user.photo ? (
                 <img
-                  src={props.user.photo}
-                  alt={`${props.user.nickname}`}
+                  // src={props.user.photo || ''}
+                  src={''}
+                  // alt={`${props.user.nickname || ''}`}
+                  alt={`${''}`}
                 ></img>
               ) : (
                 <img
                   className="alt-user-img"
-                  src={altUserImg}
-                  alt={props.user.nickname}
+                  // src={altUserImg || ''}
+                  // alt={props.user.nickname || 'default'}
+                  src={''}
+                  alt={'default'}
                 />
-              )}
+              )} */}
             </div>
             <div className="Profile-actions">
               <div className="Action" onClick={toggleRotate}>
@@ -150,7 +176,7 @@ const Contacts = props => {
             </div>
           </div>
           {/* onClick will be changed with "enterChatRoom"  */}
-          {props.contacts.map((contact, i) => (
+          {contacts && contacts.map((contact, i) => (
             <Contact
               key={`contact-${i}`}
               contact={contact}
@@ -162,13 +188,13 @@ const Contacts = props => {
             <span>Salas de chat</span>
             <div
               className="image-wrapper"
-              onClick={() => props.toggleModal(true)}
+              onClick={() => props.toggleModal && props.toggleModal(true)}
             >
               <img src={add} alt="crear sala de chat"></img>
             </div>
           </div>
-          {props.chatRooms[0] &&
-            props.chatRooms.map((chatRoom, i) => (
+          {chatRooms[0] &&
+            chatRooms.map((chatRoom, i) => (
               <ChatRoom
                 key={`chatRoom-${i}`}
                 chatRoom={chatRoom}
