@@ -15,6 +15,7 @@ const initialContext = {
     auth,
     user: "",
     inChatRoom: false,
+    receiver: {},
 }
 
 const Context = React.createContext(initialContext)
