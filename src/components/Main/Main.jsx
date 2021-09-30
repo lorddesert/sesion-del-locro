@@ -12,9 +12,7 @@ import Register from "../Register/Register";
 import CreateCRModal from "../CreateCRModal/CreateCRModal";
 
 const Main = () => {
-  const { globalContext } = useContext(Context)
-
-  const { auth, app, inChatRoom } = globalContext
+  const { auth, app, inChatRoom } = useContext(Context)
 
   const [state, setState] = useState({
     // State of Main to handle the view
@@ -94,21 +92,24 @@ const Main = () => {
         );
         ref = app.database().ref(`users/${user.uid}`);
 
+        setUser(user)
+        setShowLogin(false)
+        setShowRegister(false)
         /* 
           setUser
         */
-        setState(
-          {
-            showLogin: false,
-            showRegister: false,
-            user,
-          },
-          () => {
-            setContacts();
-            setChatRooms();
-            ref.child("online").onDisconnect().set(false);
-          }
-        );
+        // setState(
+        //   {
+        //     showLogin: false,
+        //     showRegister: false,
+        //     user,
+        //   },
+        //   () => {
+        //     setContacts();
+        //     setChatRooms();
+        //     ref.child("online").onDisconnect().set(false);
+        //   }
+        // );
       }
     } catch (error) {
       let err = error;
@@ -355,8 +356,6 @@ const Main = () => {
   // //     this.setState({ showLogin: false }, () => this.login(true));
   // // };
 
-
-
   toastr.options = {
     positionClass: "toast-bottom-right",
     timeOut: 2000,
@@ -365,18 +364,19 @@ const Main = () => {
     newestOnTop: false,
   };
 
-  // Login
-  if (state.showLogin)
+  //* Login
+  if (showLogin)
     return (
       <div className="Main">
         <div className="Main-content">
           <Login
-            toggleShowLogin={toggleShowLogin}
-            showLoginOptions={state.showLoginOptions}
-            showRegister={state.showRegister}
-            user={user.username || ''}
-            toggleShowRegister={toggleShowRegister}
-            login={login}
+            {...{
+              setShowLogin,
+              showLoginOptions,
+              setShowRegister,
+              toggleShowRegister,
+            }}
+            
             // authUser={authUser}
             // register={register}
           />
@@ -384,31 +384,30 @@ const Main = () => {
       </div>
     );
 
-    // ChatRoom
+    //* ChatRoom
   else if (inChatRoom)
     return (
       <div className="Main">
         <div className="Main-content" id="main">
           {state.showCRModal && (
             <CreateCRModal
-              toggleModal={toggleModal}
-              handleInputFocus={handleInputFocus}
-              createNewChatRoom={createNewChatRoom}
-              modifyChatRoom={modifyChatRoom}
-              inChatRoom={state.inChatRoom}
+            {...{
+              toggleModal,
+              handleInputFocus,
+              createNewChatRoom,
+              modifyChatRoom,
+              inChatRoom,
+            }}
+
             />
           )}
           <UserConfig
-            user={user}
             // saveNewUserInfo={saveNewUserInfo}
             // storageImg={storageImg}
           />
           {/* It will show the users connected in the chatRoom, EVEN I. */}
           <Contacts
-            user={user}
-            contacts={state.contacts}
             // setChat={setChat}
-            chatRooms={state.chatRooms}
             // setChatRoom={setChatRoom}
             // toggleModal={toggleModal}
           />
@@ -426,26 +425,27 @@ const Main = () => {
       </div>
     );
 
-    // Register
+    //* Register
   else if (state.showRegister)
     return (
       <div className="Main">
         <div className="Main-content">
           <Register
-            stepTwo={state.stepTwo}
-            setStepTwo={setStepTwo}
-            beginRegister={beginRegister}
-            endRegister={endRegister}
-            toggleShowRegister={toggleShowRegister}
-            handleInputFocus={handleInputFocus}
-            storageImg={storageImg}
-            beginRegister={beginRegister}
-            user={state.user}
+            {...{
+              stepTwo,
+              setStepTwo,
+              beginRegister,
+              endRegister,
+              toggleShowRegister,
+              handleInputFocus,
+              storageImg,
+              beginRegister,
+            }}
           />
         </div>
       </div>
     );
-  else
+  else {
     return (
       <div className="Main">
         <div className="Main-content" id="main">
@@ -459,7 +459,6 @@ const Main = () => {
             />
           )}
           <UserConfig
-            user={state.user}
             // saveNewUserInfo={saveNewUserInfo}
             // storageImg={storageImg}
           />
@@ -487,6 +486,8 @@ const Main = () => {
         </div>
       </div>
     );
+  }
+
 }
 
 export default Main
