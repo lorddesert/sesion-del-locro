@@ -8,8 +8,7 @@ import SecondaryButton from "../SecondaryButton/SecondaryButton";
 
 import "./CreateCRModal.scss";
 
-
-
+const CreateCRModal = (props) => {
 const { globalContext } = useContext(GlobalContext)
 
 const { app } = globalContext
@@ -86,7 +85,7 @@ const createNewChatRoom = useCallback((e) => {
     .catch((err) => console.log(err));
 }, []);
 
-const CreateCRModal = (props) => {
+
   if (props.inChatRoom) {
     return (
       <Modal closeModal={toggleModal}>
