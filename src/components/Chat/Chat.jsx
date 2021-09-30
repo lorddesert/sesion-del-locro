@@ -1,26 +1,25 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react"
 import GlobalContext from '../../context/GlobalContext'
 
-import Message from "../Message/Message";
-import ChatHeader from "../ChatHeader/ChatHeader";
+import Message from "../Message/Message"
+import ChatHeader from "../ChatHeader/ChatHeader"
 
-import "./Chat.scss";
-import sendImg from "./resources/send.png";
-import quote from "./resources/quote.svg";
-import dice from "./resources/dice.svg";
+import "./Chat.scss"
+import sendImg from "./resources/send.png"
+import quote from "./resources/quote.svg"
+import dice from "./resources/dice.svg"
 
 const Chat = (props) => {
 
   const { inChatRoom, receiver } = useContext(GlobalContext)
 
-  useEffect(() => {
-    if(inChatRoom || receiver.nickname) {
-      window.addEventListener("keyup", handleEvent);
-      console.log('Event listener subscribed!')
-
-      return () => window.removeEventListener("keyup", handleEvent);
-    }
-  }, [inChatRoom]);
+  // useEffect(() => {
+  //   if(inChatRoom || receiver.nickname) {
+  //     window.addEventListener("keyup", handleEvent)
+  //     console.log('Event listener subscribed!')
+  //   }
+  //   // return () => window.removeEventListener("keyup", handleEvent)
+  // }, [])
 
   const [chatRoom, setChatRoom] = useState({})
 
@@ -30,13 +29,13 @@ const Chat = (props) => {
       if (e.key === "Enter") 
         if(receiver.nickname)  {
           console.log('send message!')
-          // props.sendMsg2();
+          // props.sendMsg2()
         }
         else {
           console.log('send message to chat room!')
-          // props.sendChatRoomMsg();
+          // props.sendChatRoomMsg()
         }
-    };
+    }
 
 
   //     /* 
@@ -64,9 +63,12 @@ const Chat = (props) => {
         <div className="Chat">
           <div className="Chat-content" id="chatContent">
             <ChatHeader
-              receiverPhoto={receiver.photo}
-              receiverName={receiver.name}
-              stateMsg={chatRoom.stateMsg}
+              // receiverPhoto={receiver.photo}
+              // receiverName={receiver.name}
+              // stateMsg={chatRoom.stateMsg}
+              receiverPhoto={'receiver.photo'}
+              receiverName={'receiver.name'}
+              stateMsg={'chatRoom.stateMsg'}
               // toggleModal={props.toggleModal}
               inChatRoom={inChatRoom}
             />
@@ -75,7 +77,7 @@ const Chat = (props) => {
               {chat.map((msg, i) => (
                 <Message
                   key={`msg-${i}`}
-                  user={props.user}
+                  user={props.user || {}}
                   userNumber={i}
                   sender={`${msg.sender}`}
                   content={msg.content}
@@ -115,15 +117,15 @@ const Chat = (props) => {
             </div>
           </div>
         </div>
-      );
+      )
     }
     return (
       <div className="Chat">
         <div className="Chat-content" id="chatContent">
           <ChatHeader
-            receiverPhoto={receiver.photo}
-            receiverName={receiver.name}
-            stateMsg={stateMsg}
+            receiverPhoto={'receiver.photo'}
+            receiverName={'receiver.name'}
+            stateMsg={'stateMsg'}
             // toggleModal={toggleModal}
             // inChatRoom={inChatRoom}
           />
@@ -133,9 +135,9 @@ const Chat = (props) => {
               props.chat.map((msg, i) => (
                 <Message
                   key={`msg-${i}`}
-                  user={props.user}
+                  user={props.user || {}}
                   userNumber={i}
-                  nickname={receiver.nickname}
+                  nickname={'receiver.nickname'}
                   sender={`${msg.sender}`}
                   content={msg.content}
                 />
@@ -164,7 +166,7 @@ const Chat = (props) => {
           </div>
         </div>
       </div>
-    );
+    )
 
   // Fallback background.
   } else {
@@ -197,8 +199,8 @@ const Chat = (props) => {
           </div>
         </div>
       </div>
-    );
+    )
   }
-};
+}
 
-export default Chat;
+export default Chat
