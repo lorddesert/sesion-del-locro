@@ -191,3 +191,49 @@
     #ff9966
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
+
+#flagAnimation {
+  animation: flag infinite ease-in-out 2s;
+}
+
+#flag1, #flag2, #flag3, #flag4 {
+  animation: fly infinite ease-in-out 250ms;
+  transform: translate(0);
+  transition: 2s all ease;
+}
+
+#flag2 {
+  animation-delay: 250ms;
+}
+#flag3 {
+  animation-delay: 500ms;
+}
+#flag4 {
+  animation-delay: 750ms;
+}
+
+@keyframes flag {
+  0% {
+    color: red;
+  }
+  25% {
+    color: crimson;
+  }
+  50% {
+    color: cyan;
+  }
+  75% {
+    color: greenyellow;
+  }
+  100% {
+    color: red;
+  }
+}
+
+@keyframes fly {
+  from {
+    background: black;
+  } to {
+    background: rgb(37, 37, 37);
+  }
+}

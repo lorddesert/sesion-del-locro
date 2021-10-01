@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react"
+import React, { useState, useEffect, useCallback, useContext } from "react"
 import "./Contacts.scss"
+import GlobalContext from '../../context/GlobalContext'
 
 // Components
 import Contact from "../Contact/Contact"
@@ -10,45 +11,53 @@ import ChatRooms from "../ChatRooms/ChatRooms"
 
 const Contacts = props => {
 
+  const { globalContext } = useContext(GlobalContext)
+  const { app, auth } = globalContext
+
+  console.log(auth)
+
   const [contacts, setContacts] = useState([])
 
-  // useEffect(() => {
+  useEffect(() => {
+    console.log('contacts: ', contacts)
+    
+  const fetchContacts = async () => {
+    try {
+      let contacts = [];
+      const usersRef = app.database().ref("users");
+      const sender = auth.currentUser.uid;
+      const myNickname = auth.currentUser.displayName;
 
-  //   //*setContacts
-  //   (async () => {
-  //     try {
-  //       let contacts = [];
-  //       const usersRef = app.database().ref("users");
-  //       const sender = auth.currentUser.uid;
-  //       const myNickname = auth.currentUser.displayName;
-  
-  //       let snapshot = await usersRef.once("value");
-  
-  //       snapshot.forEach((user) => {
-  //         if (user.val().nickname !== myNickname) {
-  //           const { photo, online, nickname } = user.val();
-  //           let chat = user.child(`contacts/${sender}/chat`).val();
-  
-  //           chat = chat ? Object.values(chat) : [];
-  
-  //           const newContact = {
-  //             chat,
-  //             photo,
-  //             online,
-  //             nickname,
-  //             ref: user,
-  //           };
-  
-  //           contacts.push(newContact);
-  //         }
-  //       });
-  
-  //       setContacts(contacts);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }})()
+      let snapshot = await usersRef.once("value");
 
-  // }, [])
+      snapshot.forEach((user) => {
+        if (user.val().nickname !== myNickname) {
+          const { photo, online, nickname } = user.val();
+          let chat = user.child(`contacts/${sender}/chat`).val();
+
+          chat = chat ? Object.values(chat) : [];
+
+          const newContact = {
+            chat,
+            photo,
+            online,
+            nickname,
+            ref: user,
+          };
+
+          contacts.push(newContact);
+        }
+      });
+
+      setContacts(contacts);
+    } catch (error) {
+      console.log(error);
+    }}
+
+    fetchContacts()
+
+    //*setContacts
+  }, [])
 
   const [chatRooms, setChatRooms] = useState([])
 
@@ -117,7 +126,6 @@ const Contacts = props => {
       setTimeout(() => (userCfgPanel.style.display = "none"), 100)
     }
   })
-
   const dummyFn = () => alert("asd")
   
     if(contacts.length){
@@ -155,7 +163,14 @@ const Contacts = props => {
         return <div className="Contacts" id="contacts">
         <div className="Contacts-content">
           <Profile />
-          <div id="flag"><strong style={{color: 'crimson', fontSize: '10rem'}}>FLAG</strong></div>
+          <div id="flag" style={{paddingLeft: "5em",transform: "rotate(90deg)"}}>
+            <strong id="flagAnimation" style={{fontSize: '10rem'}}>
+              <span id="flag1">F</span>
+              <span id="flag2">L</span>
+              <span id="flag3">A</span>
+              <span id="flag4">G</span>
+              </strong>
+            </div>
         </div>
       </div>
     }
