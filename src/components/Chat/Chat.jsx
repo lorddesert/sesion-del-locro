@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
-import GlobalContext from '../../context/GlobalContext'
+import Context from '../../context/GlobalContext'
 
 import Message from "../Message/Message"
 import ChatHeader from "../ChatHeader/ChatHeader"
@@ -11,15 +11,18 @@ import dice from "./resources/dice.svg"
 
 const Chat = (props) => {
 
-  const { inChatRoom, receiver } = useContext(GlobalContext)
+  const { globalContext } = useContext(Context)
+  const { inChatRoom, receiver } = globalContext
 
-  // useEffect(() => {
-  //   if(inChatRoom || receiver.nickname) {
-  //     window.addEventListener("keyup", handleEvent)
-  //     console.log('Event listener subscribed!')
-  //   }
-  //   // return () => window.removeEventListener("keyup", handleEvent)
-  // }, [])
+  useEffect(() => {
+    console.log('receiver:', receiver)
+    console.assert(receiver === {}, ' NOOOOOOOOOOOOOOOO',receiver)
+    // if(inChatRoom || receiver.nickname) {
+    //   window.addEventListener("keyup", handleEvent)
+    //   console.log('Event listener subscribed!')
+    // }
+    // // return () => window.removeEventListener("keyup", handleEvent)
+  }, [])
 
   const [chatRoom, setChatRoom] = useState({})
 
@@ -56,8 +59,7 @@ const Chat = (props) => {
 
   // // const [inChatRoom, setInChatRoom] = useState(false)
 
-
-  if (receiver) {
+  if (Object.keys(receiver).length !== 0) {
     if(inChatRoom) {
        return (
         <div className="Chat">
@@ -132,7 +134,7 @@ const Chat = (props) => {
           <div className="chat-wrapper"></div>
           <div className="Chat-messages" id="chat">
             {
-              props.chat.map((msg, i) => (
+              chat.map((msg, i) => (
                 <Message
                   key={`msg-${i}`}
                   user={props.user || {}}
