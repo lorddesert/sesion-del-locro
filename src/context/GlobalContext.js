@@ -6,7 +6,7 @@ import { DB_CONFIG } from '../config/config'
 const app = !firebase.apps.length
 ? firebase.initializeApp(DB_CONFIG)
 : firebase.app()
-const storage = app.storage()
+const storage = app.storage
 const auth = app.auth() // I need the reference here?
 
 const initialContext = {
@@ -16,6 +16,7 @@ const initialContext = {
     user: "",
     inChatRoom: false,
     receiver: {},
+    
 }
 
 const Context = React.createContext(initialContext)

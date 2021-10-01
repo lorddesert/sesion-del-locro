@@ -11,18 +11,22 @@ import dice from "./resources/dice.svg"
 
 const Chat = (props) => {
 
-  const { globalContext } = useContext(Context)
-  const { inChatRoom, receiver } = globalContext
+  let myContext = useContext(Context);
+  myContext = myContext.globalContext
+
+  console.log('in chat: ', myContext)
+
+  // if('globalContext' in context) context = {...context.globalContext}
+
+  const { inChatRoom, receiver } = myContext
 
   useEffect(() => {
-    console.log('receiver:', receiver)
-    console.assert(receiver === {}, ' NOOOOOOOOOOOOOOOO',receiver)
-    // if(inChatRoom || receiver.nickname) {
-    //   window.addEventListener("keyup", handleEvent)
-    //   console.log('Event listener subscribed!')
-    // }
-    // // return () => window.removeEventListener("keyup", handleEvent)
-  }, [])
+    // console.assert(receiver === {}, ' NOOOOOOOOOOOOOOOO',receiver)
+    window.addEventListener("keyup", handleEvent)
+
+    return () => window.removeEventListener("keyup", handleEvent)
+    // console.log('chat receiver: ', receiver)
+  }, [myContext])
 
   const [chatRoom, setChatRoom] = useState({})
 
@@ -40,26 +44,7 @@ const Chat = (props) => {
         }
     }
 
-
-  //     /* 
-  //               receiverPhoto={props.receiverPhoto}
-  //             receiverName={props.receiverName}
-  //             stateMsg={props.stateMsg}
-  //             toggleModal={props.toggleModal}
-  //             inChatRoom={props.inChatRoom}
-
-  // const { receiverPhoto, receiverName, }
-  // if chatRoom { stateMsg }
-
-  // user.inChatRoom
-  
-  // function toggleModal
-  
-  // */
-
-  // // const [inChatRoom, setInChatRoom] = useState(false)
-
-  if (Object.keys(receiver).length !== 0) {
+  if (chat.length || Object.values(receiver).length !== 0) {
     if(inChatRoom) {
        return (
         <div className="Chat">
@@ -206,3 +191,25 @@ const Chat = (props) => {
 }
 
 export default Chat
+
+
+
+
+
+  //     /* 
+  //               receiverPhoto={props.receiverPhoto}
+  //             receiverName={props.receiverName}
+  //             stateMsg={props.stateMsg}
+  //             toggleModal={props.toggleModal}
+  //             inChatRoom={props.inChatRoom}
+
+  // const { receiverPhoto, receiverName, }
+  // if chatRoom { stateMsg }
+
+  // user.inChatRoom
+  
+  // function toggleModal
+  
+  // */
+
+  // // const [inChatRoom, setInChatRoom] = useState(false)

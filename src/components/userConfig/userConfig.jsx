@@ -31,9 +31,11 @@ const userConfig = props => {
     setEdit(!edit)
   }, []);
 
-  const { globalContext } = useContext(GlobalContext);
-  const { auth } = globalContext
-  const { photoURL, displayName, email } = auth.currentUser
+  let context = useContext(GlobalContext);
+
+  if('globalContext' in context) context = {...context.globalContext}
+
+  // const { photoURL, displayName, email } = context.auth.currentUser
 
     if (!edit)
       return (
@@ -44,15 +46,15 @@ const userConfig = props => {
           <div className="userInfoContainer closed" id="userInfoContainer">
             <div className="userInfo">
               <div className="userProfile">
-                <img src={photoURL ? photoURL : ""} alt={displayName} />
+                {/* <img src={photoURL ? photoURL : ""} alt={displayName} /> */}
                 <div className="displayInfo">
                   <hgroup>
                     <h2>Email</h2>
-                    <h3>{email}</h3>
+                    {/* <h3>{email}</h3> */}
                   </hgroup>
                   <hgroup>
                     <h2>Nickname</h2>
-                    <h3>{displayName}</h3>
+                    {/* <h3>{displayName}</h3> */}
                   </hgroup>
                 </div>
               </div>
@@ -72,7 +74,7 @@ const userConfig = props => {
           <div className="userInfoContainer" id="userInfoContainer">
             <div className="userInfo">
               <div className="userProfile">
-                <img src={photoURL ? photoURL : ""} alt={displayName} />
+                {/* <img src={photoURL ? photoURL : ""} alt={displayName} /> */}
                 <PrimaryButton
                   action={() => document.getElementById("fileInput").click()}
                   value="Cambiar imagen"

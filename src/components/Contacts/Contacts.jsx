@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from "react"
 import "./Contacts.scss"
-import GlobalContext from '../../context/GlobalContext'
+import Context from '../../context/GlobalContext'
 
 // Components
 import Contact from "../Contact/Contact"
@@ -11,15 +11,16 @@ import ChatRooms from "../ChatRooms/ChatRooms"
 
 const Contacts = props => {
 
-  const { globalContext } = useContext(GlobalContext)
-  const { app, auth } = globalContext
+  let context = useContext(Context);
+  if('globalContext' in context) context = {...context.globalContext}
 
-  console.log(auth)
+  const {app, auth, receiver} = context
 
   const [contacts, setContacts] = useState([])
 
   useEffect(() => {
-    console.log('contacts: ', contacts)
+    // console.log('contacts: ', contacts)
+    console.log(`globalContext`, context)
     
   const fetchContacts = async () => {
     try {
@@ -137,9 +138,8 @@ const Contacts = props => {
           {contacts && contacts.map((contact, i) => (
             <Contact
               key={`contact-${i}`}
-              contact={contact || {}}
-              // setChat={props.setChat}
-              setChat={dummyFn}
+              contact={contact}
+              contacts={contacts}
               number={i}
             />
           ))}
@@ -153,8 +153,9 @@ const Contacts = props => {
               <img src={add} alt="crear sala de chat"></img>
             </div>
           </div>
+          <div className="asd">{receiver && 'MUAJAJAJA'}</div>
 
-          <ChatRooms chatRooms={chatRooms} />
+          {/* <ChatRooms chatRooms={chatRooms} /> */}
         </div>
       </div>
     )}

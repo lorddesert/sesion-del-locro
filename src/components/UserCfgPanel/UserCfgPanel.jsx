@@ -4,11 +4,15 @@ import GlobalContext from '../../context/GlobalContext'
 import SecondaryButton from '../SecondaryButton/SecondaryButton'
 
 const UserCfgPanel = () => {
+  let context = useContext(GlobalContext);
 
-    const { auth } = useContext(GlobalContext)
+  if('globalContext' in context) context = {...context.globalContext}
+
+  const { auth } = context
+
 
     const toggleUserConfig = useCallback(() => {
-        this.toggleRotate()
+        // this.toggleRotate()
         setTimeout(() => {
           const ref = document.getElementById("userConfig")
           ref.classList.toggle("toggleUserConfig")

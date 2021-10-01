@@ -1,7 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { GlobalContextProvider } from '../../context/GlobalContext'
+
 import "./Main.scss";
 import Context from '../../context/GlobalContext'
-import toastr from "toastr"; // ? Should we use this?
 
 /*Components */
 import Chat from "../Chat/Chat";
@@ -12,9 +13,9 @@ import Register from "../Register/Register";
 import CreateCRModal from "../CreateCRModal/CreateCRModal";
 
 const Main = () => {
-  const { auth, app, inChatRoom } = useContext(Context)
+  const { auth, inChatRoom, receiver } = useContext(Context)
 
-  const [state, setState] = useState({
+  const [ state, setState ] = useState({
     // State of Main to handle the view
     showLogin: true,
     stepTwo: false,
@@ -23,7 +24,7 @@ const Main = () => {
     showChatRoom: false,
     showCRModal: false,
     chooseRender: "contacts",
-    
+
     // Maybe
     // receiver: null,
     // inChatRoom: false,    
@@ -36,107 +37,36 @@ const Main = () => {
     chat: [],
   })
 
-  const [showLogin, setShowLogin] = useState(true)
+  const [ showLogin, setShowLogin ] = useState(true)
 
-  const [stepTwo, setStepTwo] = useState(false)
+  const [ stepTwo, setStepTwo ] = useState(false)
 
-  const [showLoginOptions, setShowLoginOptions] = useState(false)
+  const [ showLoginOptions, setShowLoginOptions ] = useState(false)
 
-  const [showRegister, setShowRegister] = useState(false)
-  
-  const [showChatRoom, setShowChatRoom] = useState(false)
+  const [ showRegister, setShowRegister ] = useState(false)
 
-  const [showCRModal, setShowCRModal] = useState(false)
+  const [ showChatRoom, setShowChatRoom ] = useState(false)
 
-  const [chooseRender, setChooseRender] = useState("contacts")
+  const [ showCRModal, setShowCRModal ] = useState(false)
 
-  const [user, setUser] = useState({
+  const [ chooseRender, setChooseRender ] = useState("contacts")
+
+  const [ user, setUser ] = useState({
     username: '',
     displayName: '',
     photoURL: '',
   })
-  
+
+  useEffect(() => {
+    console.log('the user is: ', user)
+  }, [ user, receiver ])
+
   // stepTwo: false,
   // showLoginOptions: false,
   // showRegister: false,
   // showChatRoom: false,
   // showCRModal: false,
   // chooseRender: "contacts",
-
-  const login = async (currentUser = false) => {
-    try {
-      
-      let ref = null;
-      let authCurrentUser = auth.currentUser;
-
-      if (currentUser) {
-        ref = app.database().ref(`users/${auth.currentUser.uid}`);
-
-        toastr.success("Sesion abierta detectada");
-
-        console.log(auth.currentUser)
-        
-        ref.child("online").onDisconnect().set(false);
-
-        setUser({ ref, ...authCurrentUser })
-        setShowLogin(false)
-        setShowRegister(false)
-
-      } else {
-        let email = document.getElementById("email").value;
-        let password = document.getElementById("password").value;
-
-        let { user } = await auth.signInWithEmailAndPassword(
-          email,
-          password
-        );
-        ref = app.database().ref(`users/${user.uid}`);
-
-        setUser(user)
-        setShowLogin(false)
-        setShowRegister(false)
-        /* 
-          setUser
-        */
-        // setState(
-        //   {
-        //     showLogin: false,
-        //     showRegister: false,
-        //     user,
-        //   },
-        //   () => {
-        //     setContacts();
-        //     setChatRooms();
-        //     ref.child("online").onDisconnect().set(false);
-        //   }
-        // );
-      }
-    } catch (error) {
-      let err = error;
-      switch (error.code) {
-        case "auth/invalid-email":
-          toastr.error("El email es invalido.");
-          break;
-
-        case "auth/user-disabled":
-          toastr.error("El email fue eliminado.");
-          break;
-
-        case "auth/user-not-found":
-          toastr.error("El email no existe.");
-          break;
-
-        case "auth/wrong-password":
-          toastr.error("Contraseña incorrecta");
-          break;
-
-        default:
-          console.log(err);
-          toastr.error("Un error ocurrio, intente de nuevo mas tarde.");
-          break;
-      }
-    }
-  };
 
   // useEffect(() => {
   //   setState(
@@ -247,24 +177,6 @@ const Main = () => {
   //   }));
   // };
 
-  const toggleShowRegister = (e) => {
-    e.preventDefault();
-
-    this.setState((state) => ({
-      ...state,
-      showLogin: !state.showLogin,
-      showRegister: !state.showRegister,
-    }));
-  };
-
-  const toggleShowLogin = () => {
-    this.setState((state) => ({
-      ...state,
-      showLoginOptions: !state.showLoginOptions,
-    }));
-  };
-
-
   // ! All the effect will be in Different components
   // // useEffect(() => {
   // //   const usersRef = globalContext.app.database().ref("users");
@@ -276,7 +188,7 @@ const Main = () => {
   //   //   const receiverUid = state.receiver.getKey()
   //   // }
 
-    
+
   // !    /* This logic will go in Contacts component, I think */
   //     // this.state.contacts.forEach((contact) => {
   //     //   if (contact.nickname === childUserName) {
@@ -346,7 +258,7 @@ const Main = () => {
   // //     const ref = globalContext.app.database().ref('users');
   // //     ref.off();
   // //   }
-    
+
   // // }, [])
 
 
@@ -356,113 +268,101 @@ const Main = () => {
   // //     this.setState({ showLogin: false }, () => this.login(true));
   // // };
 
-  toastr.options = {
-    positionClass: "toast-bottom-right",
-    timeOut: 2000,
-    progressBar: true,
-    closeButton: true,
-    newestOnTop: false,
-  };
 
-  //* Login
-  if (showLogin)
-    return (
-      <div className="Main">
-        <div className="Main-content">
-          <Login
-            {...{
-              setShowLogin,
-              showLoginOptions,
-              setShowRegister,
-              toggleShowRegister,
-            }}
-            
+
+  return <GlobalContextProvider>
+    <div className="Main">
+      <div className="Main-content">
+      //* Login
+        {showLogin ? (
+          <>
+            <Login
+              {...{
+                setShowLogin,
+                showLoginOptions,
+                setShowRegister,
+                setUser,
+              }}
+
             // authUser={authUser}
             // register={register}
-          />
-        </div>
-      </div>
-    );
-
-    //* ChatRoom
-  else if (inChatRoom)
-    return (
-      <div className="Main">
-        <div className="Main-content" id="main">
-          {state.showCRModal && (
-            <CreateCRModal
-            {...{
-              toggleModal,
-              handleInputFocus,
-              createNewChatRoom,
-              modifyChatRoom,
-              inChatRoom,
-            }}
-
             />
-          )}
-          <UserConfig
+          </>
+
+          //* ChatRoom
+        ) : inChatRoom ? (
+          <>
+            {showCRModal && (
+              <CreateCRModal
+                {...{
+                  setShowCRModal,
+                  handleInputFocus,
+                  // createNewChatRoom,
+                  // modifyChatRoom,
+                  inChatRoom,
+                }}
+
+              />
+            )}
+            <UserConfig
             // saveNewUserInfo={saveNewUserInfo}
             // storageImg={storageImg}
-          />
-          {/* It will show the users connected in the chatRoom, EVEN I. */}
-          <Contacts
-            // setChat={setChat}
-            // setChatRoom={setChatRoom}
-            // toggleModal={toggleModal}
-          />
-          <Chat
-            user={auth.currentUser.displayName}
-            receiver={{}} // * Custom hook
-            sendChatRoomMsg={sendChatRoomMsg}
-            inChatRoom={false}
-            stateMsg={false}
-            receiverName={false}
+            />
+            {/* It will show the users connected in the chatRoom, EVEN I. */}
+            <Contacts
+              {...{
+                setChat,
+                setChatRoom,
+                setShowCRModal,
+              }}
+            />
+            <Chat
+              {...{
+                user: auth.currentUser.displayName,
+                receiver: {}, // * Custom hook,
+                // sendChatRoomMsg,
+                inChatRoom,
+                stateMsg,
+                receiverName: false,
+              }
+              }
             // chatRoom={state.chatRoom}
             // toggleModal={toggleModal}
-          />
-        </div>
-      </div>
-    );
+            />
+          </>
 
-    //* Register
-  else if (state.showRegister)
-    return (
-      <div className="Main">
-        <div className="Main-content">
+          //* Register
+        ) : state.showRegister ? (
           <Register
             {...{
               stepTwo,
               setStepTwo,
               beginRegister,
               endRegister,
-              toggleShowRegister,
+              setShowRegister,
               handleInputFocus,
               storageImg,
               beginRegister,
             }}
           />
-        </div>
-      </div>
-    );
-  else {
-    return (
-      <div className="Main">
-        <div className="Main-content" id="main">
-          {state.showCRModal && (
-            <CreateCRModal
+
+          //* Default
+        ) : (
+          <>
+            {state.showCRModal && (
+              <CreateCRModal
               // toggleModal={toggleModal}
               // handleInputFocus={handleInputFocus}
               // createNewChatRoom={createNewChatRoom}
               // modifyChatRoom={modifyChatRoom}
               // inChatRoom={state.inChatRoom}
-            />
-          )}
-          <UserConfig
+              />
+            )}
+            <UserConfig
             // saveNewUserInfo={saveNewUserInfo}
             // storageImg={storageImg}
-          />
-          <Contacts
+            />
+            <Contacts
             // contacts={state.contacts}
             // setChat={setChat}
             // enterChatRooms={enterChatRooms}
@@ -470,8 +370,8 @@ const Main = () => {
             // chatRooms={state.chatRooms}
             // setChatRoom={setChatRoom}
             // toggleModal={toggleModal}
-          />
-          <Chat
+            />
+            <Chat
             // user={auth.currentUser.displayName}
             // sendMsg={sendMsg}
             // receiver={state.receiver}
@@ -482,11 +382,14 @@ const Main = () => {
             // receiverPhoto={state.receiverPhoto}
             // receiverName={state.receiverName}
             // receiverNickname={state.receiverNickname}
-          />
-        </div>
+            />
+          </>
+        )
+        }
       </div>
-    );
-  }
+    </div>
+  </GlobalContextProvider>
+
 
 }
 
