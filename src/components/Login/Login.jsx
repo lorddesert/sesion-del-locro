@@ -52,6 +52,12 @@ const Login = props => {
         ref = app.database().ref(`users/${user.uid}`)
 
         props.setUser(user)
+        setGlobalContext({
+          ...globalContext,
+          user: {
+            ref, ...authCurrentUser 
+          }
+        })
         props.setShowLogin(false)
         props.setShowRegister(false)
         /* 

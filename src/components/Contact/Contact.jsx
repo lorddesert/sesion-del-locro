@@ -24,11 +24,16 @@ const Contact = ({contact, i, contacts}) => {
       receiver.nickname = contact.nickname
 
       for (i = 0; i < contacts.length; i++)
-        if (contacts[ i ].nickname === receiver.nickname)
+        if (contacts[ i ].nickname === receiver.nickname) {
+
           setGlobalContext({
+            ...globalContext,
             receiver,
             chat: contacts[ i ].chat
           })
+          globalContext.setChat(contacts[ i ].chat)
+        }
+
       // setState(
       //   {
       //     receiver: contactRef.ref,

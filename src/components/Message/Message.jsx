@@ -1,8 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
+// import Context from '../../context/GlobalContext'
 
 import "./Message.scss";
 
 class Message extends Component {
+  // context = useContext(Context)
+  // user = context.globalContext
   msgRef = React.createRef();
   style = "";
   justifyContent = {};

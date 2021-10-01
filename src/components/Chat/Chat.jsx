@@ -12,21 +12,23 @@ import dice from "./resources/dice.svg"
 const Chat = (props) => {
 
   let myContext = useContext(Context);
+  let setContext = myContext.setGlobalContext
   myContext = myContext.globalContext
 
   console.log('in chat: ', myContext)
 
   // if('globalContext' in context) context = {...context.globalContext}
 
-  const { inChatRoom, receiver } = myContext
+  const { inChatRoom, receiver, user } = myContext
 
   useEffect(() => {
     // console.assert(receiver === {}, ' NOOOOOOOOOOOOOOOO',receiver)
     window.addEventListener("keyup", handleEvent)
 
+    setContext({...myContext, setChat})
     return () => window.removeEventListener("keyup", handleEvent)
     // console.log('chat receiver: ', receiver)
-  }, [myContext])
+  }, [])
 
   const [chatRoom, setChatRoom] = useState({})
 
@@ -110,9 +112,9 @@ const Chat = (props) => {
       <div className="Chat">
         <div className="Chat-content" id="chatContent">
           <ChatHeader
-            receiverPhoto={'receiver.photo'}
-            receiverName={'receiver.name'}
-            stateMsg={'stateMsg'}
+            receiverPhoto={receiver.photo}
+            receiverName={receiver.nickname}
+            stateMsg={receiver.stateMsg}
             // toggleModal={toggleModal}
             // inChatRoom={inChatRoom}
           />
@@ -122,11 +124,11 @@ const Chat = (props) => {
               chat.map((msg, i) => (
                 <Message
                   key={`msg-${i}`}
-                  user={props.user || {}}
                   userNumber={i}
                   nickname={'receiver.nickname'}
                   sender={`${msg.sender}`}
                   content={msg.content}
+                  user={user.displayName}
                 />
               ))
             }

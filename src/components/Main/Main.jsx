@@ -59,7 +59,7 @@ const Main = () => {
 
   useEffect(() => {
     console.log('the user is: ', user)
-  }, [ user, receiver ])
+  }, [ user ])
 
   // stepTwo: false,
   // showLoginOptions: false,
@@ -273,7 +273,7 @@ const Main = () => {
   return <GlobalContextProvider>
     <div className="Main">
       <div className="Main-content">
-      //* Login
+
         {showLogin ? (
           <>
             <Login
@@ -289,7 +289,7 @@ const Main = () => {
             />
           </>
 
-          //* ChatRoom
+       
         ) : inChatRoom ? (
           <>
             {showCRModal && (
@@ -331,7 +331,6 @@ const Main = () => {
             />
           </>
 
-          //* Register
         ) : state.showRegister ? (
           <Register
             {...{
@@ -346,7 +345,6 @@ const Main = () => {
             }}
           />
 
-          //* Default
         ) : (
           <>
             {state.showCRModal && (
