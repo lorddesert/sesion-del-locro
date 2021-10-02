@@ -20,7 +20,7 @@ const Contacts = props => {
 
   useEffect(() => {
     // console.log('contacts: ', contacts)
-    console.log(`globalContext`, context)
+    // console.log(`globalContext`, context)
     
   const fetchContacts = async () => {
     try {
@@ -167,11 +167,8 @@ const Contacts = props => {
         <div className="Contacts-content">
           <Profile />
           <div id="flag" style={{paddingLeft: "5em",transform: "rotate(90deg)"}}>
-            <strong id="flagAnimation" style={{fontSize: '10rem'}}>
-              <span id="flag1">F</span>
-              <span id="flag2">L</span>
-              <span id="flag3">A</span>
-              <span id="flag4">G</span>
+            <strong id="flagAnimation" style={{fontSize: '10rem', overflow: 'hidden'}}>
+                LOA<br/>DING
               </strong>
             </div>
         </div>

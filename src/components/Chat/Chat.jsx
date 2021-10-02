@@ -3,9 +3,9 @@ import Context from '../../context/GlobalContext'
 
 import Message from "../Message/Message"
 import ChatHeader from "../ChatHeader/ChatHeader"
+import ChatInput from '../ChatInput/ChatInput'
 
 import "./Chat.scss"
-import sendImg from "./resources/send.png"
 import quote from "./resources/quote.svg"
 import dice from "./resources/dice.svg"
 
@@ -15,18 +15,13 @@ const Chat = (props) => {
   let setContext = myContext.setGlobalContext
   myContext = myContext.globalContext
 
-  console.log('in chat: ', myContext)
-
   // if('globalContext' in context) context = {...context.globalContext}
 
   const { inChatRoom, receiver, user } = myContext
 
   useEffect(() => {
     // console.assert(receiver === {}, ' NOOOOOOOOOOOOOOOO',receiver)
-    window.addEventListener("keyup", handleEvent)
-
     setContext({...myContext, setChat})
-    return () => window.removeEventListener("keyup", handleEvent)
     // console.log('chat receiver: ', receiver)
   }, [])
 
@@ -34,17 +29,14 @@ const Chat = (props) => {
 
   const [chat, setChat] = useState([])
 
-  const handleEvent = (e) => {
-      if (e.key === "Enter") 
-        if(receiver.nickname)  {
-          console.log('send message!')
-          // props.sendMsg2()
-        }
-        else {
-          console.log('send message to chat room!')
-          // props.sendChatRoomMsg()
-        }
-    }
+  // useEffect(() => {
+  //   if(chat.length) {
+  //     setChat(myContext.chat)
+  //     console.log(chat)
+  //   } else {
+  //     console.log(chat)      
+  //   }
+  // }, [myContext.chat])
 
   if (chat.length || Object.values(receiver).length !== 0) {
     if(inChatRoom) {
@@ -138,26 +130,7 @@ const Chat = (props) => {
               ))
             }
           </div>
-          <div className="Chat-input-container">
-            <div className="Chat-input">
-              <input
-                type="text"
-                id="chatInput"
-                placeholder="Escribe un mensaje"
-                autoFocus
-              />
-            </div>
-            <div className="Input-img-container">
-              <div
-                // onClick={() => props.sendMsg2()}
-                className="Input-img"
-                // onTouchEnd={() => props.sendMsg2()}
-                id="sendMsg"
-              >
-                <img src={sendImg}></img>
-              </div>
-            </div>
-          </div>
+          <ChatInput />
         </div>
       </div>
     )

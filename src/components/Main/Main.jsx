@@ -57,9 +57,8 @@ const Main = () => {
     photoURL: '',
   })
 
-  useEffect(() => {
-    console.log('the user is: ', user)
-  }, [ user ])
+  // useEffect(() => {
+  // }, [ user ])
 
   // stepTwo: false,
   // showLoginOptions: false,

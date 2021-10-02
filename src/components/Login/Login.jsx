@@ -113,7 +113,7 @@ const myFn = () => {
 }
 
 useEffect(() => {
-  console.log('THE USEEEEEEEEEEEER', user)
+  // console.log('THE USEEEEEEEEEEEER', user)
 }, [user])
     return (
       <div className="Login">

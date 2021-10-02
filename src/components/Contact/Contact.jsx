@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext, useCallback, useEffect } from "react";
 import Context from '../../context/GlobalContext'
 import scrollBottom from '../../scripts/scrollBotom'
 import "./Contact.scss";
@@ -7,7 +7,6 @@ import altUserImg from "./resources/altuser.png";
 const Contact = ({contact, i, contacts}) => {
 
   const { globalContext, setGlobalContext } = useContext(Context)
-
 
   const setChat = useCallback(async () => {
     try {
@@ -20,7 +19,8 @@ const Contact = ({contact, i, contacts}) => {
       const snapshot = await contact.ref.ref.once("value")
       receiver.photo = snapshot.child("photo").val()
       receiver.name = snapshot.child("nickname").val()
-      receiver.ref = contact.ref
+      // receiver.ref = contact.ref
+      receiver.ref = snapshot
       receiver.nickname = contact.nickname
 
       for (i = 0; i < contacts.length; i++)

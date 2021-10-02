@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from 'react'
+import React, { useContext, useEffect } from 'react'
 import GlobalContext from '../../context/GlobalContext'
 
 import UserCfgPanel from '../UserCfgPanel/UserCfgPanel'
@@ -7,19 +7,24 @@ import UserCfgPanel from '../UserCfgPanel/UserCfgPanel'
 
 const Profile = props => {
 
-    const { user } = useContext(GlobalContext)
-    
+    const { globalContext } = useContext(GlobalContext)
+    const { user } = globalContext
+
+    // useEffect(() => {
+    //   // console.log('THE USER IS: ', user)
+    //   return () => {
+        
+    //   }
+    // }, [user])
 
     return <div className="Profile">
     <div className="Profile-img">
-      {/* {user.photo && (
+      {user.photoURL && (
         <img
-          // src={props.user.photo || ''}
-          src={''}
-          // alt={`${props.user.nickname || ''}`}
-          alt={`${''}`}
+          src={user.photoURL || ''}
+          alt={`${user.displayName || ''}`}
         ></img>
-      )} */}
+      )}
     </div>
     <div className="Profile-actions">
       <div className="Action" onClick={props.toggleRotate}>

@@ -3,7 +3,7 @@ import React from 'react'
 import ChatRoom from '../ChatRoom/ChatRoom'
 
 const ChatRooms = props => {
-  console.log(props)
+  // console.log(props)
     return (
         <>
         {props.chatRooms.length &&
