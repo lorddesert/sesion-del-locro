@@ -62,33 +62,35 @@ const Contacts = props => {
 
   const [chatRooms, setChatRooms] = useState([])
 
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   //*setChatRooms
-  //   (async () => {
-  //     try {
-  //       const chatRoomRef = app.database().ref("chatRooms");
-  //       const snapshot = await chatRoomRef.once("value");
-  //       let chatRooms = [];
+    //*setChatRooms
+    async function fetchChatRooms () {
+      try {
+        const chatRoomRef = app.database().ref("chatRooms");
+        const snapshot = await chatRoomRef.once("value");
+        let chatRooms = [];
   
-  //       snapshot.forEach((chatRoom) => {
-  //         const newChatRoom = {
-  //           ...chatRoom.val(),
-  //           chat: chatRoom.hasChild("chat")
-  //             ? Object.values(chatRoom.child("chat").val())
-  //             : [],
-  //         };
+        snapshot.forEach((chatRoom) => {
+          const newChatRoom = {
+            ...chatRoom.val(),
+            chat: chatRoom.hasChild("chat")
+              ? Object.values(chatRoom.child("chat").val())
+              : [],
+          };
   
-  //         chatRooms.push(newChatRoom);
-  //       });
+          chatRooms.push(newChatRoom);
+        });
   
-  //       setChatRooms(chatRooms)
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   })()
+        setChatRooms(chatRooms)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    
+    fetchChatRooms()
 
-  // }, [])
+  }, [])
 
   const modal = useCallback(() => {
     const modal = document.getElementById("modal")
@@ -153,9 +155,9 @@ const Contacts = props => {
               <img src={add} alt="crear sala de chat"></img>
             </div>
           </div>
-          <div className="asd">{receiver && 'MUAJAJAJA'}</div>
+          {/* <div className="asd">{receiver && 'MUAJAJAJA'}</div> */}
 
-          {/* <ChatRooms chatRooms={chatRooms} /> */}
+          <ChatRooms chatRooms={chatRooms} />
         </div>
       </div>
     )}

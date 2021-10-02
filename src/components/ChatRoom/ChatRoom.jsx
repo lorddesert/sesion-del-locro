@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './ChatRoom.scss';
-// import chatRoomImg from './resources/chat-room.svg';
+import chatRoomImg from './resources/chat-room.svg';
 
 class ChatRoom extends Component {
   render() {
