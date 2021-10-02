@@ -112,9 +112,12 @@ const Chat = (props) => {
       <div className="Chat">
         <div className="Chat-content" id="chatContent">
           <ChatHeader
-            receiverPhoto={receiver.photo}
-            receiverName={receiver.nickname}
-            stateMsg={receiver.stateMsg}
+            {...{
+              receiverPhoto:receiver.photo,
+              receiverName:receiver.nickname,
+              stateMsg:receiver.stateMsg
+              }
+            }
             // toggleModal={toggleModal}
             // inChatRoom={inChatRoom}
           />
@@ -123,12 +126,14 @@ const Chat = (props) => {
             {
               chat.map((msg, i) => (
                 <Message
-                  key={`msg-${i}`}
-                  userNumber={i}
-                  nickname={'receiver.nickname'}
-                  sender={`${msg.sender}`}
-                  content={msg.content}
-                  user={user.displayName}
+                  {...{
+                    key:`msg-${i}`,
+                    userNumber:i,
+                    nickname:'receiver.nickname',
+                    sender:`${msg.sender}`,
+                    content:msg.content,
+                    user:user.displayName,
+                  }}
                 />
               ))
             }
