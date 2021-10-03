@@ -20,14 +20,12 @@ const ChatInput = () => {
     // console.assert(receiver === {}, ' NOOOOOOOOOOOOOOOO',receiver)
     window.addEventListener("keyup", handleEvent)
     return () => window.removeEventListener("keyup", handleEvent)
-  }, [])
+  }, [receiver])
 
   const handleEvent = (e) => {
     if (e.key === "Enter")
-      if (receiver.nickname) {
+      document.querySelector("#sendMsg").click()
         // console.log('send message!')
-        document.querySelector("#sendMsg").click()
-      }
   }
 
 
@@ -76,7 +74,6 @@ const ChatInput = () => {
   const sendChatRoomMsg = async (diceRoll = false) => {
     try {
       const sender = auth.currentUser.displayName;
-      const receiver = receiver.name; // will be the chatRoom we pick.
       const msg = document.getElementById("chatInput");
       /* I need to change this to the actual chatRoom which the one that has the same .name */
       const receiverDiceValues = {
@@ -96,14 +93,20 @@ const ChatInput = () => {
         newMsg.content = getRandomNumber(parseInt(min), parseInt(max));
       }
 
-      const chatRooms = app.database().ref("chatRooms").once("value")
-
+      const chatRooms =  await app.database().ref("chatRooms").once("value")
       chatRooms.forEach((chatRoom) => {
         if (chatRoom.child("name").val() === receiver) {
           let newRef = chatRoom.ref;
           app.database().ref(newRef).child("chat").push().set(newMsg)
+
+          setGlobalContext({
+            ...globalContext,
+            chat: [ ...chat, newMsg ]
+          })
+          setChat([ ...chat, newMsg ])
+
           msg.value = "";
-          scrollBottom(true);
+          scrollBottom(true)
         }
 
       });
@@ -135,9 +138,9 @@ const ChatInput = () => {
 
         <div className="Input-img-container">
           <div
-            onClick={() => sendChatRoomMsg()}
+            onClick={sendChatRoomMsg}
             className="Input-img"
-            onTouchEnd={() => sendChatRoomMsg()}
+            onTouchEnd={sendChatRoomMsg}
             id="sendMsg"
           >
             <img src={sendImg}></img>
