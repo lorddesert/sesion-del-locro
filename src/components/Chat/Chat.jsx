@@ -7,7 +7,6 @@ import ChatInput from '../ChatInput/ChatInput'
 
 import "./Chat.scss"
 import quote from "./resources/quote.svg"
-import dice from "./resources/dice.svg"
 
 const Chat = (props) => {
 
@@ -25,6 +24,10 @@ const Chat = (props) => {
     // console.log('chat receiver: ', receiver)
   }, [])
 
+  // useEffect(() => {
+  //   console.log('Receiver in main: ', receiver)
+  // }, [ receiver ])
+
   const [chatRoom, setChatRoom] = useState({})
 
   const [chat, setChat] = useState([])
@@ -39,67 +42,29 @@ const Chat = (props) => {
   // }, [myContext.chat])
 
   if (chat.length || Object.values(receiver).length !== 0) {
-    if(inChatRoom) {
-       return (
-        <div className="Chat">
-          <div className="Chat-content" id="chatContent">
-            <ChatHeader
-              // receiverPhoto={receiver.photo}
-              // receiverName={receiver.name}
-              // stateMsg={chatRoom.stateMsg}
-              receiverPhoto={'receiver.photo'}
-              receiverName={'receiver.name'}
-              stateMsg={'chatRoom.stateMsg'}
-              // toggleModal={props.toggleModal}
-              inChatRoom={inChatRoom}
-            />
-            <div className="chat-wrapper"></div>
-            <div className="Chat-messages" id="chat">
-              {chat.map((msg, i) => (
-                <Message
-                  key={`msg-${i}`}
-                  user={props.user || {}}
-                  userNumber={i}
-                  sender={`${msg.sender}`}
-                  content={msg.content}
-                  diceRoll={msg.diceRoll}
-                />
-              ))
-              }
-            </div>
-            <div className="Chat-input-container">
-              <div className="Chat-input">
-                <input
-                  type="text"
-                  id="chatInput"
-                  placeholder="Escribe un mensaje"
-                  autoFocus
-                />
-              </div>
-              <div className="Input-img-container">
-                <div
-                  // onClick={() => props.sendChatRoomMsg(true)}
-                  className="Input-img"
-                  // onTouchEnd={() => props.sendChatRoomMsg(true)}
-                >
-                  <img src={dice}></img>
-                </div>
-              </div>
-              <div className="Input-img-container">
-                <div
-                  // onClick={() => props.sendChatRoomMsg()}
-                  className="Input-img"
-                  // onTouchEnd={() => props.sendChatRoomMsg()}
-                  id="sendMsg"
-                >
-                  <img src={sendImg}></img>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    }
+    // if(inChatRoom) {
+    //    return (
+    //     <div className="Chat">
+    //       <div className="Chat-content" id="chatContent">
+    //         <ChatHeader
+    //           // receiverPhoto={receiver.photo}
+    //           // receiverName={receiver.name}
+    //           // stateMsg={chatRoom.stateMsg}
+    //           receiverPhoto={'receiver.photo'}
+    //           receiverName={'receiver.name'}
+    //           stateMsg={'chatRoom.stateMsg'}
+    //           // toggleModal={props.toggleModal}
+    //           inChatRoom={inChatRoom}
+    //         />
+    //         <div className="chat-wrapper"></div>
+    //         <div className="Chat-messages" id="chat">
+
+    //         </div>
+    //         <ChatInput />
+    //       </div>
+    //     </div>
+    //   )
+    // }
     return (
       <div className="Chat">
         <div className="Chat-content" id="chatContent">
@@ -115,7 +80,7 @@ const Chat = (props) => {
           />
           <div className="chat-wrapper"></div>
           <div className="Chat-messages" id="chat">
-            {
+            {inChatRoom ?
               chat.map((msg, i) => (
                 <Message
                   {...{
@@ -126,6 +91,16 @@ const Chat = (props) => {
                     content:msg.content,
                     user:user.displayName,
                   }}
+                />
+              ))
+            : chat.map((msg, i) => (
+                <Message
+                  key={`msg-${i}`}
+                  user={props.user || {}}
+                  userNumber={i}
+                  sender={`${msg.sender}`}
+                  content={msg.content}
+                  diceRoll={msg.diceRoll}
                 />
               ))
             }
