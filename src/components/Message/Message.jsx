@@ -12,6 +12,7 @@ class Message extends Component {
   render() {
     // if sender == user => background: #DDFC74, messageOwner.display = none.
     /* msg.classList.toggle('myMsg?') */
+    console.log(this.props.sender, this.props.user)
       if (this.props.sender !== this.props.user) {
         this.justifyContent = { justifyContent: "flex-start" };
         this.style = "";

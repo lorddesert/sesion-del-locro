@@ -91,12 +91,15 @@ const Chat = (props) => {
             {inChatRoom ?
                chat.map((msg, i) => (
                 <Message
-                  key={`msg-${i}`}
-                  user={props.user || {}}
-                  userNumber={i}
-                  sender={`${msg.sender}`}
-                  content={msg.content}
-                  diceRoll={msg.diceRoll}
+                {...{
+                    key:`msg-${i}`,
+                    user: user.displayName,
+                    userNumber: i,
+                    sender: `${msg.sender}`,
+                    content: msg.content,
+                    diceRoll: msg.diceRoll
+                  }
+                }
                 />
               ))
             :
@@ -106,9 +109,9 @@ const Chat = (props) => {
                     key:`msg-${i}`,
                     userNumber:i,
                     nickname: receiver.nickname,
-                    sender:`${msg.sender}`,
-                    content:msg.content,
-                    user:user.displayName,
+                    sender: `${msg.sender}`,
+                    content: msg.content,
+                    user: user.displayName,
                   }}
                 />
               ))

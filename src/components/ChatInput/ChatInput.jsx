@@ -67,6 +67,10 @@ const ChatInput = () => {
       const sender = auth.currentUser.displayName
       const msg = document.querySelector("#chatInput")
 
+      // console.log(sender, user)
+
+      // return
+
       const receiverDiceValues = {
         min: receiver.minDiceValue,
         max: receiver.maxDiceValue
