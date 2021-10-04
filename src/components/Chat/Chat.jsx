@@ -40,6 +40,14 @@ const Chat = (props) => {
   //     console.log(chat)      
   //   }
   // }, [myContext.chat])
+  const handleEvent = (e) => {
+    e.persist()
+    if (e.key === "Enter") {
+        document.querySelector("#sendMsg").click()
+    }
+    // console.log('send message!')
+  }
+
 
   if (chat.length || Object.values(receiver).length !== 0) {
     // if(inChatRoom) {
@@ -66,7 +74,7 @@ const Chat = (props) => {
     //   )
     // }
     return (
-      <div className="Chat">
+      <div className="Chat" onKeyPress={handleEvent}>
         <div className="Chat-content" id="chatContent">
           <ChatHeader
             {...{
@@ -78,22 +86,10 @@ const Chat = (props) => {
             // toggleModal={toggleModal}
             // inChatRoom={inChatRoom}
           />
-          <div className="chat-wrapper"></div>
+          {/* <div className="chat-wrapper"></div> */}
           <div className="Chat-messages" id="chat">
             {inChatRoom ?
-              chat.map((msg, i) => (
-                <Message
-                  {...{
-                    key:`msg-${i}`,
-                    userNumber:i,
-                    nickname:'receiver.nickname',
-                    sender:`${msg.sender}`,
-                    content:msg.content,
-                    user:user.displayName,
-                  }}
-                />
-              ))
-            : chat.map((msg, i) => (
+               chat.map((msg, i) => (
                 <Message
                   key={`msg-${i}`}
                   user={props.user || {}}
@@ -101,6 +97,19 @@ const Chat = (props) => {
                   sender={`${msg.sender}`}
                   content={msg.content}
                   diceRoll={msg.diceRoll}
+                />
+              ))
+            :
+              chat.map((msg, i) => (
+                <Message
+                  {...{
+                    key:`msg-${i}`,
+                    userNumber:i,
+                    nickname: receiver.nickname,
+                    sender:`${msg.sender}`,
+                    content:msg.content,
+                    user:user.displayName,
+                  }}
                 />
               ))
             }

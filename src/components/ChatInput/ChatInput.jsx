@@ -16,17 +16,11 @@ const ChatInput = () => {
   const { app, auth, receiver, user, chat, setChat, inChatRoom } = globalContext
 
 
-  useEffect(() => {
-    // console.assert(receiver === {}, ' NOOOOOOOOOOOOOOOO',receiver)
-    window.addEventListener("keyup", handleEvent)
-    return () => window.removeEventListener("keyup", handleEvent)
-  }, [])
-
-  const handleEvent = (e) => {
-    if (e.key === "Enter")
-      document.querySelector("#sendMsg").click()
-    // console.log('send message!')
-  }
+  // useEffect(() => {
+  //   // console.assert(receiver === {}, ' NOOOOOOOOOOOOOOOO',receiver)
+  //   window.addEventListener("keyup", handleEvent)
+  //   return () => window.removeEventListener("keyup", handleEvent)
+  // }, [])
 
   const sendMsg = async () => {
     try {
@@ -71,8 +65,8 @@ const ChatInput = () => {
   const sendChatRoomMsg = async (diceRoll = false) => {
     try {
       const sender = auth.currentUser.displayName
-      const msg = document.getElementById("chatInput")
-      
+      const msg = document.querySelector("#chatInput")
+
       const receiverDiceValues = {
         min: receiver.minDiceValue,
         max: receiver.maxDiceValue
@@ -87,7 +81,7 @@ const ChatInput = () => {
 
       if (msg.value === "" && !diceRoll) return false
 
-      if (diceRoll) newMsg.content = getRandomNumber(parseInt(min), parseInt(max))
+      if (diceRoll && typeof diceRoll !== 'object') newMsg.content = getRandomNumber(parseInt(min), parseInt(max))
 
       // console.log('diceRoll', diceRoll, typeof diceRoll)
       // return
@@ -140,9 +134,9 @@ const ChatInput = () => {
 
         <div className="Input-img-container">
           <div
-            onClick={sendChatRoomMsg}
+            onClick={() => sendChatRoomMsg()}
             className="Input-img"
-            onTouchEnd={sendChatRoomMsg}
+            onTouchEnd={() => sendChatRoomMsg()}
             id="sendMsg"
           >
             <img src={sendImg}></img>

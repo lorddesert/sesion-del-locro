@@ -7,18 +7,11 @@ import Context from '../../context/GlobalContext'
 
 
 const ChatRoom = props => {
-
-  console.log(props)
-
   const { globalContext, setGlobalContext } = useContext(Context)
   const { setChat, inChatRoom } = globalContext
 
   const setChatRoom = async () => {
     try {
-      console.log(props.chatRoom)
-      console.log('ininChatRoom', inChatRoom)
-
-
       if (window.innerWidth < 768)
         document.getElementById("main").classList.toggle("show-chat");
 

@@ -29,7 +29,8 @@ const Contact = ({contact, i, contacts}) => {
           setGlobalContext({
             ...globalContext,
             receiver,
-            chat: contacts[ i ].chat
+            chat: contacts[ i ].chat,
+            inChatRoom: false
           })
           globalContext.setChat(contacts[ i ].chat)
         }

@@ -57,9 +57,6 @@ const Main = () => {
     photoURL: '',
   })
 
-  // useEffect(() => {
-  // }, [ user ])
-
   // stepTwo: false,
   // showLoginOptions: false,
   // showRegister: false,
