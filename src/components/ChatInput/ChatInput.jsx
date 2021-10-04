@@ -70,33 +70,32 @@ const ChatInput = () => {
 
   const sendChatRoomMsg = async (diceRoll = false) => {
     try {
-      const sender = auth.currentUser.displayName;
-      const msg = document.getElementById("chatInput");
+      const sender = auth.currentUser.displayName
+      const msg = document.getElementById("chatInput")
       /* I need to change this to the actual chatRoom which the one that has the same .name */
       const receiverDiceValues = {
         min: receiver.minDiceValue,
         max: receiver.maxDiceValue
       }
-      const { min, max } = receiverDiceValues;
+      const { min, max } = receiverDiceValues
 
       let newMsg = {
         sender,
         content: msg.value,
         diceRoll,
-      };
-
-      if (msg.value === "" && !diceRoll) return false;
-
-      if (diceRoll) {
-        newMsg.content = getRandomNumber(parseInt(min), parseInt(max));
       }
 
-      console.log('diceRoll', diceRoll, typeof diceRoll)
-      return
+      if (msg.value === "" && !diceRoll) return false
+
+      if (diceRoll) newMsg.content = getRandomNumber(parseInt(min), parseInt(max))
+
+      // console.log('diceRoll', diceRoll, typeof diceRoll)
+      // return
+
       const chatRooms = await app.database().ref("chatRooms").once("value")
       chatRooms.forEach((chatRoom) => {
         if (chatRoom.child("name").val() === receiver) {
-          let newRef = chatRoom.ref;
+          let newRef = chatRoom.ref
           app.database().ref(newRef).child("chat").push().set(newMsg)
 
           setGlobalContext({
@@ -105,15 +104,15 @@ const ChatInput = () => {
           })
           setChat([ ...chat, newMsg ])
 
-          msg.value = "";
+          msg.value = ""
           scrollBottom(true)
         }
 
-      });
+      })
     } catch (error) {
       console.log(error)
     }
-  };
+  }
 
   return <div className="Chat-input-container">
     <div className="Chat-input">
@@ -128,9 +127,9 @@ const ChatInput = () => {
       <>
         <div className="Input-img-container">
           <div
-            onClick={() => sendChatRoomMsg(true)}
+            onClick={(e) => sendChatRoomMsg(true)}
             className="Input-img"
-            onTouchEnd={() => sendChatRoomMsg(true)}
+            onTouchEnd={(e) => sendChatRoomMsg(true)}
           >
             <img src={dice}></img>
           </div>
