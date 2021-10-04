@@ -72,7 +72,7 @@ const ChatInput = () => {
     try {
       const sender = auth.currentUser.displayName
       const msg = document.getElementById("chatInput")
-      /* I need to change this to the actual chatRoom which the one that has the same .name */
+      
       const receiverDiceValues = {
         min: receiver.minDiceValue,
         max: receiver.maxDiceValue
@@ -93,8 +93,10 @@ const ChatInput = () => {
       // return
 
       const chatRooms = await app.database().ref("chatRooms").once("value")
+
       chatRooms.forEach((chatRoom) => {
-        if (chatRoom.child("name").val() === receiver) {
+
+        if (chatRoom.child("name").val() === receiver.name) {
           let newRef = chatRoom.ref
           app.database().ref(newRef).child("chat").push().set(newMsg)
 
@@ -102,6 +104,7 @@ const ChatInput = () => {
             ...globalContext,
             chat: [ ...chat, newMsg ]
           })
+
           setChat([ ...chat, newMsg ])
 
           msg.value = ""
