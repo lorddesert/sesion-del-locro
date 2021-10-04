@@ -20,14 +20,13 @@ const ChatInput = () => {
     // console.assert(receiver === {}, ' NOOOOOOOOOOOOOOOO',receiver)
     window.addEventListener("keyup", handleEvent)
     return () => window.removeEventListener("keyup", handleEvent)
-  }, [receiver])
+  }, [])
 
   const handleEvent = (e) => {
     if (e.key === "Enter")
       document.querySelector("#sendMsg").click()
-        // console.log('send message!')
+    // console.log('send message!')
   }
-
 
   const sendMsg = async () => {
     try {
@@ -69,8 +68,6 @@ const ChatInput = () => {
     }
   }
 
-
-
   const sendChatRoomMsg = async (diceRoll = false) => {
     try {
       const sender = auth.currentUser.displayName;
@@ -89,11 +86,14 @@ const ChatInput = () => {
       };
 
       if (msg.value === "" && !diceRoll) return false;
-      else if (diceRoll) {
+
+      if (diceRoll) {
         newMsg.content = getRandomNumber(parseInt(min), parseInt(max));
       }
 
-      const chatRooms =  await app.database().ref("chatRooms").once("value")
+      console.log('diceRoll', diceRoll, typeof diceRoll)
+      return
+      const chatRooms = await app.database().ref("chatRooms").once("value")
       chatRooms.forEach((chatRoom) => {
         if (chatRoom.child("name").val() === receiver) {
           let newRef = chatRoom.ref;
