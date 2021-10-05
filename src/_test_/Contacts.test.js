@@ -8,7 +8,7 @@ import * as React from 'react'
 import { render } from '@testing-library/react'
 // import renderer from 'react-test-renderer';
 
-import Contacts from'../../components/Contacts/Contacts'
+import Contacts from'../components/Contacts/Contacts'
 
   // test('Render component: ', () => {
   //   render(<Contacts />)
