@@ -22,6 +22,7 @@ const userConfig = props => {
   const [edit, setEdit] = useState(false)
 
   const toggleShowUserCfg = useCallback((e) => {
+    if(e)
     e.preventDefault()
     setEdit(!!edit)
 
@@ -46,31 +47,29 @@ const userConfig = props => {
     const newNickname = document.querySelector("#newdisplayName").value
     const newPassword = document.querySelector("#newPassword").value
     const confirmPassword = document.querySelector("#confirmPassword").value
-    let newUserInfo = {}
     
     const userRef = app
       .database()
       .ref(`users/${user.uid}`)
+    const res = await userRef.child("nickname").once("value")
+    const oldNickname = res.val()
 
-    const oldNickname = await userRef.child("nickname").once("value").val()
-  
-    // if ()
-    //     oldNickname = newUserName
-  
       if (newPassword !== "")
         if (newPassword === confirmPassword)
-          auth.currentUser.updatePassword(newPassword)
+          user.updatePassword(newPassword)
+
         else {
           alert("¡Las contraseñas deben ser identicas!")
           return false
         }
-      else {
-        alert("¡Las contraseñas deben ser identicas!")
-        return false
-      }
       
-      if (oldNickname !== newNickname)
-        await userRef.child('nickname').set(newNickname)
+      if (oldNickname !== newNickname) {
+        await user.updateProfile({displayName: newNickname})
+        userRef.child("nickname").set(newNickname)
+      }
+
+      alert("Usuario actualizado!")
+      toggleShowUserCfg()
   }
 
   //* Folded

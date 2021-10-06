@@ -39,11 +39,8 @@ const Login = props => {
         props.setShowRegister(false)
 
       } else {
-        // let email = document.getElementById("email").value
-        // let password = document.getElementById("password").value
-
-        let email = "alan.nocetto@hotmail.com"
-        let password = "asd123"
+        let email = document.getElementById("email").value
+        let password = document.getElementById("password").value
 
         let { user } = await auth.signInWithEmailAndPassword(
           email,
@@ -108,9 +105,6 @@ const Login = props => {
     e.preventDefault()
     e.target.classList.toggle("focusedInput")
   }
-const myFn = () => {
-  setGlobalContext({user: "Magnificent Richard-man!!!!"})
-}
 
 useEffect(() => {
   // console.log('THE USEEEEEEEEEEEER', user)

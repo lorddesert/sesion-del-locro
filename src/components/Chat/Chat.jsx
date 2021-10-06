@@ -93,10 +93,11 @@ const Chat = (props) => {
                 <Message
                 {...{
                     key:`msg-${i}`,
-                    user: user.displayName,
+                    user: user.uid, //actual UID
+                    sender: msg.sender, //message sender UID
                     userNumber: i,
-                    sender: `${msg.sender}`,
                     content: msg.content,
+                    nickname: msg.nickname,
                     diceRoll: msg.diceRoll
                   }
                 }
@@ -109,9 +110,9 @@ const Chat = (props) => {
                     key:`msg-${i}`,
                     userNumber:i,
                     nickname: receiver.nickname,
-                    sender: `${msg.sender}`,
                     content: msg.content,
-                    user: user.displayName,
+                    sender: msg.sender,
+                    user: user.uid,
                   }}
                 />
               ))

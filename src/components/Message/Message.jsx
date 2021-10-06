@@ -1,4 +1,4 @@
-import React, { Component, useContext } from "react";
+import React, { Component } from "react";
 // import Context from '../../context/GlobalContext'
 
 import "./Message.scss";
@@ -10,15 +10,13 @@ class Message extends Component {
   style = "";
   justifyContent = {};
   render() {
-    // if sender == user => background: #DDFC74, messageOwner.display = none.
-    /* msg.classList.toggle('myMsg?') */
-    console.log(this.props.sender, this.props.user)
-      if (this.props.sender !== this.props.user) {
-        this.justifyContent = { justifyContent: "flex-start" };
-        this.style = "";
-      } else {
+    // console.log(this.props.sender, this.props.user)
+      if (this.props.sender === this.props.user) {
         this.justifyContent = { justifyContent: "flex-end" };
         this.style = "Switch";
+      } else {
+        this.justifyContent = { justifyContent: "flex-start" };
+        this.style = "";
       }
 
     return (
@@ -30,7 +28,7 @@ class Message extends Component {
               : `Message ${this.style}`
           }
         >
-          {this.props.sender != this.props.user && (
+          {this.props.sender !== this.props.user && (
             <div className="Message-owner" ref={this.msgOwnerRef}>
               <h3>{this.props.sender}</h3>
             </div>

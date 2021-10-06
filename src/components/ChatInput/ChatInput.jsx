@@ -38,7 +38,7 @@ const ChatInput = () => {
 
       else
         newMsg = {
-          sender: auth.currentUser.displayName,
+          sender: myUid,
           content: msg.value,
         }
 
@@ -79,6 +79,7 @@ const ChatInput = () => {
 
       let newMsg = {
         sender,
+        nickname: user.displayName,
         content: msg.value,
         diceRoll,
       }
@@ -98,12 +99,12 @@ const ChatInput = () => {
           let newRef = chatRoom.ref
           app.database().ref(newRef).child("chat").push().set(newMsg)
 
+          setChat([ ...chat, newMsg ])
+
           setGlobalContext({
             ...globalContext,
             chat: [ ...chat, newMsg ]
           })
-
-          setChat([ ...chat, newMsg ])
 
           msg.value = ""
           scrollBottom(true)
