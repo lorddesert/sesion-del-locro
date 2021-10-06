@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useContext } from "react";
-import GlobalContext from '../../context/GlobalContext'
+import Context from '../../context/GlobalContext'
 
 import "./userConfig.scss";
 import closeImg from "./resources/close.svg";
@@ -8,35 +8,38 @@ import SecondaryButton from "../SecondaryButton/SecondaryButton";
 
 const userConfig = props => {
 
+ const { globalContext } = useContext(Context);
+
+ console.log( globalContext )
+
+  const { user } = globalContext
+  
+  const { photoURL, displayName, email } = user
+
+  // if('globalContext' in context) context = {...context.globalContext}
+
   const [edit, setEdit] = useState(false)
 
   const toggleShowUserCfg = useCallback((e) => {
-    const userCfgRef = document.getElementById("userConfig");
-    let userInfoContainer = document.getElementById("userInfoContainer");
-    e.preventDefault();
+    e.preventDefault()
+    setEdit(!!edit)
 
-    if (edit) toggleEditForm();
-
-    if (!userInfoContainer.classList.contains("closed"))
+    const userCfgRef = document.querySelector("#userConfig");
+    let userInfoContainer = document.querySelector("#userInfoContainer");
+    
+    if (!userInfoContainer.classList.contains("closed")) 
       userInfoContainer.classList.toggle("closed");
 
     userCfgRef.classList.toggle("toggleUserConfig");
   }, []);
 
-  const toggleEditForm = useCallback(() => {s
-    let userInfoContainer = document.getElementById("userInfoContainer");
-
-    userInfoContainer.cslassList.toggle("closed");
+  const toggleEditForm = useCallback((e) => {
+    e.preventDefault()
 
     setEdit(!edit)
   }, []);
 
-  let context = useContext(GlobalContext);
-
-  if('globalContext' in context) context = {...context.globalContext}
-
-  const { photoURL, displayName, email } = context.auth.currentUser
-
+  //* Folded
     if (!edit)
       return (
         <div className="userConfig" id="userConfig">
@@ -46,7 +49,7 @@ const userConfig = props => {
           <div className="userInfoContainer closed" id="userInfoContainer">
             <div className="userInfo">
               <div className="userProfile">
-                <img src={photoURL ? photoURL : ""} alt={displayName} />
+                <img src={photoURL} alt={displayName} />
                 <div className="displayInfo">
                   <hgroup>
                     <h2>Email</h2>
@@ -68,13 +71,18 @@ const userConfig = props => {
           </div>
         </div>
       );
+      
+    //* Unfolded
     else
       return (
         <div className="userConfig" id="userConfig">
+          <div className="exitImg">
+            <img src={closeImg} alt="exit" onClick={toggleShowUserCfg} />
+          </div>
           <div className="userInfoContainer" id="userInfoContainer">
             <div className="userInfo">
               <div className="userProfile">
-                {/* <img src={photoURL ? photoURL : ""} alt={displayName} /> */}
+                <img src={photoURL} alt={displayName} />
                 <PrimaryButton
                   action={() => document.getElementById("fileInput").click()}
                   value="Cambiar imagen"
@@ -84,7 +92,7 @@ const userConfig = props => {
                   type="file"
                   style={{ display: "none" }}
                   id="fileInput"
-                  onChange={props.storageImg}
+                  onChange={props.storageImg} //! NEED SUPPORT
                 />
               </div>
               <form id="editForm">
@@ -93,7 +101,7 @@ const userConfig = props => {
                   <input
                     type="text"
                     id="newdisplayName"
-                    defaultValue={user.displayName}
+                    defaultValue={displayName}
                   />
                 </label>
                 <label htmlFor="newPassword">
@@ -120,7 +128,7 @@ const userConfig = props => {
                     value="Cancelar"
                   />
                   <PrimaryButton
-                    action={props.saveNewUserInfo}
+                    action={props.saveNewUserInfo} //! NEED SUPPORT
                     value="Guardar"
                   />
                 </div>
