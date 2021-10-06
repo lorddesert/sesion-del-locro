@@ -5,6 +5,7 @@ import "./userConfig.scss";
 import closeImg from "./resources/close.svg";
 import PrimaryButton from "../PrimaryButton/PrimaryButton";
 import SecondaryButton from "../SecondaryButton/SecondaryButton";
+import { auth } from "firebase";
 
 const userConfig = props => {
 
@@ -12,7 +13,7 @@ const userConfig = props => {
 
  console.log( globalContext )
 
-  const { user } = globalContext
+  const { app, auth, user } = globalContext
   
   const { photoURL, displayName, email } = user
 
@@ -26,7 +27,7 @@ const userConfig = props => {
 
     const userCfgRef = document.querySelector("#userConfig");
     let userInfoContainer = document.querySelector("#userInfoContainer");
-    
+
     if (!userInfoContainer.classList.contains("closed")) 
       userInfoContainer.classList.toggle("closed");
 
@@ -38,6 +39,39 @@ const userConfig = props => {
 
     setEdit(!edit)
   }, []);
+
+  const saveNewUserInfo = async (e) => {
+    e.preventDefault()
+  
+    const newNickname = document.querySelector("#newdisplayName").value
+    const newPassword = document.querySelector("#newPassword").value
+    const confirmPassword = document.querySelector("#confirmPassword").value
+    let newUserInfo = {}
+    
+    const userRef = app
+      .database()
+      .ref(`users/${user.uid}`)
+
+    const oldNickname = await userRef.child("nickname").once("value").val()
+  
+    // if ()
+    //     oldNickname = newUserName
+  
+      if (newPassword !== "")
+        if (newPassword === confirmPassword)
+          auth.currentUser.updatePassword(newPassword)
+        else {
+          alert("¡Las contraseñas deben ser identicas!")
+          return false
+        }
+      else {
+        alert("¡Las contraseñas deben ser identicas!")
+        return false
+      }
+      
+      if (oldNickname !== newNickname)
+        await userRef.child('nickname').set(newNickname)
+  }
 
   //* Folded
     if (!edit)
@@ -128,7 +162,7 @@ const userConfig = props => {
                     value="Cancelar"
                   />
                   <PrimaryButton
-                    action={props.saveNewUserInfo} //! NEED SUPPORT
+                    action={saveNewUserInfo} //! NEED SUPPORT
                     value="Guardar"
                   />
                 </div>
