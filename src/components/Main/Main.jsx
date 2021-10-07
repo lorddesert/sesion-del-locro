@@ -327,17 +327,18 @@ const Main = () => {
             />
           </>
 
-        ) : state.showRegister ? (
+        ) : showRegister ? (
           <Register
             {...{
-              stepTwo,
-              setStepTwo,
-              beginRegister,
-              endRegister,
+              // stepTwo,
+              // setStepTwo,
+              // beginRegister,
+              // endRegister,
               setShowRegister,
-              handleInputFocus,
-              storageImg,
-              beginRegister,
+              setShowLogin,
+              // handleInputFocus,
+              // storageImg,
+              // beginRegister,
             }}
           />
 
