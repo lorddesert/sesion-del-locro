@@ -64,7 +64,7 @@ const ChatInput = () => {
 
   const sendChatRoomMsg = async (diceRoll = false) => {
     try {
-      const sender = auth.currentUser.displayName
+      const sender = auth.currentUser.uid
       const msg = document.querySelector("#chatInput")
 
       // console.log(sender, user)

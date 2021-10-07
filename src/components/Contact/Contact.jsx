@@ -45,7 +45,6 @@ const Contact = ({contact, i, contacts}) => {
       //     inChatRoom: false,
       //   }
       scrollBottom()
-      setTimeout(() => console.log(globalContext.receiver), 500)
     } catch (error) {
       console.log(error)
     }

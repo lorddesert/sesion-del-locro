@@ -1,45 +1,46 @@
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 // import Context from '../../context/GlobalContext'
 
 import "./Message.scss";
 
-class Message extends Component {
-  // context = useContext(Context)
-  // user = context.globalContext
-  msgRef = React.createRef();
-  style = "";
-  justifyContent = {};
-  render() {
-    // console.log(this.props.sender, this.props.user)
-      if (this.props.sender === this.props.user) {
-        this.justifyContent = { justifyContent: "flex-end" };
-        this.style = "Switch";
+const Message = props => {
+  // let {context} = useContext(Context)
+  // let user = context.globalContext.user
+
+  let msgRef = React.createRef();
+  let style = "";
+  let justifyContent = {};
+
+    // console.log(props.sender, props.user)
+      if (props.sender === props.user) {
+        justifyContent = { justifyContent: "flex-end" };
+        style = "Switch";
       } else {
-        this.justifyContent = { justifyContent: "flex-start" };
-        this.style = "";
+        console.log(props.sender, props.user)
+        justifyContent = { justifyContent: "flex-start" };
+        style = "";
       }
 
     return (
-      <div className="Message-wrapper" style={this.justifyContent}>
+      <div className="Message-wrapper" style={justifyContent}>
         <div
           className={
-            this.props.diceRoll
-              ? `Message ${this.style} dice-roll`
-              : `Message ${this.style}`
+            props.diceRoll
+              ? `Message ${style} dice-roll`
+              : `Message ${style}`
           }
         >
-          {this.props.sender !== this.props.user && (
-            <div className="Message-owner" ref={this.msgOwnerRef}>
-              <h3>{this.props.sender}</h3>
+          {props.sender !== props.user && (
+            <div className="Message-owner" ref={msgRef}>
+              <h3>{props.nickname}</h3>
             </div>
-          )}
+           )} 
           <div className="Message-content">
-            <p>{this.props.content}</p>
+            <p>{props.content}</p>
           </div>
         </div>
       </div>
     );
-  }
 }
 
 export default Message;

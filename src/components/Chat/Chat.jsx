@@ -20,7 +20,7 @@ const Chat = (props) => {
 
   useEffect(() => {
     // console.assert(receiver === {}, ' NOOOOOOOOOOOOOOOO',receiver)
-    setContext({...myContext, setChat})
+    setContext({ ...myContext, setChat })
     // console.log('chat receiver: ', receiver)
   }, [])
 
@@ -28,9 +28,9 @@ const Chat = (props) => {
   //   console.log('Receiver in main: ', receiver)
   // }, [ receiver ])
 
-  const [chatRoom, setChatRoom] = useState({})
+  const [ chatRoom, setChatRoom ] = useState({})
 
-  const [chat, setChat] = useState([])
+  const [ chat, setChat ] = useState([])
 
   // useEffect(() => {
   //   if(chat.length) {
@@ -43,56 +43,45 @@ const Chat = (props) => {
   const handleEvent = (e) => {
     e.persist()
     if (e.key === "Enter") {
-        document.querySelector("#sendMsg").click()
+      document.querySelector("#sendMsg").click()
     }
     // console.log('send message!')
   }
 
 
   if (chat.length || Object.values(receiver).length !== 0) {
-    // if(inChatRoom) {
-    //    return (
-    //     <div className="Chat">
-    //       <div className="Chat-content" id="chatContent">
-    //         <ChatHeader
-    //           // receiverPhoto={receiver.photo}
-    //           // receiverName={receiver.name}
-    //           // stateMsg={chatRoom.stateMsg}
-    //           receiverPhoto={'receiver.photo'}
-    //           receiverName={'receiver.name'}
-    //           stateMsg={'chatRoom.stateMsg'}
-    //           // toggleModal={props.toggleModal}
-    //           inChatRoom={inChatRoom}
-    //         />
-    //         <div className="chat-wrapper"></div>
-    //         <div className="Chat-messages" id="chat">
-
-    //         </div>
-    //         <ChatInput />
-    //       </div>
-    //     </div>
-    //   )
-    // }
     return (
       <div className="Chat" onKeyPress={handleEvent}>
         <div className="Chat-content" id="chatContent">
-          <ChatHeader
-            {...{
-              receiverPhoto:receiver.photo,
-              receiverName:receiver.nickname,
-              stateMsg:receiver.stateMsg
+          {!inChatRoom ?
+            <ChatHeader
+              {...{
+                receiverPhoto: receiver.photo,
+                receiverName: receiver.nickname,
+                stateMsg: receiver.stateMsg
               }
-            }
+              }
             // toggleModal={toggleModal}
             // inChatRoom={inChatRoom}
-          />
+            />
+            :
+            <ChatHeader
+              {...{
+                receiverPhoto: receiver.photo,
+                receiverName: receiver.name,
+                stateMsg: receiver.stateMsg
+              }
+              }
+            // toggleModal={toggleModal}
+            // inChatRoom={inChatRoom}
+            />}
           {/* <div className="chat-wrapper"></div> */}
           <div className="Chat-messages" id="chat">
             {inChatRoom ?
-               chat.map((msg, i) => (
+              chat.map((msg, i) => (
                 <Message
-                {...{
-                    key:`msg-${i}`,
+                  {...{
+                    key: `msg-${i}`,
                     user: user.uid, //actual UID
                     sender: msg.sender, //message sender UID
                     userNumber: i,
@@ -100,19 +89,19 @@ const Chat = (props) => {
                     nickname: msg.nickname,
                     diceRoll: msg.diceRoll
                   }
-                }
+                  }
                 />
               ))
-            :
+              :
               chat.map((msg, i) => (
                 <Message
                   {...{
-                    key:`msg-${i}`,
-                    userNumber:i,
-                    nickname: receiver.nickname,
-                    content: msg.content,
-                    sender: msg.sender,
+                    key: `msg-${i}`,
                     user: user.uid,
+                    sender: msg.sender,
+                    userNumber: i,
+                    content: msg.content,
+                    nickname: receiver.nickname,
                   }}
                 />
               ))
@@ -123,7 +112,7 @@ const Chat = (props) => {
       </div>
     )
 
-  // Fallback background.
+    // Fallback background.
   } else {
     return (
       <div className="Chat" id="chat">
@@ -175,9 +164,9 @@ export default Chat
   // if chatRoom { stateMsg }
 
   // user.inChatRoom
-  
+
   // function toggleModal
-  
+
   // */
 
   // // const [inChatRoom, setInChatRoom] = useState(false)

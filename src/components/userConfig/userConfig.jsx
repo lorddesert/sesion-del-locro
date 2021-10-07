@@ -11,8 +11,6 @@ const userConfig = props => {
 
  const { globalContext } = useContext(Context);
 
- console.log( globalContext )
-
   const { app, auth, user } = globalContext
   
   const { photoURL, displayName, email } = user
