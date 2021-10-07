@@ -20,6 +20,14 @@ const Login = props => {
   }
   const { globalContext, setGlobalContext }  = useContext(GlobalContext)
   const { app, auth, user } = globalContext
+  
+  useEffect(() => {
+    // console.log('THE USEEEEEEEEEEEER', user)
+    setGlobalContext({
+      ...globalContext,
+      logIn,
+    })
+  }, [user])
 
   const logIn = async (currentUser = false) => {
     try {
@@ -29,23 +37,29 @@ const Login = props => {
 
       if (currentUser) {
         ref = app.database().ref(`users/${auth.currentUser.uid}`)
-
+        
         toastr.success("Sesion abierta detectada")
         
         ref.child("online").onDisconnect().set(false)
-
-        props.setUser({ ref, ...authCurrentUser })
+        
+        props.setUser({...authCurrentUser })
+        setGlobalContext({
+          ...globalContext,
+          user: {
+            ref, ...authCurrentUser 
+          }
+        })
         props.setShowLogin(false)
         props.setShowRegister(false)
-
+        
       } else {
         let email = document.getElementById("email").value
         let password = document.getElementById("password").value
-
+        
         let { user } = await auth.signInWithEmailAndPassword(
           email,
           password
-        )
+          )
         ref = app.database().ref(`users/${user.uid}`)
 
         props.setUser(user)
@@ -106,9 +120,11 @@ const Login = props => {
     e.target.classList.toggle("focusedInput")
   }
 
-useEffect(() => {
-  // console.log('THE USEEEEEEEEEEEER', user)
-}, [user])
+  const showRegister = (e) => {
+    e.preventDefault()
+    props.setShowLogin(false)
+    props.setShowRegister(true)
+  }
     return (
       <div className="Login">
         <div className="Login-img" />
@@ -154,7 +170,7 @@ useEffect(() => {
               <SecondaryButton
                 id="link"
                 value="¿No tienes una cuenta?"
-                action={() => setShowRegister(true)}
+                action={showRegister}
               />
             </div>
           </form>
