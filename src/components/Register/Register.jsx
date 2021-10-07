@@ -77,6 +77,7 @@ const Register = props => {
                 onFocus={handleInputFocus}
                 onBlur={handleInputFocus}
                 placeholder="example@hotmail.com"
+                autoComplete="email"
               />
             </label>
           </section>
@@ -92,6 +93,7 @@ const Register = props => {
                 onFocus={handleInputFocus}
                 onBlur={handleInputFocus}
                 placeholder="Imma'getchu"
+                autoComplete="password"
               />
             </label>
           </section>
