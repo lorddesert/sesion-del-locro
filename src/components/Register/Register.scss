@@ -11,6 +11,10 @@ $gray: #a8a8a8;
   overflow: auto;
   place-items: center;
 
+  .RegisterForm {
+    min-width: 350px;
+  }
+
   img {
     width: 75px;
     height: 75px;
