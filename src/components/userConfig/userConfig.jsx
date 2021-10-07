@@ -45,6 +45,7 @@ const userConfig = props => {
     const newNickname = document.querySelector("#newdisplayName").value
     const newPassword = document.querySelector("#newPassword").value
     const confirmPassword = document.querySelector("#confirmPassword").value
+    const user = auth.currentUser
     
     const userRef = app
       .database()

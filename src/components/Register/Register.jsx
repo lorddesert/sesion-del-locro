@@ -6,7 +6,7 @@ import SecondaryButton from "../SecondaryButton/SecondaryButton"
 
 const Register = props => {
   const { globalContext } = useContext(Context)
-  const { auth, logIn } = globalContext
+  const { app, auth, logIn, user } = globalContext
   const [ img, setImg ] = useState("")
 
   const getRegisterImg = (e) => {
@@ -22,9 +22,22 @@ const Register = props => {
     try {
       e.preventDefault()
       const email = document.querySelector("#email").value
+      const nickname = document.querySelector("#nickname").value
       const password = document.querySelector("#password").value
 
+      // !LOADING
       await auth.createUserWithEmailAndPassword(email, password)
+
+      await auth.currentUser.updateProfile({
+        displayName: nickname
+      })
+      
+      await app.database().ref("users").child(`${auth.currentUser.uid}`).set({
+        nickname: nickname,
+        online: true,
+        email,
+      })
+      
 
       alert('SU! ccesfully registered. Welcome!')
 
@@ -93,8 +106,7 @@ const Register = props => {
                 onFocus={handleInputFocus}
                 onBlur={handleInputFocus}
                 placeholder="Imma'getchu"
-                autoComplete="password"
-              />
+                />
             </label>
           </section>
 
@@ -108,6 +120,7 @@ const Register = props => {
                 required
                 onFocus={handleInputFocus}
                 onBlur={handleInputFocus}
+                autoComplete="password"
               />
             </label>
           </section>
