@@ -5,7 +5,6 @@ import "./userConfig.scss";
 import closeImg from "./resources/close.svg";
 import PrimaryButton from "../PrimaryButton/PrimaryButton";
 import SecondaryButton from "../SecondaryButton/SecondaryButton";
-import { auth } from "firebase";
 
 const userConfig = props => {
 
