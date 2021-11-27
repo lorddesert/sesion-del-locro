@@ -38,7 +38,7 @@
         email,
       })
 
-      toastr.success("Registro completado.", "¡Listo!")
+     alert("Registro completado.", "¡Listo!")
       login(true)
     } catch (error) {
       console.log(error)

@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
-import firebase from "firebase"
+import { initializeApp } from "firebase/app"
 import { DB_CONFIG } from '../config/config'
 
 
-const app = !firebase.apps.length
-? firebase.initializeApp(DB_CONFIG)
-: firebase.app()
+const app = initializeApp(DB_CONFIG)
 const storage = app.storage
 const auth = app.auth() // I need the reference here?
 
@@ -15,7 +13,9 @@ const initialContext = {
     auth,
     user: "",
     inChatRoom: false,
-    receiver: {},
+    receiver: {
+        ref: {}
+    },
     
 }
 
