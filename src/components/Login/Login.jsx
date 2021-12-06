@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react"
-import toastr from "toastr" // ? Should we use this?
 
 
 import "./Login.scss"
@@ -11,13 +10,6 @@ import PrimaryButton from "../PrimaryButton/PrimaryButton"
 import SecondaryButton from "../SecondaryButton/SecondaryButton"
 
 const Login = props => {
-  toastr.options = {
-    positionClass: "toast-bottom-right",
-    timeOut: 2000,
-    progressBar: true,
-    closeButton: true,
-    newestOnTop: false,
-  }
   const { globalContext, setGlobalContext }  = useContext(GlobalContext)
   const { app, auth, user } = globalContext
   
@@ -37,9 +29,7 @@ const Login = props => {
 
       if (currentUser) {
         ref = app.database().ref(`users/${auth.currentUser.uid}`)
-        
-        toastr.success("Sesion abierta detectada")
-        
+                
         ref.child("online").onDisconnect().set(false)
         
         props.setUser({...authCurrentUser })
@@ -91,24 +81,24 @@ const Login = props => {
       let err = error
       switch (error.code) {
         case "auth/invalid-email":
-          toastr.error("El email es invalido.")
+          alert("El email es invalido.")
           break
 
         case "auth/user-disabled":
-          toastr.error("El email fue eliminado.")
+          alert("El email fue eliminado.")
           break
 
         case "auth/user-not-found":
-          toastr.error("El email no existe.")
+          alert("El email no existe.")
           break
 
         case "auth/wrong-password":
-          toastr.error("Contraseña incorrecta")
+          alert("Contraseña incorrecta")
           break
 
         default:
           console.log(err)
-          toastr.error("Un error ocurrio, intente de nuevo mas tarde.")
+          alert("Un error ocurrio, intente de nuevo mas tarde.")
           break
       }
     }
@@ -129,11 +119,6 @@ const Login = props => {
       <div className="Login">
         <div className="Login-img" />
         <div className="Login-form-container">
-          <div className="Logo">
-            <h1>Sesion del Locro</h1>
-            {/* <img src='https://frasesparami.com/wp-content/uploads/2019/09/imagenes-bonitas.jpg' alt='logo' width='50px' /> */}
-            <img src={logo} alt="logo" width="50px" />
-          </div>
           <form className="Login-form">
             <span id="errorMsg"></span>
             <label htmlFor="email">
