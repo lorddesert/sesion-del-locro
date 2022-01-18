@@ -16,7 +16,6 @@ const Message = props => {
         justifyContent = { justifyContent: "flex-end" };
         style = "Switch";
       } else {
-        console.log(props.sender, props.user)
         justifyContent = { justifyContent: "flex-start" };
         style = "";
       }
