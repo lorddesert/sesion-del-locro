@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app"
 import { 
     signInWithEmailAndPassword, 
     createUserWithEmailAndPassword,
-    currentUser,
+    getAuth,
     signOut,
 } from "firebase/auth"
 import { DB_CONFIG } from '../config/config'
@@ -11,6 +11,7 @@ import { DB_CONFIG } from '../config/config'
 
 const app = initializeApp(DB_CONFIG)
 const storage = app.storage
+const currentUser = getAuth().currentUser
 const auth = {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
