@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useCallback, useContext } from "react"
+import { get, getDatabase, onValue, ref } from 'firebase/database'
+import { getAuth } from 'firebase/auth'
+
 import "./Contacts.scss"
 import Context from '../../context/GlobalContext'
 
@@ -19,37 +22,38 @@ const Contacts = props => {
   const [contacts, setContacts] = useState([])
 
   useEffect(() => {
-    // console.log('contacts: ', contacts)
-    // console.log(`globalContext`, context)
-    
+  
   const fetchContacts = async () => {
     try {
       let contacts = [];
-      const usersRef = app.database().ref("users");
-      const sender = auth.currentUser.uid;
-      const myNickname = auth.currentUser.displayName;
+      const usersRef = ref(getDatabase(), "users/");
+      const sender = getAuth().currentUser.uid;
+      const myNickname = getAuth().currentUser.displayName;
 
-      let snapshot = await usersRef.once("value");
+     const snapshot = await get(usersRef)
 
-      snapshot.forEach((user) => {
-        if (user.val().nickname !== myNickname) {
-          const { photo, online, nickname } = user.val();
-          let chat = user.child(`contacts/${sender}/chat`).val();
+     console.log('flag2');
+     
+     snapshot.forEach((user) => {
+      console.log(user)
+      if (user.val().nickname !== myNickname) {
+        const { photo, online, nickname } = user.val();
+        let chat = user.child(`contacts/${sender}/chat`).val();
 
-          chat = chat ? Object.values(chat) : [];
+        chat = chat ? Object.values(chat) : [];
 
-          const newContact = {
-            chat,
-            photo,
-            online,
-            nickname,
-            ref: user,
-          };
+        const newContact = {
+          chat,
+          photo,
+          online,
+          nickname,
+          ref: user,
+        };
 
-          contacts.push(newContact);
-        }
-      });
-
+        contacts.push(newContact);
+      }
+    });
+      console.log('flag 2');
       setContacts(contacts);
     } catch (error) {
       console.log(error);
@@ -67,8 +71,8 @@ const Contacts = props => {
     //*setChatRooms
     async function fetchChatRooms () {
       try {
-        const chatRoomRef = app.database().ref("chatRooms");
-        const snapshot = await chatRoomRef.once("value");
+        const chatRoomRef = ref(getDatabase(), "chatRooms");
+        const snapshot = await get(chatRoomRef);
         let chatRooms = [];
   
         snapshot.forEach((chatRoom) => {
