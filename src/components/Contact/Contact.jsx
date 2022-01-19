@@ -1,4 +1,6 @@
 import React, { useContext, useCallback, useEffect } from "react";
+import { get, getDatabase, ref } from 'firebase/database'
+// Components
 import Context from '../../context/GlobalContext'
 import scrollBottom from '../../scripts/scrollBotom'
 import "./Contact.scss";
@@ -16,11 +18,16 @@ const Contact = ({contact, i, contacts}) => {
         document.getElementById("main").classList.toggle("show-chat")
       }
 
-      const snapshot = await contact.ref.ref.once("value")
-      receiver.photo = snapshot.child("photo").val()
-      receiver.name = snapshot.child("nickname").val()
+      console.log('contact snapshot flag', contact);
+      
+      // return
+      // const snapshot = await get(contact.ref)
+      // console.log(snapshot)
+      
+      receiver.photo = contact.photo
+      receiver.name = contact.nickname
       // receiver.ref = contact.ref
-      receiver.ref = snapshot
+      receiver.ref = contact.ref
       receiver.nickname = contact.nickname
 
       for (i = 0; i < contacts.length; i++)
