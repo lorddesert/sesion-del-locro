@@ -49,7 +49,7 @@ const Chat = (props) => {
   }
 
 
-  if (chat.length || Object.values(receiver).length !== 0) {
+  if (chat.length) {
     return (
       <div className="Chat" onKeyPress={handleEvent}>
         <div className="Chat-content" id="chatContent">
