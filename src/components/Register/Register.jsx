@@ -1,4 +1,8 @@
-import React, { Component, useContext, useState } from "react"
+import React, { useContext, useState } from "react"
+import { getAuth } from 'firebase/auth'
+import { ref } from 'firebase/database'
+
+// Components
 import Context from '../../context/GlobalContext'
 import "./Register.scss"
 import PrimaryButton from "../PrimaryButton/PrimaryButton"
@@ -26,13 +30,13 @@ const Register = props => {
       const password = document.querySelector("#password").value
 
       // !LOADING
-      await auth.createUserWithEmailAndPassword(email, password)
+      await auth.createUserWithEmailAndPassword(getAuth(), email, password)
 
       await auth.currentUser.updateProfile({
         displayName: nickname
       })
       
-      await app.database().ref("users").child(`${auth.currentUser.uid}`).set({
+      await ref(getAuth(), "users").child(`${auth.currentUser.uid}`).set({
         nickname: nickname,
         online: true,
         email,
