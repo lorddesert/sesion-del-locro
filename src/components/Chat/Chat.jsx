@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react"
 import Context from '../../context/GlobalContext'
+import { getAuth } from 'firebase/auth'
 
 import Message from "../Message/Message"
 import ChatHeader from "../ChatHeader/ChatHeader"
@@ -19,7 +20,6 @@ const Chat = (props) => {
   const { inChatRoom, receiver, user } = myContext
 
   useEffect(() => {
-    // console.assert(receiver === {}, ' NOOOOOOOOOOOOOOOO',receiver)
     setContext({ ...myContext, setChat })
     // console.log('chat receiver: ', receiver)
   }, [])
@@ -82,7 +82,7 @@ const Chat = (props) => {
                 <Message
                   {...{
                     key: `msg-${i}`,
-                    user: user.uid, //actual UID
+                    user: getAuth().currentUser.uid, //actual UID
                     sender: msg.sender, //message sender UID
                     userNumber: i,
                     content: msg.content,
@@ -97,11 +97,11 @@ const Chat = (props) => {
                 <Message
                   {...{
                     key: `msg-${i}`,
-                    user: user.uid,
-                    sender: msg.sender,
+                    user: getAuth().currentUser.uid, //actual UID
+                    sender: msg.sender, //message sender UID
                     userNumber: i,
                     content: msg.content,
-                    nickname: receiver.nickname,
+                    nickname: msg.nickname,
                   }}
                 />
               ))
