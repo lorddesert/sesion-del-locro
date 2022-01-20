@@ -8,7 +8,8 @@
     "test:watch": "npm run test --watch",
     "build": "webpack --mode production",
     "start": "webpack-dev-server --open --mode development",
-    "dev": "webpack-dev-server --open --mode development"
+    "dev": "webpack-dev-server --open --mode development",
+    "docker": "docker run -p 5000:8080 lorddesert/demo:latest"
   },
   "jest": {
     "moduleNameMapper": {
