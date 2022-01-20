@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react"
 import { getAuth } from 'firebase/auth'
-import { ref, getDatabase } from 'firebase/database'
+import { ref, getDatabase, onDisconnect } from 'firebase/database'
 
 import "./Login.scss"
 import locro from "./resources/locro.jpg"
@@ -27,18 +27,20 @@ const Login = props => {
       const db = getDatabase()
       
       let userRef = null
-      let authCurrentUser = auth.currentUser
+      let authCurrentUser = getAuth().currentUser
 
       if (currentUser) {
-        ref = ref(db, `users/${auth.currentUser.uid}`)
+        // Old
+        // ref = ref(db, `users/${authCurrentUser.uid}`)
+        // ref.child("online").onDisconnect().set(false)
                 
-        ref.child("online").onDisconnect().set(false)
+        onDisconnect(child('users', `users/${authCurrentUser.uid}/online`)).set(false)
         
         props.setUser({...authCurrentUser })
         setGlobalContext({
           ...globalContext,
           user: {
-            ref, ...authCurrentUser 
+            ref: ref(db, `users/${authCurrentUser.uid}`), ...authCurrentUser 
           }
         })
         props.setShowLogin(false)
@@ -49,7 +51,7 @@ const Login = props => {
         let password = document.getElementById("password").value
         
         let { user } = await auth.signInWithEmailAndPassword( getAuth(), email, password )
-        console.log('flag 1')
+        
         userRef = ref(db, `users/${user.uid}`)
 
         props.setUser(user)
