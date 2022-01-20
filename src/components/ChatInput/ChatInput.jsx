@@ -44,15 +44,16 @@ const ChatInput = () => {
         newMsg = {
           sender: myUid,
           content: msg.value,
+          nickname: getAuth().currentUser.displayName
         }
+      console.log(getAuth().currentUser);
       //Obtain the receiver username and set my chat.
       const { nickname } = await receiver.ref.val()
       //   return
 
       receiverNickname = nickname
-      console.log(receiverNickname)
       // console.log(user, user.ref);
-      console.log('userRef: ', user.userRef);
+      // console.log('userRef: ', user.userRef);
 
       receiverChat = child(ref(getDatabase(), `users/${receiverUid}`), `contacts/${myUid}/chat`)
       myChat = child(ref(getDatabase(), `users/${myUid}`), `contacts/${receiverUid}/chat`)
