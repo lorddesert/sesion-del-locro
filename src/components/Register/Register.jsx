@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react"
-import { getAuth } from 'firebase/auth'
-import { ref } from 'firebase/database'
+import { getAuth, updateCurrentUser, updateProfile } from 'firebase/auth'
+import { getDatabase, ref, child, set } from 'firebase/database'
 
 // Components
 import Context from '../../context/GlobalContext'
@@ -32,15 +32,24 @@ const Register = props => {
       // !LOADING
       await auth.createUserWithEmailAndPassword(getAuth(), email, password)
 
-      await auth.currentUser.updateProfile({
+      
+      await updateProfile(getAuth().currentUser, {
         displayName: nickname
       })
+
+      console.log('%c Update displayName', 'color: aquagreen; background: black; border-radius: 7px;');
       
-      await ref(getAuth(), "users").child(`${auth.currentUser.uid}`).set({
+      const currentUserRef = child(ref(getDatabase(), "users"), `${getAuth().currentUser.uid}`)
+      console.log('%c Current user ref', 'color: aquagreen; background: black; border-radius: 7px;');
+
+      // return
+      await set(currentUserRef, {
         nickname: nickname,
         online: true,
         email,
       })
+      console.log('FLAG 2 Set new user info');
+      console.log(getAuth().currentUser);
       
 
       alert('SU! ccesfully registered. Welcome!')
