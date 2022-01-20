@@ -1,4 +1,5 @@
 import React, { useCallback, useContext } from 'react'
+import { getAuth, signOut } from 'firebase/auth'
 import GlobalContext from '../../context/GlobalContext'
 
 import SecondaryButton from '../SecondaryButton/SecondaryButton'
@@ -20,7 +21,7 @@ const UserCfgPanel = () => {
       })
     
       const disconnect = useCallback(() => {
-        auth.signOut()
+        signOut(getAuth())
         window.location.reload()
       })
     
