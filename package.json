@@ -1,7 +1,7 @@
 {
   "name": "sesion-del-locro",
-  "version": "1.0.0",
-  "description": "A chat application where you can play role games!",
+  "version": "0.1.1",
+  "description": "A chat application with special characteristics for role table games.",
   "main": "index.js",
   "scripts": {
     "test": "jest src",
