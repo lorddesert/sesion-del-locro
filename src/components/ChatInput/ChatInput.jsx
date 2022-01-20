@@ -1,4 +1,7 @@
 import React, { useContext, useEffect } from 'react'
+import { getAuth } from 'firebase/auth'
+import { get, getDatabase, ref, child, push, onValue } from 'firebase/database'
+
 
 import sendImg from "./resources/send.png"
 import dice from "./resources/dice.svg"
@@ -25,10 +28,11 @@ const ChatInput = () => {
   const sendMsg = async () => {
     try {
       const msg = document.getElementById("chatInput")
-      let myUid = auth.currentUser.uid
       let receiverNickname = null
       let receiverUid = receiver.ref.key
-      let receiverChat = receiver.ref.child(`contacts/${myUid}/chat`).ref
+      let receiverChat = null
+
+      let myUid = getAuth().currentUser.uid
       let myChat = null
       let newMsg = {}
       //   console.log('reChat: ', receiverChat)
@@ -41,20 +45,40 @@ const ChatInput = () => {
           sender: myUid,
           content: msg.value,
         }
-
       //Obtain the receiver username and set my chat.
       const { nickname } = await receiver.ref.val()
       //   return
 
       receiverNickname = nickname
-      myChat = user.ref.child(`contacts/${receiverUid}/chat`)
-      myChat.push().set(newMsg)
+      console.log(receiverNickname)
+      // console.log(user, user.ref);
+      console.log('userRef: ', user.userRef);
+
+      receiverChat = child(ref(getDatabase(), `users/${receiverUid}`), `contacts/${myUid}/chat`)
+      myChat = child(ref(getDatabase(), `users/${myUid}`), `contacts/${receiverUid}/chat`)
+
+
+      // myChat.push().set(newMsg)
+      push(myChat, newMsg)
+
       msg.value = ""
-      receiverChat.push().set(newMsg)
+
+      push(receiverChat, newMsg)
+
+      onValue(receiverChat, snapshot => {
+        const messages = snapshot.val()
+        console.log('receiver: ', Object.values(messages))
+      })
+      onValue(myChat, snapshot => {
+        const messages = snapshot.val()
+        console.log('My chat: ', Object.values(messages))
+      })
+
       setGlobalContext({
         ...globalContext,
         chat: [ ...chat, newMsg ]
       })
+
       setChat([ ...chat, newMsg ])
       scrollBottom(true)
     } catch (error) {
@@ -64,7 +88,7 @@ const ChatInput = () => {
 
   const sendChatRoomMsg = async (diceRoll = false) => {
     try {
-      const sender = auth.currentUser.uid
+      const sender = getAuth().currentUser.uid
       const msg = document.querySelector("#chatInput")
 
       // console.log(sender, user)
@@ -91,13 +115,16 @@ const ChatInput = () => {
       // console.log('diceRoll', diceRoll, typeof diceRoll)
       // return
 
-      const chatRooms = await app.database().ref("chatRooms").once("value")
+      const chatRooms = await get(ref(getDatabase(), "chatRooms"))
 
       chatRooms.forEach((chatRoom) => {
-
+         console.log(chatRoom);
+         
         if (chatRoom.child("name").val() === receiver.name) {
           let newRef = chatRoom.ref
-          app.database().ref(newRef).child("chat").push().set(newMsg)
+          console.log('newRef', newRef);
+          
+          newRef.child("chat").push().set(newMsg)
 
           setChat([ ...chat, newMsg ])
 
