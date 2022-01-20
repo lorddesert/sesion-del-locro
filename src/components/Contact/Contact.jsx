@@ -18,7 +18,7 @@ const Contact = ({contact, i, contacts}) => {
         document.getElementById("main").classList.toggle("show-chat")
       }
 
-      console.log('contact snapshot flag', contact);
+      // console.log('contact snapshot flag', contact);
       
       // return
       // const snapshot = await get(contact.ref)
@@ -39,7 +39,9 @@ const Contact = ({contact, i, contacts}) => {
             chat: contacts[ i ].chat,
             inChatRoom: false
           })
-          globalContext.setChat(contacts[ i ].chat)
+          
+          if (contacts[ i ].chat.length === 0) globalContext.setChat([...contacts[ i ].chat, 1])
+          else globalContext.setChat(contacts[ i ].chat)
         }
 
       // setState(
