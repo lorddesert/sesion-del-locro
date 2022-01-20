@@ -32,10 +32,8 @@ const Contacts = props => {
 
      const snapshot = await get(usersRef)
 
-     console.log('flag2');
      
      snapshot.forEach((user) => {
-      console.log(user)
       if (user.val().nickname !== myNickname) {
         const { photo, online, nickname } = user.val();
         let chat = user.child(`contacts/${sender}/chat`).val();
@@ -53,7 +51,6 @@ const Contacts = props => {
         contacts.push(newContact);
       }
     });
-      console.log('flag 2');
       setContacts(contacts);
     } catch (error) {
       console.log(error);
