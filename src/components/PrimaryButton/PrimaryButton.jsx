@@ -5,8 +5,8 @@ import './PrimaryButton.scss';
 class PrimaryButton extends Component {
   render() {
     return (
-      <div className='PrimaryButton' id={this.props.id}>
-        <button className={`${this.props.className}`} onClick={this.props.action} >{this.props.value}</button>
+      <div onClick={this.props.action} className='PrimaryButton' id={this.props.id}>
+        <button onFocus={this.props.focus} className={`${this.props.className}`}>{this.props.value}</button>
       </div>
     );
   }

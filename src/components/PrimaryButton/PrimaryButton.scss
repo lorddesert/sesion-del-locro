@@ -1,10 +1,17 @@
+$semi-black: #393d42;
+$black: #1C1919;
+$yellow: #DDCF1B;
+$header-font-size: 1.5rem;
+$white: #fff;
+$gray: #A8A8A8;
+
 @mixin buttonStyle {
+  
     // border-radius: 37px;
     // background: linear-gradient(145deg, #0f684b, #127b59);
-    background: #000;
+    background: $yellow;
+    color: $black
 }
-$button-color: #117353;
-$font-color: #fff;
 
 .Facebook {
   background: #3b5998 !important;
@@ -15,15 +22,17 @@ $font-color: #fff;
 
 .PrimaryButton {
   // padding: .5em;
+  transition: background-color 50ms linear ;
+  transition: all 0.3s ease;
 
   button {
-    color: $font-color;
-    font-family: 'Lato', Verdana, Geneva, Tahoma, sans-serif;
+    font-family: 'Poppins', Verdana, Geneva, Tahoma, sans-serif;
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    padding: .9em;
+
+    padding: .9em 0;
     border: none;
     border-radius: 7px;
     width: 200px;
