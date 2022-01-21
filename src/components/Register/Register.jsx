@@ -138,7 +138,7 @@ const Register = props => {
             </label>
           </section>
 
-          <div style={{ display: "flex", placeItems: "center" }}>
+          <div style={{ display: "flex", placeItems: "center", margin: "0 auto" }}>
             {img && <img src={img} alt="imagen del usuario" />}
             <PrimaryButton
               action={(e) => {
@@ -159,11 +159,11 @@ const Register = props => {
           <PrimaryButton value="Listo" action={register} /> {/*//! End register */}
 
           <p>
-          <strong>ó</strong>
+          <strong style={{fontSize: "20px", fontWeight: "bold", color: 'white'}}>ó</strong>
         </p>
         <SecondaryButton
           id="logIn"
-          value="Inicia Sesión"
+          value="Inicia sesión"
           action={returnToLogin}
         />
         </form>
