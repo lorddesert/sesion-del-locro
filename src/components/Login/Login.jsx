@@ -9,6 +9,7 @@ import GlobalContext from "../../context/GlobalContext"
 
 import PrimaryButton from "../PrimaryButton/PrimaryButton"
 import SecondaryButton from "../SecondaryButton/SecondaryButton"
+import Login3js from '../3js'
 
 const Login = props => {
   const { globalContext, setGlobalContext }  = useContext(GlobalContext)
@@ -162,7 +163,8 @@ const Login = props => {
   }
     return (
       <div className="Login">
-        <div className="Login-img" />
+        {/* <div className="Login-img" /> */}
+        <Login3js />
         <div className="Login-form-container">
           <form className="Login-form">
             <span id="errorMsg"></span>
@@ -196,11 +198,7 @@ const Login = props => {
                 action={(e) => {
                   e.preventDefault()
                   logIn()
-                  // myFn()
                 }}
-                // focus={(e) => {
-                //   document.querySelector('.PrimaryButton').style.borderRadius = "50%"
-                // }}
               />
             </label>
             <div className="links">

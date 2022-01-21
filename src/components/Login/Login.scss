@@ -7,10 +7,13 @@ $header-font-size: 1.5rem;
 $white: #fff;
 $gray: #A8A8A8;
 $success: mediumspringgreen;
+$blue: #0f3050;
+$bright-blue: #105599;
 
 .Login {
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   color: #fff;
 
 }
@@ -34,7 +37,8 @@ $success: mediumspringgreen;
     width: 85%;
     margin: auto;
     margin-bottom: 2vh;
-    font-size: 14px;
+    font-size: 1rem !important;
+    font-weight: bold;
   }
 
   .Login-form {
@@ -44,18 +48,22 @@ $success: mediumspringgreen;
     p {
 
       font-weight: 700;
-      font-size: 14px;
-      font-family: 'Lato', Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 1rem;
     }
     input {
+      font-family: inherit;
       transition: all 0.1s ease;
       width: 80%;
       
       border: 1px solid #000;
-      color: $white;
+      padding: 1em 1.2em;
+      border-radius: 35px;
+      border: 3px solid $blue;
+      
       text-align: start;
-      font-size: 14px;
-      font-weight: 400;
+      font-size: 1rem;
+      color: $white;
+      font-weight: normal;
     }
 
     .PrimaryButton {
@@ -73,6 +81,10 @@ $success: mediumspringgreen;
         background: none;
         transform: rotate(-45deg);
         width: auto;
+
+        font-weight: bold;
+        font-size: 1.5rem;
+        font-family: inherit;
 
       }
 
@@ -102,7 +114,7 @@ $success: mediumspringgreen;
 
 }
 .focusedInput {
-  border: 1px solid #DDCF1B !important;
+  border: 3px solid $bright-blue !important;
 }
 .Login-img {
   width: 100%;
