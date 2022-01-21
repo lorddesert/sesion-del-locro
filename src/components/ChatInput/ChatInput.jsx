@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { getAuth } from 'firebase/auth'
 import { get, getDatabase, ref, child, push, onValue } from 'firebase/database'
-
+import { success } from '../../scripts/customConsole.js' 
 
 import sendImg from "./resources/send.png"
 import dice from "./resources/dice.svg"
@@ -119,14 +119,12 @@ const ChatInput = () => {
       const chatRooms = await get(ref(getDatabase(), "chatRooms"))
 
       chatRooms.forEach((chatRoom) => {
-         console.log(chatRoom);
-         
-        if (chatRoom.child("name").val() === receiver.name) {
-          let newRef = chatRoom.ref
-          console.log('newRef', newRef);
-          
-          newRef.child("chat").push().set(newMsg)
-
+        if (chatRoom.val().name === receiver.name) {
+          // console.log(newMsg);
+          // return
+          const chatRoomRef = ref(getDatabase(), `chatRooms/${chatRoom.key}/chat`)
+          push(chatRoomRef, newMsg)
+          success('Message pushed')
           setChat([ ...chat, newMsg ])
 
           setGlobalContext({
