@@ -60,7 +60,7 @@ const Login = props => {
           
           props.setShowLogin(false)
           props.setShowRegister(false)
-        }, 2000)
+        }, 1000)
         
       } else {
         let email = document.getElementById("email").value
@@ -171,6 +171,7 @@ const Login = props => {
               <input
                 type="text"
                 id="email"
+                autoComplete="true"
                 onFocus={handleEvent}
                 onBlur={handleEvent}
                 placeholder="example@hotmail.com"
@@ -181,6 +182,8 @@ const Login = props => {
               <input
                 type="password"
                 id="password"
+                autoComplete="true"
+                autoSave="true"
                 onFocus={handleEvent}
                 onBlur={handleEvent}
               />
