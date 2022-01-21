@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { getAuth } from 'firebase/auth'
 import { ref, getDatabase, onDisconnect, child } from 'firebase/database'
 
@@ -13,6 +13,10 @@ import SecondaryButton from "../SecondaryButton/SecondaryButton"
 const Login = props => {
   const { globalContext, setGlobalContext }  = useContext(GlobalContext)
   const { app, auth, user } = globalContext
+  const submitBtn = document.querySelector('#submit')
+
+  const [submitBtnValue, setSubmitBtnValue] = useState('GO!')
+
   
   useEffect(() => {
     // console.log('THE USEEEEEEEEEEEER', user)
@@ -47,9 +51,13 @@ const Login = props => {
           user: {
             ref: ref(db, `users/${authCurrentUser.uid}`), ...authCurrentUser 
           }
-        })
-        props.setShowLogin(false)
-        props.setShowRegister(false)
+        })        
+        setSubmitBtnValue('✔')
+        setTimeout(() => {
+          
+          props.setShowLogin(false)
+          props.setShowRegister(false)
+        }, 2000)
         
       } else {
         let email = document.getElementById("email").value
@@ -66,8 +74,14 @@ const Login = props => {
             userRef, ...authCurrentUser 
           }
         })
-        props.setShowLogin(false)
-        props.setShowRegister(false)
+
+        document.querySelector('.PrimaryButton').classList.toggle('success')
+        setSubmitBtnValue('✔')
+        setTimeout(() => {
+          
+          props.setShowLogin(false)
+          props.setShowRegister(false)
+        }, 2000)
         /* 
           setUser
         */
@@ -86,6 +100,20 @@ const Login = props => {
       }
     } catch (error) {
       let err = error
+
+      document.querySelector('.PrimaryButton').classList.toggle('error')
+      document.querySelector('.submitBtn').classList.toggle('error')
+
+      setSubmitBtnValue('ERR!')
+
+      setTimeout(() => {
+        document.querySelector('.PrimaryButton').classList.toggle('error')
+
+        document.querySelector('.submitBtn').classList.toggle('error')
+        setSubmitBtnValue('GO!')
+      }, 2500)      
+
+
       switch (error.code) {
         case "auth/invalid-email":
           alert("El email es invalido.")
@@ -107,6 +135,9 @@ const Login = props => {
           console.log(err)
           alert("Un error ocurrio, intente de nuevo mas tarde.")
           break
+
+
+        
       }
     }
   }
@@ -150,12 +181,16 @@ const Login = props => {
             <label htmlFor="submit">
               <PrimaryButton
                 id="submit"
-                value="Iniciar Sesión"
+                value={submitBtnValue}
+                className='submitBtn'
                 action={(e) => {
                   e.preventDefault()
                   logIn()
                   // myFn()
                 }}
+                // focus={(e) => {
+                //   document.querySelector('.PrimaryButton').style.borderRadius = "50%"
+                // }}
               />
             </label>
             <div className="links">
