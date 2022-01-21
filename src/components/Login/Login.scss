@@ -87,10 +87,14 @@ $success: mediumspringgreen;
       color: #fafafa;
     }
 
-    .success {
+    .success, .waiting {
       background: mediumspringgreen;
       border-radius: 50%;
 
+    }
+
+    .waiting {
+      background: $gray;
     }
 
     

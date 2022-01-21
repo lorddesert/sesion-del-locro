@@ -33,6 +33,9 @@ const Login = props => {
 
   const logIn = async (currentUser = false) => {
     try {
+      setSubmitBtnValue('…')
+      document.querySelector('.PrimaryButton').classList.toggle('waiting')
+
       const db = getDatabase()
       
       let userRef = null
@@ -101,6 +104,7 @@ const Login = props => {
     } catch (error) {
       let err = error
 
+      document.querySelector('.PrimaryButton').classList.toggle('waiting')
       document.querySelector('.PrimaryButton').classList.toggle('error')
       document.querySelector('.submitBtn').classList.toggle('error')
 
@@ -130,6 +134,9 @@ const Login = props => {
         case "auth/wrong-password":
           alert("Contraseña incorrecta")
           break
+
+        case "auth/internal-error":
+          alert("Error interno del servicio")
 
         default:
           console.log(err)
