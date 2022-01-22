@@ -1,9 +1,27 @@
+$semi-black: #393d42;
+$black: #0c0b0b;
+$full-black: #050505;
+$yellow: #DDCF1B;
+$dark-yellow: #ddd01bdc;
+$header-font-size: 1.5rem;
+$white: #fff;
+$gray: #A8A8A8;
+$success: mediumspringgreen;
+$blue: #0f3050;
+$bright-blue: #105599;
+
 .Contact {
   display: flex;
   flex-direction: row;
-  border-bottom: solid 1px #3a3a3a;
-  padding: 0.5em 0;
+  background: $black;
+  // border-top: 3px solid $full-black;
+  // border-bottom: 3px solid $full-black;
+  transition: all ease 150ms;
+  
+  padding: 1em 0;
   width: 100%;
+
+
   .Contact-avatar {
     flex: 0.9;
     display: grid;
@@ -22,11 +40,11 @@
     align-items: center;
     justify-content: start;
     flex: 3;
-    font-family: "Roboto", Geneva, Tahoma, sans-serif;
     font-size: 14px;
     font-weight: 400;
 
     span {
+      transition: all ease 200ms;
       padding-left: 0.5em;
       color: #fff;
       text-align: start;
@@ -48,13 +66,16 @@
   }
 }
 .Contact:hover {
-  background: #49494d;
   cursor: pointer;
+
+  background: hsl(0, 0%, 8%);
+
+  // span {
+  //   color: $yellow;
+  // }
+  
 }
 
-.Contact:last-child {
-  border: none;
-}
 
 .online {
   img {
