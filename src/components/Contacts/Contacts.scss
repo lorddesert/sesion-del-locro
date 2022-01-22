@@ -1,17 +1,33 @@
+$semi-black: #393d42;
+$black: #1C1919;
+$full-black: #050505;
+$yellow: #DDCF1B;
+$dark-yellow: #ddd01bdc;
+$header-font-size: 1.5rem;
+$white: #fff;
+$gray: #A8A8A8;
+$success: mediumspringgreen;
+$blue: #0f3050;
+$bright-blue: #105599;
+
+
+
 .Contacts {
   z-index: 1;
-  background: #f0f0f0;
+  background: $full-black;
   color: #000;
   flex: 2;
   display: flex;
   flex-direction: column;
   .Contacts-content {
+    gap: 5px;
     max-width: 20vw;
     overflow: auto;
     flex: 9;
     display: flex;
     flex-direction: column;
-    background: #242628;
+    min-width: 270px;
+    // justify-content: bet;
     // For administrate the white spaces
     // justify-content: space-evenly;
 
@@ -24,7 +40,6 @@
 
       span {
         font-size: 1.5em;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
         color: #666;
         opacity: 0.6;
         padding: 0.5em;
@@ -39,7 +54,7 @@
 .Profile {
   display: flex;
   justify-content: space-between !important;
-  background: #1c1c1c;
+  background: hsl(0, 0%, 0%);
 
   .Profile-img,
   .Profile-actions {
@@ -78,11 +93,9 @@
   grid-template-columns: 1fr 33%;
   place-items: center start;
   font-size: 14px;
-  font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
   gap: 2em;
 
   color: #ddcf1b;
-  background: #1c1c1c;
 
   span {
     text-align: start;
@@ -102,7 +115,6 @@
     padding: 1em;
 
     &:hover {
-      background: #48484b;
       border-radius: 50%;
     }
   }
@@ -134,7 +146,6 @@
     "userConfig"
     "logOut";
   font-size: 14px;
-  background: #49494d;
   opacity: 0;
   transition: 0.1s all ease;
   transform: translateY(-10px);
@@ -146,7 +157,6 @@
   button {
     font-size: 14px !important;
     color: #fff;
-    font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif !important;
     font-weight: 800;
   }
   .panelOption {
