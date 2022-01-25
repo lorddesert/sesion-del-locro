@@ -9,7 +9,7 @@ import GlobalContext from "../../context/GlobalContext"
 
 import PrimaryButton from "../PrimaryButton/PrimaryButton"
 import SecondaryButton from "../SecondaryButton/SecondaryButton"
-import Login3js from '../3js'
+import Login3js from '../../Login3js/3js'
 
 const Login = props => {
   const { globalContext, setGlobalContext }  = useContext(GlobalContext)
