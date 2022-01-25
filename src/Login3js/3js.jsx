@@ -36,9 +36,9 @@ const Login3js = () => {
         camera.position.z = zPosition;
         container.appendChild(renderer.domElement);
 
-        // const cube = addCube()
-        // animate(cube);
-        add3DModel()
+        const cube = addCube()
+        animate(cube);
+        // add3DModel()
 
     }, [])
     return <>
