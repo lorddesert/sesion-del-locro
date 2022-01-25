@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import * as THREE from 'three';
-
+import backgroundImage from './Lawrencium.jpg'
 
 const Login3js = () => {
     const scene = new THREE.Scene();
     let camera = {}
-    const renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
     const zPosition = 20
     let cube
 
@@ -13,9 +13,14 @@ const Login3js = () => {
     // const fogColor = new THREE.Color( 'mediumspringgreen' )
 
     // scene.fog = new THREE.Fog(new THREE.Color( 'mediumspringgreen' ), 0.0025, 50);
-    scene.fog = new THREE.Fog(new THREE.Color('yellow'), 0.025, 60);
-    scene.background = backgroundSceneColor
+    // scene.fog = new THREE.Fog(new THREE.Color('yellow'), 0.025, 60);
+    // scene.background = backgroundSceneColor
 
+    var loader = new THREE.TextureLoader();
+    var backgroundTexture = loader.load( backgroundImage );
+
+
+    scene.background = backgroundTexture
     
     useEffect(() => {
 
@@ -31,6 +36,8 @@ const Login3js = () => {
         container.appendChild(renderer.domElement);
 
         cube = addCube()
+
+        addLights()
         // console.log()
         animate();
         // add3DModel()
@@ -42,13 +49,15 @@ const Login3js = () => {
     </>
 
 function addCube() {
-    const geometry = new THREE.TorusKnotGeometry( 8, 3, 300, 20, 4, 7 );
+    const geometry = new THREE.TorusKnotGeometry( 8, 3, 300, 20 );
     // const geometry = new THREE.SphereGeometry( 15, 64, 32 );
 
 
     const material = new THREE.MeshStandardMaterial( { 
             // map: normalMap, 
-            color: 'mediumspringgreen',
+            color: 'black',
+            metalness: 0.5,
+            roughness: 1,
             // aoMap: ambientOcclusion,
             // specularMap,
 
@@ -75,6 +84,17 @@ function moveCamera(e) {
 
     console.log(e.key);
 
+}
+
+function addLights() {
+    
+    const light = new THREE.PointLight( 0x302b63, 100, 1000 );
+    light.position.set( 100, -100, 0 );
+    scene.add( light );
+
+    const light2 = new THREE.PointLight( 0x0f0c29, 100, 1000 );
+    light2.position.set( -100, 50, 0 );
+    scene.add( light2 );
 }
 
 
