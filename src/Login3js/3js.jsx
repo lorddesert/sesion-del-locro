@@ -1,25 +1,19 @@
 import React, { useEffect } from 'react'
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import textureMap from './NormalMap.png'
-import SpecularMap from './SpecularMap.png'
-import AmbientOcclusionMap from './AmbientOcclusionMap.png'
-import DisplacementMap from './DisplacementMap.png'
-// import japRoomv2 from './jap-room-v2.glb'
-import japRoomv2 from './scene.gltf'
 
 
 const Login3js = () => {
     const scene = new THREE.Scene();
     let camera = {}
     const renderer = new THREE.WebGLRenderer();
-    const zPosition = 5
+    const zPosition = 20
+    let cube
 
-    const backgroundSceneColor = new THREE.Color('green')
+    const backgroundSceneColor = new THREE.Color('black')
     // const fogColor = new THREE.Color( 'mediumspringgreen' )
 
     // scene.fog = new THREE.Fog(new THREE.Color( 'mediumspringgreen' ), 0.0025, 50);
-    // scene.fog = new THREE.Fog(new THREE.Color('yellow'), 0.025, 60);
+    scene.fog = new THREE.Fog(new THREE.Color('yellow'), 0.025, 60);
     scene.background = backgroundSceneColor
 
     
@@ -36,8 +30,9 @@ const Login3js = () => {
         camera.position.z = zPosition;
         container.appendChild(renderer.domElement);
 
-        const cube = addCube()
-        animate(cube);
+        cube = addCube()
+        // console.log()
+        animate();
         // add3DModel()
 
     }, [])
@@ -47,18 +42,11 @@ const Login3js = () => {
     </>
 
 function addCube() {
-    const geometry = new THREE.TorusKnotGeometry( 8, 3, 300, 16 );
+    const geometry = new THREE.TorusKnotGeometry( 8, 3, 300, 20, 4, 7 );
     // const geometry = new THREE.SphereGeometry( 15, 64, 32 );
-    const normalMap = new THREE.TextureLoader().load(textureMap);
-    normalMap.wrapS = THREE.RepeatWrapping
-    normalMap.wrapST = THREE.RepeatWrapping
-    normalMap.repeat.set(1,1)
-    const ambientOcclusion = new THREE.TextureLoader().load(AmbientOcclusionMap);
-    const displacementMap = new THREE.TextureLoader().load(DisplacementMap);
-    const specularMap = new THREE.TextureLoader().load(SpecularMap);
 
 
-    const material = new THREE.MeshBasicMaterial( { 
+    const material = new THREE.MeshStandardMaterial( { 
             // map: normalMap, 
             color: 'mediumspringgreen',
             // aoMap: ambientOcclusion,
@@ -72,30 +60,15 @@ function addCube() {
     return torusKnot
 }
 
-function animate(cube) {
+function animate() {
     requestAnimationFrame( animate );
 
     // cube.rotation.x += 0.002;
-    cube.rotation.y += 0.003;
+    // cube.rotation.y += 0.003;
+    cube.rotation.z += 0.003;
 
     renderer.render( scene, camera );
 };
-
-
-function add3DModel() {
-    const loader = new GLTFLoader();
-
-    loader.load( japRoomv2, function ( gltf ) {
-
-        console.log('Success!', gltf);
-
-        scene.add( gltf.scene );
-        }, undefined, error => {
-
-            console.error( error );
-
-        } );
-    }
 
 function moveCamera(e) {
     e.preventDefault()
