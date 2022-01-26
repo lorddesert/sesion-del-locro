@@ -3,8 +3,6 @@ import { getAuth } from 'firebase/auth'
 import { ref, getDatabase, onDisconnect, child } from 'firebase/database'
 
 import "./Login.scss"
-import locro from "./resources/locro.jpg"
-import logo from "./resources/logo.svg"
 import GlobalContext from "../../context/GlobalContext"
 
 import PrimaryButton from "../PrimaryButton/PrimaryButton"
