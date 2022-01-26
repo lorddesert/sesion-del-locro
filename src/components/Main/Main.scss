@@ -7,14 +7,6 @@
   overflow: auto;
   // margin-top: .5em;
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5 {
-    font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
-  }
-
   .Main-content {
     flex: 1;
     display: flex;
@@ -40,7 +32,6 @@ input {
   padding: 8px;
   background-color: #242628;
   width: 80%;
-  font-family: 'Roboto', Verdana, Geneva, Tahoma, sans-serif;
   font-size: 14px !important;
 }
 
