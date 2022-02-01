@@ -135,8 +135,8 @@ const Contacts = props => {
     if(contacts.length){
     return (
       <div className="Contacts" id="contacts">
-        <div className="Contacts-content">
-        <Profile toggleRotate={toggleRotate}/>
+        <div className="Contacts-content" style={{paddingTop: '15px'}}>
+        {/* <Profile toggleRotate={toggleRotate}/> */}
 
           {contacts && contacts.map((contact, i) => (
             <Contact
@@ -147,7 +147,7 @@ const Contacts = props => {
             />
           ))}
 
-          <div className="chat-room">
+          {/* <div className="chat-room">
             <span>Salas de chat</span>
             <div
               className="image-wrapper"
@@ -155,7 +155,7 @@ const Contacts = props => {
             >
               <img src={add} alt="crear sala de chat"></img>
             </div>
-          </div>
+          </div> */}
           {/* <div className="asd">{receiver && 'MUAJAJAJA'}</div> */}
 
           <ChatRooms chatRooms={chatRooms} />

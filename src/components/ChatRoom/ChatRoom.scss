@@ -1,9 +1,12 @@
+// @use ;
+
 .ChatRoom {
   display: flex;
   flex-direction: row;
-  border-bottom: solid 1px #3a3a3a;
   padding: 0.5em 0;
   width: 100%;
+  transition: all ease 150ms;
+
   .ChatRoom-image {
     display: grid;
     justify-content: center;
@@ -54,9 +57,19 @@
   }
 }
 .ChatRoom:hover {
-  background: #49494d;
   cursor: pointer;
+
+  box-shadow:5px -5px 0 1px #07c05a inset; 
+  border-radius: 15px 0 0 7px;
+  transform: translate(15px, -5px);
+  // box-shadow: 10px 10px 25px 5px #ffffff inset; 
+
+  // span {
+  //   color: $yellow;
+  // }
+  
 }
+
 
 .ChatRoom:last-child {
   border: none;

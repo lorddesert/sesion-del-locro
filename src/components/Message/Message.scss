@@ -1,3 +1,6 @@
+@use '../App/App.scss' as var;
+$msgBackground: #f1f1f1;
+
 .Message-wrapper {
   display: flex;
   width: 100%;
@@ -10,36 +13,31 @@
 }
 .Switch {
   margin: 0 2em 0 0 !important;
-  background: #A0E850 !important;
+  background:var.$blue !important;
+  color: #fafafa !important;
 }
 .Message {
+  font-size: 15px;
   display: flex;
   flex-direction: column;
   align-items: start;
-  color: black;
-  border-radius: 15px;
+  color: var.$full-black;
+  border-radius: 1rem;
   margin-left: 2em;
-  background: #fff;
+  background: #f0f0f0;
   padding: .8em;
-
-  p {
-    font-family: 'Roboto', Arial, Helvetica, sans-serif;
-    font-weight: 400;
-  }
 
   .Message-owner {
     font-weight: bold !important;
-    font-size: 15px;
-    font-family: 'Poppins', Arial, Helvetica, sans-serif;
   }
 
   .Message-content {
-    padding: .5em .5em .5em 0;
+    padding: .7em;
+    text-align: center;
     word-break: break-word;
 
     p {
       text-align: start;
-      font-size: 14.2px;
     }
   }
 }
@@ -48,13 +46,12 @@
   display: grid;
   place-items: center;
   font-weight: bold;
-  background: #f2f2f2;
-  border-radius: 7px;
-  padding: .5em 1em !important;
+  background: crimson;
+  border-radius: 50%;
+  color: black;
 
   .Message-owner {
     margin-bottom: .5em;
-    font-size: 14px;
 
   }
 
@@ -62,16 +59,7 @@
     text-align: start;
     word-break: break-all;
     padding: 1em 1.6em;
-    background: #e4e4e4;
     border-radius: 7px;
 
-  }
-
-  p {
-    font-size: 1.6rem;
-    font-style: italic;
-    text-align: center;
-    font-family: 'Poppins', Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: 400;
   }
 }

@@ -14,12 +14,12 @@ $bright-blue: #105599;
 
 .Contacts {
   z-index: 1;
-  background: $full-black;
   color: #000;
   flex: 2;
   display: flex;
   flex-direction: column;
   .Contacts-content {
+    overflow-x: hidden !important;
     gap: 5px;
     max-width: 20vw;
     overflow: auto;
@@ -92,11 +92,12 @@ $bright-blue: #105599;
   display: grid;
   grid-template-columns: 1fr 33%;
   place-items: center start;
-  font-size: 14px;
+  font-size: 1rem;
   gap: 2em;
-
-  color: #ddcf1b;
-
+  color: gray;
+  border-bottom: 2px solid gray;
+  margin-bottom: .5em;
+  
   span {
     text-align: start;
     padding-left: 0.5em;

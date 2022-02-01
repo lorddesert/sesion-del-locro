@@ -13,7 +13,7 @@ $bright-blue: #105599;
 .Contact {
   display: flex;
   flex-direction: row;
-  background: $black;
+  background: #000000;
   // border-top: 3px solid $full-black;
   // border-bottom: 3px solid $full-black;
   transition: all ease 150ms;
@@ -67,15 +67,15 @@ $bright-blue: #105599;
 }
 .Contact:hover {
   cursor: pointer;
-
-  background: hsl(0, 0%, 8%);
+  box-shadow:5px -5px 0 1px #07c05a inset; 
+  border-radius: 15px 0 0 7px;
+  transform: translate(15px, -5px);
 
   // span {
   //   color: $yellow;
   // }
   
 }
-
 
 .online {
   img {

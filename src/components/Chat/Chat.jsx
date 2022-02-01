@@ -118,28 +118,7 @@ const Chat = (props) => {
       <div className="Chat" id="chat">
         <div className="Chat-content">
           <div className="intro">
-            <hgroup>
-              <h2>¡Bienvenido!</h2>
-              <h3>¿Listo para otra gran aventura?</h3>
-            </hgroup>
-            <div className="quotes">
-              <p>
-                Si no, puedes tomar este consejo de nuestros autoproclamados
-                expertos:
-              </p>
-              <blockquote>
-                <img src={quote} alt="quatation marks" />
-                <p>
-                  El que me crea que me crea el que no me crea que no me crea.{" "}
-                  <strong className="autor">- Desconocido</strong>
-                </p>
-                <img
-                  src={quote}
-                  style={{ transform: "rotate(180deg)" }}
-                  alt="quatation marks"
-                />
-              </blockquote>
-            </div>
+            Intro
           </div>
         </div>
       </div>
