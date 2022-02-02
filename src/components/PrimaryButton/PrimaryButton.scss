@@ -1,23 +1,12 @@
-$semi-black: #393d42;
-$black: #1C1919;
-$yellow: #DDCF1B;
+@use '../app/App.scss' as var;
 $header-font-size: 1.5rem;
 $white: #fff;
 $gray: #A8A8A8;
 
 @mixin buttonStyle {
-  
-    // border-radius: 37px;
-    // background: linear-gradient(145deg, #0f684b, #127b59);
-    background: $yellow;
-    color: $black
-}
+    background: black;
 
-.Facebook {
-  background: #3b5998 !important;
-}
-.Facebook:hover {
-  box-shadow: 0 0 7px #8b9dc3;
+    color: $white
 }
 
 .PrimaryButton {
@@ -27,15 +16,15 @@ $gray: #A8A8A8;
 
   button {
     font-family: 'Poppins', Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 20px;
-    font-weight: bold;
+    font-weight: 400;
     cursor: pointer;
     transition: all 0.3s ease;
+    border-radius: 35px;
+    padding: .6em 1em;
 
     padding: .9em 0;
     border: none;
-    border-radius: 7px;
-    width: 200px;
+    min-width: 200px;
     @include buttonStyle();
     }
 }

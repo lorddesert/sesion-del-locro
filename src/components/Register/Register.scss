@@ -1,3 +1,4 @@
+@use "../App/App.scss" as var;
 $black: #242628;
 $yellow: #ddcf1b;
 $header-font-size: 2rem;
@@ -5,7 +6,7 @@ $white: #fff;
 $gray: #a8a8a8;
 
 .Register {
-  background: #1c1c1c;
+  background: var.$full-black;
   flex: 1;
   display: grid;
   overflow: auto;
@@ -27,23 +28,11 @@ $gray: #a8a8a8;
     color: #fff !important;
     text-align: start;
     font-weight: normal;
-    font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
   }
   .background-title {
     width: 100%;
     position: absolute;
     top: 15%;
-
-    h2 {
-      text-align: start;
-      opacity: 0.2;
-      color: #fff;
-      font-family: "Roboto", Verdana, Geneva, Tahoma, sans-serif;
-      font-size: 150px;
-      font-weight: normal;
-      letter-spacing: 45px;
-      text-align: start;
-    }
   }
 
   header {
@@ -61,121 +50,44 @@ $gray: #a8a8a8;
     }
   }
 
-  footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 10vh;
-    background: $black;
-    color: $white;
-    width: 100%;
-  }
-
   form {
-    display: grid;
+
     gap: 1.5em;
-    background: #111213;
-    padding: 0.8em;
-  }
 
-  h2 {
-    text-align: start;
-    font-size: 14px;
-  }
+    section {
+      margin-bottom: 4vh;
+    }
 
-  input {
-    background: $black;
-    border: none;
-    padding: 0.5em;
-    text-align: start;
-    color: $white;
-    margin-bottom: 0.5em;
-    font-weight: normal;
-    margin-top: 2vh;
-    width: inherit;
-    border: 1px solid #000;
+    h2 {
+      text-align: start;
+      font-size: 1rem;
+      margin-bottom: var.$h2-font-unit;
+    }
 
-  }
+    input {
+      font-family: inherit;
+      transition: all 0.1s ease;
+      width: 100%;
 
-  #logIn button{
-    font-weight: normal !important;
-  }
+      border: 1px solid #000;
+      padding: 1em 1.2em;
+      border-radius: 35px;
+      border: 3px solid var.$blue;
 
-  // .stepBalls {
-  //   margin-top: 50px;
-  //   width: 100%;
-  //   display: flex;
-  //   justify-content: center;
-  //   align-items: center;
-  //   flex-direction: row;
-  //   flex: 1;
-
-  //   #ball1, #ball2 {
-  //     width: 15px;
-  //     height: 15px;
-  //     border-radius: 50%;
-
-  //   }
-  //   #ball1 {
-  //     margin-right: 10px;
-  //   }
-
-  // }
-  // .stepOne {
-  //   #ball1 {
-  //     background: white;
-  //   }
-  //   #ball2 {
-  //     background: $gray;
-  //   }
-  // }
-
-  // .stepTwo {
-  //   #ball2 {
-  //     background: #fff;
-  //   }
-  //   #ball1 {
-  //     background: $gray;
-  //   }
-  // }
-
-  .PrimaryButton button {
-    background: $yellow;
-    color: black;
-    padding: 0.5em 0.3em;
-    border-radius: 7px;
-    font-size: 16px;
-  }
-
-  .SecondaryButton {
-    padding: 0 !important;
-    border-radius: 7px;
-
-    button {
-      border: 1px solid #fff;
-      width: 200px;
-      color: #fff;
-      font-size: 16px;
-      border-radius: 7px;
-      padding: 0.5em 0.2em;
+      text-align: start;
+      font-size: 1rem;
+      color: $white;
+      font-weight: normal;
     }
   }
 
-  .imageContainer {
-    display: flex;
+  #logIn button {
+    font-weight: normal !important;
   }
 
   #userImage {
     background: url("https://www.hogar.mapfre.es/media/2018/08/que_son_los_nudos_en_la_madera-1280x720.jpg");
     width: 100px;
     height: 100px;
-  }
-
-  .changeImgBtn {
-    background-color: #3a3a3a !important;
-    color: #fff !important;
-    width: 170px !important;
-    padding: 0.9em !important;
-    font-weight: 400;
   }
 }

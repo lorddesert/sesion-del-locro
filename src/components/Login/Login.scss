@@ -31,15 +31,12 @@ $padding: 1em 1.2em;
     font-size: $header-font-size;
   }
   h2 {
-    display: grid;
-    height: 20%;
     text-align: start;
-    align-items: center;
     width: 85%;
     margin: auto;
     margin-bottom: 2vh;
     font-size: 1rem !important;
-    font-weight: bold;
+    font-weight: 400 !important;
   }
 
   .Login-form {
@@ -64,7 +61,7 @@ $padding: 1em 1.2em;
       text-align: start;
       font-size: 1rem;
       color: $white;
-      font-weight: normal;
+      font-weight: 400;
     }
 
     .PrimaryButton {
@@ -79,6 +76,7 @@ $padding: 1em 1.2em;
       place-content: center;
 
       button {
+        color: black;
         background: none;
         transform: rotate(-45deg);
         width: auto;
@@ -97,7 +95,7 @@ $padding: 1em 1.2em;
     .error {
       background: crimson;
       // $yellow: crimson;
-      color: #fafafa;
+      color: #fafafa !important;
     }
 
     .success, .waiting {
