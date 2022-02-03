@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from "react"
-import { get, getDatabase, onValue, ref } from 'firebase/database'
+import { get, getDatabase, onValue, ref, onChildChanged } from 'firebase/database'
 import { getAuth } from 'firebase/auth'
 
 import "./Contacts.scss"
@@ -19,8 +19,7 @@ const Contacts = props => {
 
   const [contacts, setContacts] = useState([])
 
-  useEffect(() => {
-  
+ 
   const fetchContacts = async () => {
     try {
       let contacts = [];
@@ -53,83 +52,57 @@ const Contacts = props => {
     } catch (error) {
       console.log(error);
     }}
+  async function fetchChatRooms () {
+    try {
+      const chatRoomRef = ref(getDatabase(), "chatRooms");
+      const snapshot = await get(chatRoomRef);
+      let chatRooms = [];
 
+      snapshot.forEach((chatRoom) => {
+        const newChatRoom = {
+          ...chatRoom.val(),
+          chat: chatRoom.hasChild("chat")
+            ? Object.values(chatRoom.child("chat").val())
+            : [],
+        };
+
+        chatRooms.push(newChatRoom);
+      });
+
+      setChatRooms(chatRooms)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+  useEffect(() => {
     fetchContacts()
 
-    //*setContacts
+    const unsubscribe = onChildChanged(ref(getDatabase(), 'users'), () => {
+      fetchContacts()
+    })
+  
+    return () => {
+      unsubscribe()
+    }
   }, [])
 
   const [chatRooms, setChatRooms] = useState([])
 
+  
   useEffect(() => {
-
-    //*setChatRooms
-    async function fetchChatRooms () {
-      try {
-        const chatRoomRef = ref(getDatabase(), "chatRooms");
-        const snapshot = await get(chatRoomRef);
-        let chatRooms = [];
-  
-        snapshot.forEach((chatRoom) => {
-          const newChatRoom = {
-            ...chatRoom.val(),
-            chat: chatRoom.hasChild("chat")
-              ? Object.values(chatRoom.child("chat").val())
-              : [],
-          };
-  
-          chatRooms.push(newChatRoom);
-        });
-  
-        setChatRooms(chatRooms)
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    
     fetchChatRooms()
+
+    const unsubscribe = onChildChanged(ref(getDatabase(), 'chatRooms'), () => {
+      fetchChatRooms()
+    })
+  
+    return () => {
+      unsubscribe()
+    }
 
   }, [])
 
-  const modal = useCallback(() => {
-    const modal = document.getElementById("modal")
-    const modalForm = document.getElementById("modalForm")
-
-    setTimeout(() => modalForm.classList.toggle("modalTransition"), 10)
-    modal.classList.toggle("show-modal")
-  })
-
-  const addContact = useCallback(() => {
-    alert("añadir modal para agregar contacto:\nnombre de usuario?\nnickname?")
-  })
-
-  const displayContacts = useCallback(() => {
-    const contacts = document.getElementById("contacts-display")
-    const contactsArrow = document.getElementById("contacts-arrow")
-
-    contacts.style.display = "flex"
-    contacts.style.alignItems = "start"
-    contactsArrow.style.transition = "all ease 150ms"
-    contactsArrow.style.transform = "rotate(0deg)"
-  })
-
-  const toggleRotate = useCallback(() => {
-    let userCfg = document.getElementById("userCfg")
-    let userCfgPanel = document.getElementById("userCfgPanel")
-
-    userCfg.classList.toggle("rotate")
-    const containsDisplay = userCfgPanel.classList.contains("display")
-
-    if (!containsDisplay) {
-      userCfgPanel.style.display = "grid"
-      setTimeout(() => userCfgPanel.classList.toggle("display"), 100)
-    } else {
-      userCfgPanel.classList.toggle("display")
-      setTimeout(() => (userCfgPanel.style.display = "none"), 100)
-    }
-  })
-  const dummyFn = () => alert("asd")
-  
     if(contacts.length){
     return (
       <div className="Contacts" id="contacts">
