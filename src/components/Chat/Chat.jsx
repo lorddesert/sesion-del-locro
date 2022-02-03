@@ -52,7 +52,6 @@ const Chat = (props) => {
   if (chat.length) {
     return (
       <div className="Chat" onKeyPress={handleEvent}>
-        <div className="Chat-content" id="chatContent">
           {!inChatRoom ?
             <ChatHeader
               {...{
@@ -108,7 +107,6 @@ const Chat = (props) => {
             }
           </div>
           <ChatInput />
-        </div>
       </div>
     )
 
