@@ -12,28 +12,27 @@ const Message = props => {
   let justifyContent = {};
 
     // console.log(props.sender, props.user)
-      if (props.sender === props.user) {
-        justifyContent = { justifyContent: "flex-end" };
-        style = "Switch";
-      } else {
-        justifyContent = { justifyContent: "flex-start" };
-        style = "";
-      }
+      // if (props.sender === props.user) {
+      //   justifyContent = { justifyContent: "flex-end" };
+      //   style = "Switch";
+      // } else {
+      //   justifyContent = { justifyContent: "flex-start" };
+      //   style = "";
+      // }
 
     return (
       <div className="Message-wrapper" style={justifyContent}>
         <div
           className={
             props.diceRoll
-              ? `Message ${style} dice-roll`
-              : `Message ${style}`
+              ? `Message dice-roll`
+              : `Message`
           }
         >
-          {props.sender !== props.user && (
             <div className="Message-owner" ref={msgRef}>
               <h3>{props.nickname}</h3>
+              <i class="user-image fas fa-user"></i>
             </div>
-           )} 
           <div className="Message-content">
             <p>{props.content}</p>
           </div>
