@@ -11,6 +11,8 @@ import Login from "../Login/Login";
 import UserConfig from "../userConfig/userConfig";
 import Register from "../Register/Register";
 import CreateCRModal from "../CreateCRModal/CreateCRModal";
+import Navigation from "../Navigation/Navigation";
+import userConfig from "../userConfig/userConfig";
 
 const Main = () => {
   const { auth, inChatRoom, receiver } = useContext(Context)
@@ -45,6 +47,8 @@ const Main = () => {
 
   const [ showRegister, setShowRegister ] = useState(false)
 
+  const [ showConfig, setShowConfig] = useState(false)
+
   const [ showChatRoom, setShowChatRoom ] = useState(false)
 
   const [ showCRModal, setShowCRModal ] = useState(false)
@@ -57,12 +61,9 @@ const Main = () => {
     photoURL: '',
   })
 
-  return <GlobalContextProvider>
-    <div className="Main">
-      <div className="Main-content">
-
-        {showLogin ? (
-          <>
+  if (showLogin) return <GlobalContextProvider>
+      <div className="Main">
+        <div className="Main-content">
             <Login
               {...{
                 setShowLogin,
@@ -70,108 +71,73 @@ const Main = () => {
                 setShowRegister,
                 setUser,
               }}
+            />
+        </div>
+      </div>
+    </GlobalContextProvider>
 
-            // authUser={authUser}
-            // register={register}
-            />
-          </>
+  if (showRegister) return <GlobalContextProvider>
+    <div className="Main">
+      <div className="Main-con">
+        <Register
+          {...{
+            setShowRegister,
+            setShowLogin,
+          }}
+        />
+      </div>
+    </div>
+  </GlobalContextProvider>
 
-       
-        ) : inChatRoom ? (
-          <>
-            {showCRModal && (
-              <CreateCRModal
-                {...{
-                  setShowCRModal,
-                  handleInputFocus,
-                  // createNewChatRoom,
-                  // modifyChatRoom,
-                  inChatRoom,
-                }}
+  if (inChatRoom) return <GlobalContextProvider>
+    <div className="Main">
+      <div className="Main-content">
+        <CreateCRModal
+          {...{
+            setShowCRModal,
+            handleInputFocus,
+            inChatRoom,
+          }}
+        />
+        <UserConfig/>
+        <Navigation setShowConfig={setShowConfig}/>
+        <Contacts
+          {...{
+            setChat,
+            setChatRoom,
+            setShowCRModal,
+          }}
+        />
+        <Chat
+          {...{
+            user: auth.currentUser.displayName,
+            receiver: {},
+            inChatRoom,
+            stateMsg,
+            receiverName: false,
+          }
+          }
+        />
+      </div>
+    </div>
+  </GlobalContextProvider>
 
-              />
-            )}
-            <UserConfig
-            // saveNewUserInfo={saveNewUserInfo}
-            // storageImg={storageImg}
-            />
-            {/* It will show the users connected in the chatRoom, EVEN I. */}
-            <Contacts
-              {...{
-                setChat,
-                setChatRoom,
-                setShowCRModal,
-              }}
-            />
-            <Chat
-              {...{
-                user: auth.currentUser.displayName,
-                receiver: {}, // * Custom hook,
-                // sendChatRoomMsg,
-                inChatRoom,
-                stateMsg,
-                receiverName: false,
-              }
-              }
-            // chatRoom={state.chatRoom}
-            // toggleModal={toggleModal}
-            />
-          </>
+  if (showConfig) return <GlobalContextProvider>
+    <div className="Main">
+      <div className="Main-content">
+        <Navigation {...{showConfig, setShowConfig}}/>
+        <UserConfig />
+      </div>
+    </div>
+  </GlobalContextProvider>
 
-        ) : showRegister ? (
-          <Register
-            {...{
-              // stepTwo,
-              // setStepTwo,
-              // beginRegister,
-              // endRegister,
-              setShowRegister,
-              setShowLogin,
-              // handleInputFocus,
-              // storageImg,
-              // beginRegister,
-            }}
-          />
 
-        ) : (
-          <>
-            {state.showCRModal && (
-              <CreateCRModal
-              // toggleModal={toggleModal}
-              // handleInputFocus={handleInputFocus}
-              // createNewChatRoom={createNewChatRoom}
-              // modifyChatRoom={modifyChatRoom}
-              // inChatRoom={state.inChatRoom}
-              />
-            )}
-            <UserConfig
-            // saveNewUserInfo={saveNewUserInfo}
-            // storageImg={storageImg}
-            />
-            <Contacts
-            // contacts={state.contacts}
-            // setChat={setChat}
-            // enterChatRooms={enterChatRooms}
-            // chooseRender={state.chooseRender}
-            // chatRooms={state.chatRooms}
-            // setChatRoom={setChatRoom}
-            // toggleModal={toggleModal}
-            />
-            <Chat
-            // user={auth.currentUser.displayName}
-            // sendMsg={sendMsg}
-            // receiver={state.receiver}
-            // chat={state.chat}
-            // sendChatRoomMsg={sendChatRoomMsg}
-            // inChatRoom={state.inChatRoom}
-            // sendMsg2={sendMsg2}
-            // receiverPhoto={state.receiverPhoto}
-            // receiverName={state.receiverName}
-            // receiverNickname={state.receiverNickname}
-            />
-          </>
-        )
-        }
+  return <GlobalContextProvider>
+    <div className="Main">
+      <div className="Main-content">
+        <Navigation {...{showConfig, setShowConfig}}/>
+        <Contacts/>
+        <Chat/>
       </div>
     </div>
   </GlobalContextProvider>
