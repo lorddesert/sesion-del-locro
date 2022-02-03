@@ -9,6 +9,7 @@ $gray: #A8A8A8;
 $success: mediumspringgreen;
 $blue: #0f3050;
 $bright-blue: #105599;
+$contacts-background: #050505;
 
 
 
@@ -19,14 +20,21 @@ $bright-blue: #105599;
   display: flex;
   flex-direction: column;
   .Contacts-content {
-    overflow-x: hidden !important;
-    gap: 5px;
-    max-width: 20vw;
-    overflow: auto;
-    flex: 9;
-    display: flex;
-    flex-direction: column;
-    min-width: 270px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    height: 100%;
+    background: $contacts-background;
+    
+    .contacts-wrapper {
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden !important;
+      gap: 5px;
+      max-width: 20vw;
+      flex: 9;
+      display: flex;
+      min-width: 270px;
+    }
     // justify-content: bet;
     // For administrate the white spaces
     // justify-content: space-evenly;
@@ -202,6 +210,43 @@ $bright-blue: #105599;
     #ff9966
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: .5em;
+  background-color: #1B1B1B;
+}
+
+.nav-icon {
+  display: grid;
+  place-items: center;
+  background-color: $semi-black;
+  width: 55px;
+  height: 55px;
+  color: #e3e3e3;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all ease 200ms;
+  border-radius: 14px;
+
+  
+}
+
+.nav-icon:hover {
+  border-radius: 50%;
+}
+
+.shutdown:hover {
+  background-color: crimson;
+}
+
+.config:hover {
+  background-color: $blue;
+}
+
+
 
 #flagAnimation {
   animation: flag infinite ease-in-out 2s;
