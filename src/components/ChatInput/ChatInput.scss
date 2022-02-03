@@ -1,0 +1,36 @@
+img {
+    width: 35px;
+    height: 35px;
+}
+
+
+
+.Chat-input-container {
+    display: flex;
+
+    input {
+        margin-left: 1em;
+        font-family: inherit;
+        transition: all 0.1s ease;
+        width: 80%;
+        
+        border: 1px solid #000;
+        padding: 1em 1.2em;
+        border-radius: 35px;
+        
+        text-align: start;
+        font-size: 1rem;
+        color: white;
+        font-weight: 400;
+      }
+
+      .Input-img {
+        margin: 0 .5em;
+        display: grid;
+        place-items: center;
+        background: blanchedalmond;
+        border-radius: 50%;
+        padding: .5em;
+
+    }
+}
