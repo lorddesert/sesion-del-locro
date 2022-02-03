@@ -7,9 +7,7 @@ import Context from '../../context/GlobalContext'
 
 // Components
 import Contact from "../Contact/Contact"
-import Profile from "../Profile/Profile"
 
-import add from "./resources/add.svg"
 import ChatRooms from "../ChatRooms/ChatRooms"
 
 const Contacts = props => {
@@ -135,30 +133,20 @@ const Contacts = props => {
     if(contacts.length){
     return (
       <div className="Contacts" id="contacts">
-        <div className="Contacts-content" style={{paddingTop: '15px'}}>
+        <div className="Contacts-content">
         {/* <Profile toggleRotate={toggleRotate}/> */}
-
+        <div className="contacts-wrapper">
           {contacts && contacts.map((contact, i) => (
             <Contact
-              key={`contact-${i}`}
-              contact={contact}
-              contacts={contacts}
-              number={i}
+            key={`contact-${i}`}
+            contact={contact}
+            contacts={contacts}
+            number={i}
             />
-          ))}
-
-          {/* <div className="chat-room">
-            <span>Salas de chat</span>
-            <div
-              className="image-wrapper"
-              onClick={() => props.toggleModal && props.toggleModal(true)}
-            >
-              <img src={add} alt="crear sala de chat"></img>
-            </div>
-          </div> */}
-          {/* <div className="asd">{receiver && 'MUAJAJAJA'}</div> */}
+            ))}
 
           <ChatRooms chatRooms={chatRooms} />
+          </div>
         </div>
       </div>
     )}
@@ -166,7 +154,6 @@ const Contacts = props => {
     else {
         return <div className="Contacts" id="contacts">
         <div className="Contacts-content">
-          <Profile />
           <div id="flag" style={{paddingLeft: "5em",transform: "rotate(90deg)"}}>
             <strong id="flagAnimation" style={{fontSize: '10rem', overflow: 'hidden'}}>
                 LOA<br/>DING
