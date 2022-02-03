@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { getAuth } from 'firebase/auth'
 import { get, getDatabase, ref, child, push, onValue } from 'firebase/database'
 import { success } from '../../scripts/customConsole.js' 
+import './ChatInput.scss'
 
 import sendImg from "./resources/send.png"
 import dice from "./resources/dice.svg"
@@ -124,7 +125,7 @@ const ChatInput = () => {
           // return
           const chatRoomRef = ref(getDatabase(), `chatRooms/${chatRoom.key}/chat`)
           push(chatRoomRef, newMsg)
-          success('Message pushed')
+          // success('Message pushed')
           setChat([ ...chat, newMsg ])
 
           setGlobalContext({
@@ -143,17 +144,14 @@ const ChatInput = () => {
   }
 
   return <div className="Chat-input-container">
-    <div className="Chat-input">
       <input
         type="text"
         id="chatInput"
         placeholder="Escribe un mensaje"
         autoFocus
       />
-    </div>
     {inChatRoom ?
       <>
-        <div className="Input-img-container">
           <div
             onClick={(e) => sendChatRoomMsg(true)}
             className="Input-img"
@@ -161,9 +159,7 @@ const ChatInput = () => {
           >
             <img src={dice}></img>
           </div>
-        </div>
 
-        <div className="Input-img-container">
           <div
             onClick={() => sendChatRoomMsg()}
             className="Input-img"
@@ -172,11 +168,9 @@ const ChatInput = () => {
           >
             <img src={sendImg}></img>
           </div>
-        </div>
       </>
       :
       <>
-        <div className="Input-img-container">
           <div
             onClick={sendMsg}
             className="Input-img"
@@ -185,7 +179,6 @@ const ChatInput = () => {
           >
             <img src={sendImg}></img>
           </div>
-        </div>
       </>
     }
 
