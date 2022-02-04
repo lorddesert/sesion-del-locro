@@ -1,24 +1,21 @@
 // import firebase from 'firebase/app'
-import "firebase/storage"
+import { ref, uploadBytes, getStorage } from "firebase/storage"
+import  { getAuth } from 'firebase/auth'
 
 async function getRegisterImg(uid) {
     try {
-      const img = document.getElementById("fileInput").files[0];
-      if (!img) {
-        return false;
-      } else {
-        let newUserStorage = storage.child(`${uid}/${img.name}`);
-        let uploadTask = null;
-        let imgURL = null;
 
-        uploadTask = await newUserStorage.put(img);
-        imgURL = await newUserStorage.getDownloadURL();
+      const img = document.getElementById("fileInput").files[0];
+
+      if (!img) return false
+      
+      const file = URL.createObjectURL(img)
+      const destiny = ref(getStorage(), `users/${getAuth().currentUser.uid}/${file.name}`)
+      const response = await uploadBytes(destiny, file)
 
         return imgURL;
-      }
     } catch (error) {
       console.log(error);
-      console.log(uploadTask, imgURL);
       alert("Ha ocurrido un error inesperado.");
     }
   }
