@@ -68,7 +68,10 @@ const Chat = (props) => {
               {...{
                 receiverPhoto: receiver.photo,
                 receiverName: receiver.name,
-                stateMsg: receiver.stateMsg
+                stateMsg: receiver.stateMsg,
+                inChatRoom,
+                showCRConfig: props.showCRConfig,
+                setShowCRConfig: props.setShowCRConfig
               }
               }
             // toggleModal={toggleModal}

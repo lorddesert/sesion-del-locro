@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import "./ChatHeader.scss";
 import arrow from "./resources/arrow.svg";
 import altImg from "./resources/altuser.png";
 import options from "./resources/more-options.svg";
+import Context from '../../context/GlobalContext'
+
 
 function toggleClass() {
   document.getElementById("main").classList.toggle("show-chat");
 }
 
 const ChatHeader = (props) => {
+
+  // let { showCRConfig, setShowCRConfig } = useContext(Context);
+
+  // console.log(showCRConfig)
+  const toggleCRConfig = () => {
+    props.setShowCRConfig(!props.showCRConfig)
+  }
+
   return (
     <div className="ChatHeader">
       <div className="return" id="return" onClick={toggleClass}>
@@ -31,8 +41,8 @@ const ChatHeader = (props) => {
           <img
             src={options}
             alt="mas opciones"
-            onClick={(e) => props.toggleModal()}
-            onTouchEnd={(e) => props.toggleModal()}
+            onClick={toggleCRConfig}
+            onTouchEnd={toggleCRConfig}
           />
         </div>
       )}
