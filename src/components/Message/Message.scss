@@ -37,10 +37,11 @@ $msgBackground: #f1f1f1;
 .dice-roll {
   display: grid;
   place-items: center;
-  font-weight: bold;
-  background: crimson;
-  border-radius: 50%;
-  color: black;
+  margin-bottom: 1em;
+  width: 200px;
+  background: var.$semi-black;
+  border-radius: 7px;
+  font-size: 1.2rem;
 
   .Message-owner {
     margin-bottom: .5em;
