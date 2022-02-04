@@ -17,15 +17,8 @@ const Contact = ({ contact, i, contacts }) => {
         document.getElementById("main").classList.toggle("show-chat");
       }
 
-      // console.log('contact snapshot flag', contact);
-
-      // return
-      // const snapshot = await get(contact.ref)
-      // console.log(snapshot)
-
       receiver.photo = contact.photo;
       receiver.name = contact.nickname;
-      // receiver.ref = contact.ref
       receiver.ref = contact.ref;
       receiver.nickname = contact.nickname;
 
@@ -43,15 +36,6 @@ const Contact = ({ contact, i, contacts }) => {
           else globalContext.setChat(contacts[i].chat);
         }
 
-      // setState(
-      //   {
-      //     receiver: contactRef.ref,
-      //     receiverPhoto,
-      //     receiverName,
-      //     receiverNickname: this.state.contacts[i].nickname,
-      //     chat: this.state.contacts[i].chat,
-      //     inChatRoom: false,
-      //   }
       scrollBottom();
     } catch (error) {
       console.log(error);
