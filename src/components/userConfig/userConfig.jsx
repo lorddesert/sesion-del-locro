@@ -10,6 +10,7 @@ const userConfig = (props) => {
   
   const { displayName, uid, photoURL } = getAuth().currentUser
   const [ userImage, setUserImage ] = useState(photoURL)
+  const [ file, setFile ] = useState({})
 
   const saveNewPassword = async (e) => {
 
@@ -41,9 +42,10 @@ const userConfig = (props) => {
     try {
       e.preventDefault()
 
+      console.log(userImage)
       const newNickname = document.querySelector("#newdisplayName").value
       const userRef = ref(getDatabase(), `users/${uid}`)
-      const userStorageRef = storageRef(getStorage(), `users/${uid}`)
+      const userStorageRef = storageRef(getStorage(), `users/${uid}/${file.name}`)
       const response = await uploadBytes(userStorageRef, userImage)
       const imageURL = await getDownloadURL(response.ref)
       // Update the Database User
@@ -73,6 +75,7 @@ const userConfig = (props) => {
 
     let fileURL = URL.createObjectURL(file)
 
+    setFile(file)
     setUserImage(fileURL)
   }
 
