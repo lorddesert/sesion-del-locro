@@ -31,7 +31,7 @@ const Message = props => {
         >
             <div className="Message-owner" ref={msgRef}>
               <h3>{props.nickname}</h3>
-              <i class="user-image fas fa-user"></i>
+              <i className="user-image fas fa-user"></i>
             </div>
           <div className="Message-content">
             <p>{props.content}</p>
