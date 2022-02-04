@@ -12,32 +12,33 @@ import UserConfig from "../userConfig/userConfig";
 import Register from "../Register/Register";
 import CreateCRModal from "../CreateCRModal/CreateCRModal";
 import Navigation from "../Navigation/Navigation";
-import userConfig from "../userConfig/userConfig";
+import ChatRoomConfig from '../ChatRoomConfig/ChatRoomConfig'
+
 
 const Main = () => {
   const { auth, inChatRoom, receiver } = useContext(Context)
 
-  const [ state, setState ] = useState({
-    // State of Main to handle the view
-    showLogin: true,
-    stepTwo: false,
-    showLoginOptions: false,
-    showRegister: false,
-    showChatRoom: false,
-    showCRModal: false,
-    chooseRender: "contacts",
+  // const [ state, setState ] = useState({
+  //   // State of Main to handle the view
+  //   showLogin: true,
+  //   stepTwo: false,
+  //   showLoginOptions: false,
+  //   showRegister: false,
+  //   showChatRoom: false,
+  //   showCRModal: false,
+  //   chooseRender: "contacts",
 
-    // Maybe
-    // receiver: null,
-    // inChatRoom: false,    
-    // This is only needed for Contacts
-    chatRooms: [],
-    contacts: [],
+  //   // Maybe
+  //   // receiver: null,
+  //   // inChatRoom: false,    
+  //   // This is only needed for Contacts
+  //   chatRooms: [],
+  //   contacts: [],
 
 
-    // Only for chat?
-    chat: [],
-  })
+  //   // Only for chat?
+  //   chat: [],
+  // })
 
   const [ showLogin, setShowLogin ] = useState(true)
 
@@ -62,6 +63,7 @@ const Main = () => {
     displayName: '',
     photoURL: '',
   })
+
 
   if (showLogin) return <GlobalContextProvider>
       <div className="Main">
@@ -117,6 +119,8 @@ const Main = () => {
             inChatRoom,
             stateMsg,
             receiverName: false,
+            setShowCRConfig,
+            showCRConfig
           }
           }
         />
@@ -133,16 +137,29 @@ const Main = () => {
     </div>
   </GlobalContextProvider>
 
+  if (showCRConfig) return <GlobalContextProvider>
+    <div className="Main">
+      <div className="Main-content">
+        <Navigation {...{showConfig, setShowConfig}}/>
+        <ChatRoomConfig 
+          {...{
+            showCRConfig,
+            setShowCRConfig
+          }}
+        />
+      </div>
+    </div>
+  </GlobalContextProvider>
+
   return <GlobalContextProvider>
     <div className="Main">
       <div className="Main-content">
         <Navigation {...{showConfig, setShowConfig}}/>
         <Contacts/>
-        <Chat/>
+        <Chat {...{showCRConfig, setShowCRConfig}}/>
       </div>
     </div>
   </GlobalContextProvider>
-
 
 }
 
