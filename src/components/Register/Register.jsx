@@ -153,7 +153,7 @@ const Register = (props) => {
                 e.preventDefault();
                 document.querySelector("#fileInput").click();
               }}
-              value="Cambiar imagen"
+              value="Elegir imagen de perfil"
               className="changeImgBtn"
             />
             <input
