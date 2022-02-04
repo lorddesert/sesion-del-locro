@@ -49,6 +49,8 @@ const Main = () => {
 
   const [ showConfig, setShowConfig] = useState(false)
 
+  const [ showCRConfig, setShowCRConfig] = useState(false)
+
   const [ showChatRoom, setShowChatRoom ] = useState(false)
 
   const [ showCRModal, setShowCRModal ] = useState(false)
@@ -78,7 +80,7 @@ const Main = () => {
 
   if (showRegister) return <GlobalContextProvider>
     <div className="Main">
-      <div className="Main-con">
+      <div className="Main-content">
         <Register
           {...{
             setShowRegister,
@@ -130,7 +132,6 @@ const Main = () => {
       </div>
     </div>
   </GlobalContextProvider>
-
 
   return <GlobalContextProvider>
     <div className="Main">
