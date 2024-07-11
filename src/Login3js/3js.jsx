@@ -26,8 +26,6 @@ const Login3js = () => {
 
     const container = document.querySelector('#container')
 
-    console.log(container)
-
     renderer.setSize(container.clientWidth, container.clientHeight)
     camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000)
     camera.position.z = zPosition
