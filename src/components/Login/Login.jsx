@@ -20,7 +20,6 @@ const Login = props => {
     // console.log('THE USEEEEEEEEEEEER', user)
 
     if (getAuth().currentUser) logIn(true)
-    else console.log(getAuth().currentUser)
 
     setGlobalContext({
       ...globalContext,
