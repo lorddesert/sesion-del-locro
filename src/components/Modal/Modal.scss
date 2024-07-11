@@ -58,11 +58,11 @@
 // for chatRoom craete modal
 
 .diceValues {
-  h3 {
-    font-size: 0.8rem;
-  }
+  padding: .5em;
   display: grid;
   place-items: start;
   gap: .5em;
-  padding: .5em;
+  h3 {
+    font-size: 0.8rem;
+  }
 }

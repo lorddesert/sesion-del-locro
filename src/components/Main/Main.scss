@@ -96,10 +96,10 @@ input,
     }
 
     .ChatHeader {
+      grid-template-columns: repeat(3, auto) 1fr !important;
       .return {
         display: none;
       }
-      grid-template-columns: repeat(3, auto) 1fr !important;
     }
 
     .Contacts-content {
