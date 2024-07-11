@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { getAuth } from 'firebase/auth'
 import { get, getDatabase, ref, child, push, onValue } from 'firebase/database'
-import { success } from '../../scripts/customConsole.js'
+import { sendMsg } from '../../scripts/chat'
 import './ChatInput.scss'
 
 import sendImg from './resources/send.png'
@@ -12,131 +12,37 @@ import Context from '../../context/GlobalContext'
 import scrollBottom from '../../scripts/scrollBotom'
 import getRandomNumber from '../../scripts/getRandomNumber'
 
+
 const ChatInput = () => {
   const { globalContext, setGlobalContext } = useContext(Context)
-  const { app, auth, receiver, user, chat, setChat, inChatRoom } = globalContext
+  const { receiver, user, chat, setChat, inChatRoom } = globalContext
 
-  // useEffect(() => {
-  //   // console.assert(receiver === {}, ' NOOOOOOOOOOOOOOOO',receiver)
-  //   window.addEventListener("keyup", handleEvent)
-  //   return () => window.removeEventListener("keyup", handleEvent)
-  // }, [])
+  useEffect(() => {
+    const receiverUid = receiver.ref.key
+    const myUid = getAuth().currentUser.uid
 
-  const sendMsg = async () => {
-    try {
-      const msg = document.getElementById('chatInput')
-      let receiverNickname = null
-      const receiverUid = receiver.ref.key
-      let receiverChat = null
+    const myChat = child(ref(getDatabase(), `users/${myUid}`), `contacts/${receiverUid}/chat`)
 
-      const myUid = getAuth().currentUser.uid
-      let myChat = null
-      let newMsg = {}
-      //   console.log('reChat: ', receiverChat)
-      //   return
+    const onValueUnsubscribe = onValue(myChat, snapshot => {
+      const newMessages = Object.values(snapshot.val())
 
-      if (!msg.value) return false
+      //TODO: Make condition to escape the function if there are no new messages.
 
-      else {
-        newMsg = {
-          sender: myUid,
-          content: msg.value,
-          nickname: getAuth().currentUser.displayName
-        }
-      }
-      console.log(getAuth().currentUser)
-      // Obtain the receiver username and set my chat.
-      const { nickname } = await receiver.ref.val()
-      //   return
-
-      receiverNickname = nickname
-      // console.log(user, user.ref);
-      // console.log('userRef: ', user.userRef);
-
-      receiverChat = child(ref(getDatabase(), `users/${receiverUid}`), `contacts/${myUid}/chat`)
-      myChat = child(ref(getDatabase(), `users/${myUid}`), `contacts/${receiverUid}/chat`)
-
-      // myChat.push().set(newMsg)
-      push(myChat, newMsg)
-
-      msg.value = ''
-
-      push(receiverChat, newMsg)
-
-      onValue(receiverChat, snapshot => {
-        const messages = snapshot.val()
-        console.log('receiver: ', Object.values(messages))
-      })
-      onValue(myChat, snapshot => {
-        const messages = snapshot.val()
-        console.log('My chat: ', Object.values(messages))
-      })
+      console.log("New message entered:", newMessages)
 
       setGlobalContext({
         ...globalContext,
-        chat: [...chat, newMsg]
+        chat: newMessages
       })
 
-      setChat([...chat, newMsg])
-      scrollBottom(true)
-    } catch (error) {
-      console.log(error)
+      setChat(newMessages)
+      scrollBottom()
+    })
+
+    return () => {
+      onValueUnsubscribe()
     }
-  }
-
-  const sendChatRoomMsg = async (diceRoll = false) => {
-    try {
-      const sender = getAuth().currentUser.uid
-      const msg = document.querySelector('#chatInput')
-
-      // console.log(sender, user)
-
-      // return
-
-      const receiverDiceValues = {
-        min: receiver.minDiceValue,
-        max: receiver.maxDiceValue
-      }
-      const { min, max } = receiverDiceValues
-
-      const newMsg = {
-        sender,
-        nickname: user.displayName,
-        content: msg.value,
-        diceRoll
-      }
-
-      if (msg.value === '' && !diceRoll) return false
-
-      if (diceRoll && typeof diceRoll !== 'object') newMsg.content = getRandomNumber(parseInt(min), parseInt(max))
-
-      // console.log('diceRoll', diceRoll, typeof diceRoll)
-      // return
-
-      const chatRooms = await get(ref(getDatabase(), 'chatRooms'))
-
-      chatRooms.forEach((chatRoom) => {
-        if (chatRoom.val().name === receiver.name) {
-          // console.log(newMsg);
-          // return
-          const chatRoomRef = ref(getDatabase(), `chatRooms/${chatRoom.key}/chat`)
-          push(chatRoomRef, newMsg)
-          // success('Message pushed')
-          setChat([...chat, newMsg])
-
-          setGlobalContext({
-            ...globalContext,
-            chat: [...chat, newMsg]
-          })
-
-          msg.value = ''
-          scrollBottom(true)
-        }
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  }, [])
 
   return (
     <div className='Chat-input-container'>
@@ -151,7 +57,6 @@ const ChatInput = () => {
           <div
             onClick={(e) => sendChatRoomMsg(true)}
             className='Input-img'
-            onTouchEnd={(e) => sendChatRoomMsg(true)}
           >
             <img src={dice} />
           </div>
@@ -159,7 +64,6 @@ const ChatInput = () => {
           <div
             onClick={() => sendChatRoomMsg()}
             className='Input-img'
-            onTouchEnd={() => sendChatRoomMsg()}
             id='sendMsg'
           >
             <img src={sendImg} />
@@ -167,9 +71,19 @@ const ChatInput = () => {
         </>
         : <>
           <div
-            onClick={sendMsg}
+            onClick={() => {
+              const msg = document.getElementById('chatInput')
+
+              sendMsg({
+                receiver,
+                msg,
+                setGlobalContext,
+                setChat,
+                globalContext,
+                chat
+              })
+            }}
             className='Input-img'
-            onTouchEnd={sendMsg}
             id='sendMsg'
           >
             <img src={sendImg} />
