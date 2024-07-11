@@ -1,19 +1,16 @@
-import React from 'react';
+import React from 'react'
 
-import './Modal.scss';
-
-
+import './Modal.scss'
 
 const Modal = props => {
   return (
-    <div className="Modal" id='modal' >
-      <div className="Modal-content" onClick={props.toggleModal}>
-      </div>
+    <div className='Modal' id='modal'>
+      <div className='Modal-content' onClick={props.toggleModal} />
       <form id='modalForm'>
         {props.children}
       </form>
     </div>
-  );
+  )
 }
 
-export default Modal;
+export default Modal

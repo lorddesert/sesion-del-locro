@@ -7,15 +7,15 @@ const setChat = async (receiver, contactRef) => {
     let receiverName = null
 
     if (window.innerWidth < 768) {
-      document.getElementById("main").classList.toggle("show-chat")
+      document.getElementById('main').classList.toggle('show-chat')
     }
 
-    const snapshot = await contactRef.ref.once("value")
-    receiverPhoto = snapshot.child("photo").val()
-    receiverName = snapshot.child("nickname").val()
+    const snapshot = await contactRef.ref.once('value')
+    receiverPhoto = snapshot.child('photo').val()
+    receiverName = snapshot.child('nickname').val()
 
-    for (i = 0; i < this.state.contacts.length; i++)
-      if (state.contacts[i].nickname === receiver)
+    for (i = 0; i < this.state.contacts.length; i++) {
+      if (state.contacts[i].nickname === receiver) {
         setState(
           {
             receiver: contactRef.ref,
@@ -23,13 +23,15 @@ const setChat = async (receiver, contactRef) => {
             receiverName,
             receiverNickname: this.state.contacts[i].nickname,
             chat: this.state.contacts[i].chat,
-            inChatRoom: false,
-          },
-          )
-          scrollBottom()
+            inChatRoom: false
+          }
+        )
+      }
+    }
+    scrollBottom()
   } catch (error) {
-    console.log(error)    
+    console.log(error)
   }
 }
 
-  export default setChat
+export default setChat

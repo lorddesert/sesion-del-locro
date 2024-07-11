@@ -2,23 +2,23 @@
  * @jest-environment jsdom
  */
 
- import '@testing-library/jest-dom'
+import '@testing-library/jest-dom'
 
- import * as React from 'react'
- import { render } from '@testing-library/react'
- import UserConfig from'../components/UserConfig/UserConfig'
- 
- const $ = document.querySelector
-   test('Rendering component Main: ', () => {
-     render(<UserConfig />)
+import * as React from 'react'
+import { render } from '@testing-library/react'
+import UserConfig from '../components/UserConfig/UserConfig'
 
-     const editBtn = $("#editBtn")
+const $ = document.querySelector
+test('Rendering component Main: ', () => {
+  render(<UserConfig />)
 
-     const changeImgBtn = $(".changeImgBtn")
+  const editBtn = $('#editBtn')
 
-     expect(editBtn).toBeTruthy()
+  const changeImgBtn = $('.changeImgBtn')
 
-     editBtn.click()
+  expect(editBtn).toBeTruthy()
 
-     expect(changeImgBtn).toBeTruthy()
-   })
+  editBtn.click()
+
+  expect(changeImgBtn).toBeTruthy()
+})

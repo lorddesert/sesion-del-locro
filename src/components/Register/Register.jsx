@@ -1,126 +1,126 @@
-import React, { useContext, useState } from "react";
-import { getAuth, updateCurrentUser, updateProfile } from "firebase/auth";
-import { getDatabase, ref, child, set } from "firebase/database";
+import React, { useContext, useState } from 'react'
+import { getAuth, updateCurrentUser, updateProfile } from 'firebase/auth'
+import { getDatabase, ref, child, set } from 'firebase/database'
 
 // Components
-import Context from "../../context/GlobalContext";
-import "./Register.scss";
-import PrimaryButton from "../PrimaryButton/PrimaryButton";
-import SecondaryButton from "../SecondaryButton/SecondaryButton";
+import Context from '../../context/GlobalContext'
+import './Register.scss'
+import PrimaryButton from '../PrimaryButton/PrimaryButton'
+import SecondaryButton from '../SecondaryButton/SecondaryButton'
 
 const Register = (props) => {
-  const { globalContext } = useContext(Context);
-  const { app, auth, logIn, user } = globalContext;
-  const [img, setImg] = useState("");
+  const { globalContext } = useContext(Context)
+  const { app, auth, logIn, user } = globalContext
+  const [img, setImg] = useState('')
 
   const getRegisterImg = (e) => {
-    e.persist();
-    e.preventDefault();
+    e.persist()
+    e.preventDefault()
 
-    const img = document.getElementById("fileInput").files[0];
-    const imgURL = URL.createObjectURL(img);
-    setImg(imgURL);
-  };
+    const img = document.getElementById('fileInput').files[0]
+    const imgURL = URL.createObjectURL(img)
+    setImg(imgURL)
+  }
 
   const register = async (e) => {
     try {
-      e.preventDefault();
-      const email = document.querySelector("#email").value;
-      const nickname = document.querySelector("#nickname").value;
-      const password = document.querySelector("#password").value;
+      e.preventDefault()
+      const email = document.querySelector('#email').value
+      const nickname = document.querySelector('#nickname').value
+      const password = document.querySelector('#password').value
 
       // !LOADING
-      await auth.createUserWithEmailAndPassword(getAuth(), email, password);
+      await auth.createUserWithEmailAndPassword(getAuth(), email, password)
 
       await updateProfile(getAuth().currentUser, {
-        displayName: nickname,
-      });
+        displayName: nickname
+      })
 
       console.log(
-        "%c Update displayName",
-        "color: aquagreen; background: black; border-radius: 7px;"
-      );
+        '%c Update displayName',
+        'color: aquagreen; background: black; border-radius: 7px;'
+      )
 
       const currentUserRef = child(
-        ref(getDatabase(), "users"),
+        ref(getDatabase(), 'users'),
         `${getAuth().currentUser.uid}`
-      );
+      )
       console.log(
-        "%c Current user ref",
-        "color: aquagreen; background: black; border-radius: 7px;"
-      );
+        '%c Current user ref',
+        'color: aquagreen; background: black; border-radius: 7px;'
+      )
 
       // return
       await set(currentUserRef, {
-        nickname: nickname,
+        nickname,
         online: true,
-        email,
-      });
-      console.log("FLAG 2 Set new user info");
-      console.log(getAuth().currentUser);
+        email
+      })
+      console.log('FLAG 2 Set new user info')
+      console.log(getAuth().currentUser)
 
-      alert("SU! ccesfully registered. Welcome!");
+      alert('SU! ccesfully registered. Welcome!')
 
-      logIn(true);
+      logIn(true)
     } catch (error) {
       switch (error.code) {
-        case "auth/weak-password":
-          alert("La contraeña es muy debil, intente usando otra.");
-          break;
-        case "auth/email-already-in-use":
-          alert("El email ya esta en uso, pruebe con otro.");
-          break;
-        case "auth/operation-not-allowed":
-          alert("Email o contraseña no validos.");
-          break;
+        case 'auth/weak-password':
+          alert('La contraeña es muy debil, intente usando otra.')
+          break
+        case 'auth/email-already-in-use':
+          alert('El email ya esta en uso, pruebe con otro.')
+          break
+        case 'auth/operation-not-allowed':
+          alert('Email o contraseña no validos.')
+          break
 
         default:
-          alert("Un error ha ocurrido, intente en unos minutos.");
-          console.log(error);
-          break;
+          alert('Un error ha ocurrido, intente en unos minutos.')
+          console.log(error)
+          break
       }
     }
-  };
+  }
 
   const handleInputFocus = (e) => {
-    e.persist();
-    e.preventDefault();
-    e.target.classList.toggle("focusedInput");
-  };
+    e.persist()
+    e.preventDefault()
+    e.target.classList.toggle('focusedInput')
+  }
 
   const returnToLogin = (e) => {
-    e.preventDefault();
-    props.setShowRegister(false);
-    props.setShowLogin(true);
-  };
+    e.preventDefault()
+    props.setShowRegister(false)
+    props.setShowLogin(true)
+  }
 
   return (
     <>
-      <main className="Register">
-        <form className="RegisterForm">
+      <main className='Register'>
+        <form className='RegisterForm'>
           <section>
-            <label htmlFor="email">
+            <label htmlFor='email'>
               <h2>Email</h2>
               <input
-                type="email"
-                id="email"
-                name="email"
+                type='email'
+                id='email'
+                name='email'
                 required
                 onFocus={handleInputFocus}
                 onBlur={handleInputFocus}
-                placeholder="example@hotmail.com"
-                autoComplete="email"
+                placeholder='example@hotmail.com'
+                autoComplete='email'
               />
             </label>
           </section>
 
           <section>
-            <label htmlFor="nickname">
+            <label htmlFor='nickname'>
               <h2>Nickname</h2>
               <input
-                type="text"
-                id="nickname"
-                name="nickname"
+                type='text'
+                id='nickname'
+                name='nickname'
                 required
                 onFocus={handleInputFocus}
                 onBlur={handleInputFocus}
@@ -130,55 +130,61 @@ const Register = (props) => {
           </section>
 
           <section>
-            <label htmlFor="password">
+            <label htmlFor='password'>
               <h2>Contraseña</h2>
               <input
-                type="password"
-                id="password"
-                name="password"
+                type='password'
+                id='password'
+                name='password'
                 required
                 onFocus={handleInputFocus}
                 onBlur={handleInputFocus}
-                autoComplete="password"
+                autoComplete='password'
               />
             </label>
           </section>
 
-          <div
-          >
-            {img && <img src={img} alt="imagen del usuario" />}
+          <div>
+            {img && <img src={img} alt='imagen del usuario' />}
             <PrimaryButton
               action={(e) => {
-                e.persist();
-                e.preventDefault();
-                document.querySelector("#fileInput").click();
+                e.persist()
+                e.preventDefault()
+                document.querySelector('#fileInput').click()
               }}
-              value="Elegir imagen de perfil"
-              className="changeImgBtn"
+              value='Elegir imagen de perfil'
+              className='changeImgBtn'
             />
             <input
-              type="file"
-              style={{ display: "none" }}
-              id="fileInput"
+              type='file'
+              style={{ display: 'none' }}
+              id='fileInput'
               onChange={getRegisterImg}
             />
           </div>
-          <p style={{margin: "1em 0"}}>
+          <p style={{ margin: '1em 0' }}>
             <strong
-              style={{fontSize: "16px", fontWeight: "bold", color: "white" }}
+              style={{ fontSize: '16px', fontWeight: 'bold', color: 'white' }}
             >
               ó
             </strong>
           </p>
           <PrimaryButton
-            id="logIn"
-            value="Inicia sesión"
+            id='logIn'
+            value='Inicia sesión'
             action={returnToLogin}
           />
+          <div style={{ marginTop: '1em' }}>
+            <PrimaryButton
+              id='logIn'
+              value='Registrar'
+              action={register}
+            />
+          </div>
         </form>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

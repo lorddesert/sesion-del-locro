@@ -1,15 +1,16 @@
-import React from 'react';
+import React from 'react'
 
-import './App.scss';
+import './App.scss'
 // reset and normalize css
-import './normalize.scss';
+import './normalize.scss'
 
-import Header from '../Header/Header';
-import Main from '../Main/Main';
-import Footer from '../Footer/Footer';
+import Header from '../Header/Header'
+import Main from '../Main/Main'
+import Footer from '../Footer/Footer'
 
 const App = () => {
-  return ( <div className='App'>
+  return (
+    <div className='App'>
       <div className='App-container'>
         {/* <Header /> */}
         <Main />
@@ -19,4 +20,4 @@ const App = () => {
   )
 }
 
-export default App;
+export default App

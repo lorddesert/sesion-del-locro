@@ -4,9 +4,9 @@ import ChatRoom from '../ChatRoom/ChatRoom'
 
 const ChatRooms = props => {
   // console.log(props)
-    return (
-        <>
-        {props.chatRooms.length &&
+  return (
+    <>
+      {props.chatRooms.length &&
             props.chatRooms.map((chatRoom, i) => (
               <ChatRoom
                 key={`chatRoom-${i}`}
@@ -15,8 +15,8 @@ const ChatRooms = props => {
                 number={i}
               />
             ))}
-        </>
-    )
+    </>
+  )
 }
 
 export default ChatRooms

@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-import './Footer.scss';
+import './Footer.scss'
 
 const Footer = () => {
   return (
@@ -9,11 +9,10 @@ const Footer = () => {
         <div className='Footer-logo'>
           <span>Sesión del Locro</span>
         </div>
-        <div className='Footer-links'>
-        </div>
+        <div className='Footer-links' />
       </div>
     </div>
-  );
+  )
 }
 
-export default Footer;
+export default Footer
